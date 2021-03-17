@@ -6712,7 +6712,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      enterDate: new Date().toISOString().substr(0, 10),
       menuDate: false,
       orderid: 0,
       permission: 'item',
@@ -6726,7 +6725,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'name': 'Inactive'
       }],
       form: {
-        enterDate: null,
+        enterDate: new Date().toISOString().substr(0, 10),
         item: null,
         itemId: null,
         unit: null,
@@ -39593,17 +39592,25 @@ var render = function() {
                                   ref: "menuDate",
                                   attrs: {
                                     "close-on-content-click": false,
-                                    "return-value": _vm.enterDate,
+                                    "return-value": _vm.form.enterDate,
                                     transition: "scale-transition",
                                     "offset-y": "",
                                     "min-width": "290px"
                                   },
                                   on: {
                                     "update:returnValue": function($event) {
-                                      _vm.enterDate = $event
+                                      return _vm.$set(
+                                        _vm.form,
+                                        "enterDate",
+                                        $event
+                                      )
                                     },
                                     "update:return-value": function($event) {
-                                      _vm.enterDate = $event
+                                      return _vm.$set(
+                                        _vm.form,
+                                        "enterDate",
+                                        $event
+                                      )
                                     }
                                   },
                                   scopedSlots: _vm._u(
@@ -39628,11 +39635,16 @@ var render = function() {
                                                       readonly: ""
                                                     },
                                                     model: {
-                                                      value: _vm.enterDate,
+                                                      value: _vm.form.enterDate,
                                                       callback: function($$v) {
-                                                        _vm.enterDate = $$v
+                                                        _vm.$set(
+                                                          _vm.form,
+                                                          "enterDate",
+                                                          $$v
+                                                        )
                                                       },
-                                                      expression: "enterDate"
+                                                      expression:
+                                                        "form.enterDate"
                                                     }
                                                   },
                                                   "v-text-field",
@@ -39648,7 +39660,7 @@ var render = function() {
                                     ],
                                     null,
                                     false,
-                                    1445745141
+                                    970927193
                                   ),
                                   model: {
                                     value: _vm.menuDate,
@@ -39665,11 +39677,11 @@ var render = function() {
                                     {
                                       attrs: { "no-title": "", scrollable: "" },
                                       model: {
-                                        value: _vm.enterDate,
+                                        value: _vm.form.enterDate,
                                         callback: function($$v) {
-                                          _vm.enterDate = $$v
+                                          _vm.$set(_vm.form, "enterDate", $$v)
                                         },
-                                        expression: "enterDate"
+                                        expression: "form.enterDate"
                                       }
                                     },
                                     [
@@ -39699,7 +39711,7 @@ var render = function() {
                                           on: {
                                             click: function($event) {
                                               return _vm.$refs.menuDate.save(
-                                                _vm.enterDate
+                                                _vm.form.enterDate
                                               )
                                             }
                                           }
@@ -40089,7 +40101,7 @@ var render = function() {
                             [
                               _c("v-combobox", {
                                 attrs: {
-                                  label: "Item Status",
+                                  label: "Status",
                                   items: _vm.status,
                                   "item-text": "name",
                                   "item-value": "id",

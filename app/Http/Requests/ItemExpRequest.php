@@ -26,7 +26,7 @@ class ItemExpRequest extends FormRequest
     {
         return [
             'item_id'        => 'required|integer',
-            'date'           => 'required|date',
+            'enterDate'      => 'required|date',
             'comm'           => 'required|numeric',
             'unit'           => 'required|numeric',
             'weight_pb'      => 'required|numeric',

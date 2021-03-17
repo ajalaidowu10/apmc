@@ -74,7 +74,7 @@
                 ref="menuDate"
                 v-model="menuDate"
                 :close-on-content-click="false"
-                :return-value.sync="enterDate"
+                :return-value.sync="form.enterDate"
                 transition="scale-transition"
                 offset-y
                 min-width="290px"
@@ -83,7 +83,7 @@
                   <v-text-field
                     outlined
                     dense
-                    v-model="enterDate"
+                    v-model="form.enterDate"
                     label="Date"
                     append-icon="mdi-calendar"
                     readonly
@@ -92,7 +92,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="enterDate"
+                  v-model="form.enterDate"
                   no-title
                   scrollable
                 >
@@ -107,7 +107,7 @@
                   <v-btn
                     text
                     color="primary"
-                    @click="$refs.menuDate.save(enterDate)"
+                    @click="$refs.menuDate.save(form.enterDate)"
                   >
                     OK
                   </v-btn>
@@ -284,7 +284,7 @@
               >
               <v-combobox
                 v-model="form.status"
-                label="Item Status"
+                label="Status"
                 :items="status"
                 item-text="name"
                 item-value="id"
@@ -377,7 +377,6 @@
          }
      },
     data: () => ({
-      enterDate: new Date().toISOString().substr(0, 10),
       menuDate: false,
       orderid: 0,
       permission: 'item',
@@ -385,7 +384,7 @@
       item: [],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       form: {
-              enterDate: null,
+              enterDate:  new Date().toISOString().substr(0, 10),
               item:null,
               itemId:null,
               unit: null,
