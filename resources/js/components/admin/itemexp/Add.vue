@@ -688,6 +688,7 @@
             }
             else
             {
+              console.log(this.form);
               axios.post(`itemexp`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
                       this.$router.push({name:'view-itemexp', params: { message: `Item Expense Added Successfully` }});

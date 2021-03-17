@@ -14,7 +14,7 @@ class CreateItemExpsTable extends Migration
     public function up()
     {
         Schema::create('item_exps', function (Blueprint $table) {
-            $table->foreignId('item');
+            $table->foreignId('item_id');
             $table->date('enter_date');
             $table->decimal('unit');
             $table->decimal('weight_pb');
@@ -30,7 +30,7 @@ class CreateItemExpsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('status_id')->default(1);
-            $table->foreign('item')->references('id')->on('items');
+            $table->foreign('item_id')->references('id')->on('items');
             $table->foreign('status_id')->references('id')->on('statuses');
         });
     }

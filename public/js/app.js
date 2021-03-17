@@ -7051,6 +7051,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           console.log(_this3.form.allError);
         });
       } else {
+        console.log(this.form);
         axios.post("itemexp", _utils_transformKeys__WEBPACK_IMPORTED_MODULE_2__["default"].snakeCase(this.form)).then(function (resp) {
           _this3.$router.push({
             name: 'view-itemexp',
@@ -118101,8 +118102,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\repos\apmc\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\repos\apmc\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/idowu/repos/apmc/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/idowu/repos/apmc/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
