@@ -1,17 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Home from './views/Home';
-import AddBooking from './views/AddBooking';
-import AdminAddBooking from './components/admin/booking/Add';
-import ViewBooking from './components/admin/booking/View';
 import PrintBooking from './components/admin/booking/Print';
 import ViewCheckin from './components/admin/booking/Checkin';
 import ViewCheckout from './components/admin/booking/Checkout';
 import UserLogin from './views/UserLogin';
 import AdminLogin from './views/AdminLogin';
-import PaymentSuccess from './views/PaymentSuccess';
-import BookingSuccess from './views/BookingSuccess';
 import Signup from './views/Signup';
 import Terms from './views/Terms';
 import WebAdmin from './views/WebAdmin';
@@ -67,26 +61,6 @@ const router = new Router({
   },
   routes: [
 				    {
-				      path: '/',
-				      name: 'home',
-				      component: Home,
-				    },
-				    {
-				      path: '/booking',
-				      name: 'booking',
-				      component: AddBooking,
-				    },
-				    {
-				      path: '/terms-and-conditions',
-				      name: 'terms',
-				      component: Terms,
-				    },
-				    {
-				      path: '/payment/success',
-				      name: 'payment-success',
-				      component: PaymentSuccess,
-				    },
-				    {
 				      path: '/cashbank/receipt/:id',
 				      name: 'print-cashbank',
 				      component: PrintCashbank,
@@ -135,11 +109,6 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/booking/success/:bookingid?',
-				      name: 'booking-success',
-				      component: BookingSuccess,
-				    },
-				    {
 				      path: '/login',
 				      name: 'login',
 				      component: UserLogin,
@@ -159,16 +128,6 @@ const router = new Router({
 				      name: 'web-admin-booking',
 				      component: WebAdmin,
 				      children: [
-				      	{
-				      		path:'booking',
-				      		name: 'add-booking',
-				      		component: AdminAddBooking,
-				      	},
-				      	{
-				      		path:'booking',
-				      		name: 'view-booking',
-				      		component: ViewBooking,
-				      	},
 				      	{
 				      		path:'item',
 				      		name: 'add-item',

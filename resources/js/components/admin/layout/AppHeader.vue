@@ -5,7 +5,7 @@
       dense
       dark
     >
-      <v-toolbar-title class="pl-10">Hotel Manager</v-toolbar-title>
+      <v-toolbar-title class="pl-10">Apmc Manager</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
