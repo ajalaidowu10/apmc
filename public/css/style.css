@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'eadesigner';
+    src: url('../fonts/EaDesignerBold.ttf');
+}
+
+
+#nav-title, #nav-title1, #nav-tab{
+	font-family: eadesigner!important;
+}
+
+.swal-footer {
+  background-color: rgb(245, 248, 250);
+  margin-top: 32px;
+  border-top: 1px solid #E9EEF1;
+  overflow: hidden;
+}
+
+.razorpay-payment-button{
+	background-color: #2196F3;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
