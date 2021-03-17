@@ -11,6 +11,8 @@ import Terms from './views/Terms';
 import WebAdmin from './views/WebAdmin';
 import AddItem from './components/admin/item/Add';
 import ViewItem from './components/admin/item/View';
+import AddItemExp from './components/admin/itemexp/Add';
+import ViewItemExp from './components/admin/itemexp/View';
 import AddRoom from './components/admin/room/Add';
 import ViewRoom from './components/admin/room/View';
 import AddAccount from './components/admin/account/Add';
@@ -137,6 +139,16 @@ const router = new Router({
 				      		path:'item',
 				      		name: 'view-item',
 				      		component: ViewItem,
+				      	},
+				      	{
+				      		path:'itemexp',
+				      		name: 'add-itemexp',
+				      		component: AddItemExp,
+				      	},
+				      	{
+				      		path:'itemexp',
+				      		name: 'view-itemexp',
+				      		component: ViewItemExp,
 				      	},
 				      	{
 				      		path:'service',

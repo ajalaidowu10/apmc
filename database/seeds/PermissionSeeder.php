@@ -57,6 +57,14 @@ class PermissionSeeder extends Seeder
       $new_permission->link = '/web-admin/item';
       $new_permission->save();
 
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'item-exp';
+      $new_permission->name = 'Item Expense';
+      $new_permission->icon = 'mdi-food-variant';
+      $new_permission->link = '/web-admin/itemexp';
+      $new_permission->save();
+
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);

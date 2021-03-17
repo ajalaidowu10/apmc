@@ -19,7 +19,7 @@
                 >
                   mdi-notebook-plus-outline
                 </v-icon>
-                 Add Item
+                 Add Item Expense
               </div>
               <div v-else>
                 <v-icon
@@ -28,7 +28,7 @@
                 >
                   mdi-notebook-edit-outline
                 </v-icon>
-                Edit Item
+                Edit Item Expense
               </div>
               
               
@@ -36,9 +36,9 @@
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
-                  @click="viewItem"
+                  @click="viewData"
                 >
-                  <span class="d-none d-md-flex">View Item</span>
+                  <span class="d-none d-md-flex">View Item Expense</span>
                   <v-icon >
                     mdi-book-search-outline
                   </v-icon>
@@ -51,53 +51,236 @@
         <v-container>
           <v-row>
             <v-col
-              cols="12"
+              cols="6"
               >
               <v-combobox
-                v-model="form.itemGroup"
-                label="Item Group"
-                :items="itemGroup"
+                v-model="form.item"
+                label="Item"
+                :items="item"
                 item-text="name"
                 item-value="id"
-                :error-messages="itemGroupErrors"
-                @input="$v.form.itemGroup.$touch()"
-                @blur="$v.form.itemGroup.$touch()"
+                :error-messages="itemErrors"
+                @input="$v.form.item.$touch()"
+                @blur="$v.form.item.$touch()"
                 dense
-                @change="setItemGroup($event)"
+                @change="setItem($event)"
                 outlined
               ></v-combobox>
             </v-col>
             <v-col
-              cols="12"
-             >
-              <v-text-field
-                outlined
-                dense
-                label="Item Name*"
-                v-model="form.name"
-                :error-messages="nameErrors"
-                @input="$v.form.name.$touch()"
-                @blur="$v.form.name.$touch()"
-                required
-              ></v-text-field>
+              cols="6"
+              >
+              <v-menu
+                ref="menuDate"
+                v-model="menuDate"
+                :close-on-content-click="false"
+                :return-value.sync="enterDate"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    outlined
+                    dense
+                    v-model="enterDate"
+                    label="Date"
+                    append-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="enterDate"
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="menuDate = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menuDate.save(enterDate)"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
              >
               <v-text-field
                 outlined
                 dense
-                label="Item Price*"
-                v-model="form.price"
+                label="Unit*"
+                v-model="form.unit"
                 type="number"
-                :error-messages="priceErrors"
-                @input="$v.form.price.$touch()"
-                @blur="$v.form.price.$touch()"
+                :error-messages="unitErrors"
+                @input="$v.form.unit.$touch()"
+                @blur="$v.form.unit.$touch()"
                 required
               ></v-text-field>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="Weight Conversion*"
+                v-model="form.weightPb"
+                type="number"
+                :error-messages="weightPbErrors"
+                @input="$v.form.weightPb.$touch()"
+                @blur="$v.form.weightPb.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="Commission*"
+                v-model="form.comm"
+                type="number"
+                :error-messages="commErrors"
+                @input="$v.form.comm.$touch()"
+                @blur="$v.form.comm.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="P Hamali*"
+                v-model="form.pHamali"
+                type="number"
+                :error-messages="pHamaliErrors"
+                @input="$v.form.pHamali.$touch()"
+                @blur="$v.form.pHamali.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="B Hamali*"
+                v-model="form.bHamali"
+                type="number"
+                :error-messages="bHamaliErrors"
+                @input="$v.form.bHamali.$touch()"
+                @blur="$v.form.bHamali.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="P Levy*"
+                v-model="form.pLevy"
+                type="number"
+                :error-messages="pLevyErrors"
+                @input="$v.form.pLevy.$touch()"
+                @blur="$v.form.pLevy.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="B Levey*"
+                v-model="form.bLevy"
+                type="number"
+                :error-messages="bLevyErrors"
+                @input="$v.form.bLevy.$touch()"
+                @blur="$v.form.bLevy.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="APMC*"
+                v-model="form.apmc"
+                type="number"
+                :error-messages="apmcErrors"
+                @input="$v.form.apmc.$touch()"
+                @blur="$v.form.apmc.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="MAP Levy*"
+                v-model="form.mapLevy"
+                type="number"
+                :error-messages="mapLevyErrors"
+                @input="$v.form.mapLevy.$touch()"
+                @blur="$v.form.mapLevy.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="Tolai*"
+                v-model="form.tolai"
+                type="number"
+                :error-messages="tolaiErrors"
+                @input="$v.form.tolai.$touch()"
+                @blur="$v.form.tolai.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="Discount*"
+                v-model="form.discount"
+                type="number"
+                :error-messages="discountErrors"
+                @input="$v.form.discount.$touch()"
+                @blur="$v.form.discount.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
               >
               <v-combobox
                 v-model="form.status"
@@ -126,7 +309,7 @@
                dark
                min-width="300"
                x-large
-               @click="deleteItem"
+               @click="deleteData"
                >
                Delete
                <v-icon
@@ -178,23 +361,44 @@
      mixins: [validationMixin],
      validations: {
          form:{
-           name:  {required },
-           price: {required},
-           itemGroup: {required },
+           unit: {required},
+           weightPb: {required},
+           comm: {required},
+           pHamali: {required},
+           bHamali: {required},
+           pLevy: {required},
+           bLevy: {required},
+           apmc: {required},
+           mapLevy: {required},
+           tolai: {required},
+           discount: {required},
+           item: {required },
            status: {required},
          }
      },
     data: () => ({
+      enterDate: new Date().toISOString().substr(0, 10),
+      menuDate: false,
       orderid: 0,
       permission: 'item',
       overlay: false,
-      itemGroup: [],
+      item: [],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       form: {
-              name: null,
-              itemGroup:null,
-              itemGroupId:null,
-              price: null,
+              enterDate: null,
+              item:null,
+              itemId:null,
+              unit: null,
+              weightPb: null,
+              comm: null,
+              pHamali: null,
+              bHamali: null,
+              pLevy: null,
+              bLevy: null,
+              apmc: null,
+              mapLevy: null,
+              tolai: null,
+              discount: null,
               status:null,
               statusId:null,
               overlay: false,
@@ -204,22 +408,32 @@
     }),
     created(){
       this.overlay = true;
-      axios.get(`itemgroup`)
+      axios.get(`item`)
             .then(resp=>{
-              this.itemGroup = transformKeys.camelCase(resp.data.data);
+              this.item = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
-        axios.get(`item/${this.orderid}`)
+        axios.get(`itemexp/${this.orderid}`)
              .then(resp => {
-              let getItemOrder            = transformKeys.camelCase(resp.data.data);
-              this.form.name              = getItemOrder.name;
-              this.form.price             = getItemOrder.price;
-              this.form.itemGroup         = getItemOrder.itemGroup;
-              this.form.itemGroupId       = getItemOrder.itemGroupId;
-              this.form.status            = getItemOrder.status;
-              this.form.statusId          = getItemOrder.statusId;
+              let getItemOrder           = transformKeys.camelCase(resp.data.data);
+              this.form.enterDate        = getItemOrder.enterDate;
+              this.form.unit             = getItemOrder.unit;
+              this.form.weightPb         = getItemOrder.weightPb;
+              this.form.comm             = getItemOrder.comm;
+              this.form.pHamali          = getItemOrder.pHamali;
+              this.form.bHamali          = getItemOrder.bHamali;
+              this.form.pLevy            = getItemOrder.pLevy;
+              this.form.bLevy            = getItemOrder.bLevy;
+              this.form.apmc             = getItemOrder.apmc;
+              this.form.mapLevy          = getItemOrder.mapLevy;
+              this.form.tolai            = getItemOrder.tolai;
+              this.form.discount         = getItemOrder.discount;
+              this.form.item             = getItemOrder.item;
+              this.form.itemId           = getItemOrder.itemId;
+              this.form.status           = getItemOrder.status;
+              this.form.statusId         = getItemOrder.statusId;
              })
              .catch(err => Exception.handle(err, 'admin'));
       }
@@ -227,17 +441,17 @@
       
     },
     computed: {
-      itemGroupErrors () {
+      itemErrors () {
         const errors = [];
-        if (!this.$v.form.itemGroup.$dirty) return errors; 
+        if (!this.$v.form.item.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'itemGroupId') {
-            errors.push(this.form.allError.itemGroupId[0]);
+          if (items == 'itemId') {
+            errors.push(this.form.allError.itemId[0]);
             break;
           } 
 
         } 
-        !this.$v.form.itemGroup.required && errors.push('Item Group is required')
+        !this.$v.form.item.required && errors.push('Item is required')
         return errors
       },
       statusErrors () {
@@ -250,48 +464,191 @@
           } 
 
         } 
-        !this.$v.form.status.required && errors.push('Item Status is required')
+        !this.$v.form.status.required && errors.push('Status is required')
         return errors
       },
-      nameErrors () {
+      unitErrors () {
         const errors = []
-        if (!this.$v.form.name.$dirty) return errors; 
+        if (!this.$v.form.unit.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'name') {
-            errors.push(this.form.allError.name[0]);
+          if (items == 'unit') {
+            errors.push(this.form.allError.unit[0]);
             break;
           } 
 
         } 
-        !this.$v.form.name.required && errors.push('Item Name is required')
+        !this.$v.form.unit.required && errors.push('Unit is required')
         return errors
       },
-      priceErrors () {
+      weightPbErrors () {
         const errors = []
-        if (!this.$v.form.price.$dirty) return errors; 
+        if (!this.$v.form.weightPb.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'price') {
-            errors.push(this.form.allError.price[0]);
+          if (items == 'weightPb') {
+            errors.push(this.form.allError.weightPb[0]);
             break;
           } 
 
         } 
-        !this.$v.form.price.required && errors.push('Item Price is required')
+        !this.$v.form.weightPb.required && errors.push('Weight Conversion is required')
+        return errors
+      },
+      commErrors () {
+        const errors = []
+        if (!this.$v.form.comm.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'comm') {
+            errors.push(this.form.allError.comm[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.comm.required && errors.push('Commission is required')
+        return errors
+      },
+      pHamaliErrors () {
+        const errors = []
+        if (!this.$v.form.pHamali.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'pHamali') {
+            errors.push(this.form.allError.pHamali[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.pHamali.required && errors.push('P Hamali is required')
+        return errors
+      },
+      bHamaliErrors () {
+        const errors = []
+        if (!this.$v.form.bHamali.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'bHamali') {
+            errors.push(this.form.allError.bHamali[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.bHamali.required && errors.push('B Hamali is required')
+        return errors
+      },
+      pLevyErrors () {
+        const errors = []
+        if (!this.$v.form.pLevy.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'pLevy') {
+            errors.push(this.form.allError.pLevy[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.pLevy.required && errors.push('P Levy is required')
+        return errors
+      },
+      bLevyErrors () {
+        const errors = []
+        if (!this.$v.form.bLevy.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'bLevy') {
+            errors.push(this.form.allError.bLevy[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.bLevy.required && errors.push('B Levy is required')
+        return errors
+      },
+      ampcErrors () {
+        const errors = []
+        if (!this.$v.form.ampc.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'ampc') {
+            errors.push(this.form.allError.ampc[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.ampc.required && errors.push('Unit is required')
+        return errors
+      },
+      unitErrors () {
+        const errors = []
+        if (!this.$v.form.unit.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'unit') {
+            errors.push(this.form.allError.unit[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.unit.required && errors.push('Unit is required')
+        return errors
+      },
+      mapLevyErrors () {
+        const errors = []
+        if (!this.$v.form.mapLevy.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'mapLevy') {
+            errors.push(this.form.allError.mapLevy[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.mapLevy.required && errors.push('Unit is required')
+        return errors
+      },
+      tolaiErrors () {
+        const errors = []
+        if (!this.$v.form.tolai.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'tolai') {
+            errors.push(this.form.allError.tolai[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.tolai.required && errors.push('Unit is required')
+        return errors
+      },
+      apmcErrors () {
+        const errors = []
+        if (!this.$v.form.apmc.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'apmc') {
+            errors.push(this.form.allError.apmc[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.apmc.required && errors.push('Unit is required')
+        return errors
+      },
+      discountErrors () {
+        const errors = []
+        if (!this.$v.form.discount.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'discount') {
+            errors.push(this.form.allError.discount[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.discount.required && errors.push('Unit is required')
         return errors
       },
       
     },
     methods: {
-          setItemGroup(data){
-            this.form.itemGroupId = data.id;
+          setItem(data){
+            this.form.itemId = data.id;
           },
           setStatus(data){
             this.form.statusId = data.id;
           },
-          viewItem(){
-            this.$router.push({name:'view-item'});
+          viewData(){
+            this.$router.push({name:'view-itemexp'});
           },
-          deleteItem()
+          deleteData()
           {
             
             swal({
@@ -302,9 +659,9 @@
             .then((yes) => {
               if (yes) {
                 this.overlay = true;
-                axios.delete(`item/${this.orderid}`)
+                axios.delete(`itemexp/${this.orderid}`)
                      .then(resp => {
-                      this.$router.push({name:'view-item', params: { message: `Item Deleted Successfully` }});
+                      this.$router.push({name:'view-itemexp', params: { message: `Item Deleted Successfully` }});
                      })
                      .catch(err => Exception.handle(err, 'admin'));
                 this.overlay = false;
@@ -320,9 +677,9 @@
             this.overlay = true;
             if (this.orderid != 0) 
             {
-              axios.patch(`item/${this.orderid}`, transformKeys.snakeCase(this.form))
+              axios.patch(`itemexp/${this.orderid}`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-item', params: { message: `Item ${resp.data.name} Updated Successfully` }});
+                      this.$router.push({name:'view-itemexp', params: { message: `Item Expense Updated Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;
@@ -332,9 +689,9 @@
             }
             else
             {
-              axios.post('item', transformKeys.snakeCase(this.form))
+              axios.post(`itemexp`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-item', params: { message: `Item ${resp.data.name} Added Successfully` }});
+                      this.$router.push({name:'view-itemexp', params: { message: `Item Expense Added Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;

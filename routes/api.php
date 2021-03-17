@@ -45,6 +45,7 @@ Route::group([
 });
 
 Route::apiResource('item', 'ItemController');
+Route::apiResource('itemexp', 'ItemExpController');
 Route::apiResource('room', 'RoomController');
 Route::apiResource('booking', 'BookingOrderController');
 Route::apiResource('cashbank', 'CashbankOrderController');
