@@ -40,6 +40,14 @@ class PermissionSeeder extends Seeder
       $new_permission->icon = 'mdi-account-tie';
       $new_permission->save();
 
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_utility);
+      $new_permission->slug = 'backup-restore';
+      $new_permission->name = 'Backup/Restore';
+      $new_permission->link = '/web-admin/user';
+      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->save();
+
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
@@ -53,7 +61,7 @@ class PermissionSeeder extends Seeder
       $new_permission->module()->associate($module_master);
       $new_permission->slug = 'item';
       $new_permission->name = 'Item';
-      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->icon = 'mdi-star';
       $new_permission->link = '/web-admin/item';
       $new_permission->save();
 
@@ -61,16 +69,16 @@ class PermissionSeeder extends Seeder
       $new_permission->module()->associate($module_master);
       $new_permission->slug = 'item-exp';
       $new_permission->name = 'Item Expense';
-      $new_permission->icon = 'mdi-food-variant';
+      $new_permission->icon = 'mdi-star-cog';
       $new_permission->link = '/web-admin/itemexp';
       $new_permission->save();
 
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
-      $new_permission->slug = 'iaccount-group';
+      $new_permission->slug = 'account-group';
       $new_permission->name = 'Account Group';
-      $new_permission->icon = 'mdi-food-variant';
+      $new_permission->icon = 'mdi-reloaad';
       $new_permission->link = '/web-admin/acctgroup';
       $new_permission->save();
 
