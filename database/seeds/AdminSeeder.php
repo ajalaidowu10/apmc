@@ -24,7 +24,7 @@ class AdminSeeder extends Seeder
       $create_super_admin = new Admin([
                                           'name' => 'Super Admin', 
                                           'status_id' => 1, 
-                                          'email' => 'superadmin@hotelmanager.com', 
+                                          'email' => 'superadmin@apmc.com', 
                                           'password' => 'superadmin321',
                                           'created_by' => 1
                                         ]);
