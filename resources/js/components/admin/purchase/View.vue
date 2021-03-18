@@ -28,14 +28,14 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              View Item Expense
+              View Sales
               <template v-slot:actions>
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
                   @click="addData"
                 >
-                  <span class="d-none d-md-flex">Add Item Expense</span>
+                  <span class="d-none d-md-flex">Add Sales</span>
                   <v-icon >
                     mdi-notebook-plus-outline
                   </v-icon>
@@ -61,7 +61,7 @@
               :items="itemOrders"
               :search="search"
               >
-              <template v-slot:item.edit="{ item }">
+              <template v-slot:item.view="{ item }">
                 <v-btn
                   color="primary"
                   text
@@ -69,7 +69,20 @@
                   @click="editData(item.id)"
                 >
                   <v-icon>
-                    mdi-square-edit-outline
+                    mdi-eye
+                  </v-icon>
+                </v-btn>
+              </template>
+              <template v-slot:item.print="{ item }">
+
+                <v-btn
+                  color="red"
+                  text
+                  small
+                  @click="printData(item.id)"
+                >
+                  <v-icon>
+                    mdi-file-pdf-outline
                   </v-icon>
                 </v-btn>
               </template>
@@ -93,25 +106,18 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'item',
+      permission: 'restuarant-sales',
       alert: false,
       search: '',
       headers: [
-                { text: 'Item Name', value: 'item' },
-                { text: 'Date', value: 'enter_date' },
-                { text: 'Unit', value: 'unit' },
-                { text: 'Weight Conversion', value: 'weight_pb' },
-                { text: 'Commission', value: 'comm' },
-                { text: 'P Hamali', value: 'p_hamali' },
-                { text: 'B Hamali', value: 'b_hamali' },
-                { text: 'P Levy', value: 'p_levy' },
-                { text: 'B Levy', value: 'b_levy' },
-                { text: 'Apmc', value: 'apmc' },
-                { text: 'MAP Levy', value: 'map_levy' },
-                { text: 'Discount', value: 'discount' },
-                { text: 'Tolai', value: 'tolai' },
-                { text: 'Edit', value: 'edit' },
-                { text: 'Status', value: 'status' },
+                { text: 'S/No', value: 'id' },
+                { text: 'Customer Account Name', value: 'cus_acct' },
+                { text: 'Total Quantity', value: 'total_qty' },
+                { text: 'Total Amount', value: 'total_amount' },
+                { text: 'Narration',  value: 'descp' },
+                { text: 'Date Added', value: 'created_at' },
+                { text: 'View', value: 'view' },
+                { text: 'Print', value: 'print' },
               ],
       itemOrders: [],
       overlay: false,
@@ -120,14 +126,19 @@
        this.index();
     },
     methods: {
+              printData(id)
+              {
+                let routeData = this.$router.resolve({name: 'print-sales',  params:{id:id}});
+                window.open(routeData.href, '_blank');
+              },
               addData(){
-                this.$router.push({name:'add-itemexp'});
+                this.$router.push({name:'add-sales'});
               },
               index()
               {
 
                 this.overlay = true;
-                axios.get(`itemexp`)
+                axios.get(`sales`)
                      .then(resp => {
                       this.overlay = false;
                       this.itemOrders = resp.data.data;
@@ -141,10 +152,8 @@
                     });
 
               },
-              
               editData(id){
-                console.log(id);
-                this.$router.push({name:'add-itemexp', params:{orderid:id}});
+                this.$router.push({name:'edit-sales', params:{orderid:id}});
               },
               
         }

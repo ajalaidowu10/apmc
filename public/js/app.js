@@ -7172,24 +7172,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -7198,14 +7180,44 @@ __webpack_require__.r(__webpack_exports__);
       alert: false,
       search: '',
       headers: [{
-        text: 'Item Group Type',
-        value: 'item_group'
-      }, {
         text: 'Item Name',
-        value: 'name'
+        value: 'item'
       }, {
-        text: 'Item Price',
-        value: 'price'
+        text: 'Date',
+        value: 'enter_date'
+      }, {
+        text: 'Unit',
+        value: 'unit'
+      }, {
+        text: 'Weight Conversion',
+        value: 'weight_pb'
+      }, {
+        text: 'Commission',
+        value: 'comm'
+      }, {
+        text: 'P Hamali',
+        value: 'p_hamali'
+      }, {
+        text: 'B Hamali',
+        value: 'b_hamali'
+      }, {
+        text: 'P Levy',
+        value: 'p_levy'
+      }, {
+        text: 'B Levy',
+        value: 'b_levy'
+      }, {
+        text: 'Apmc',
+        value: 'apmc'
+      }, {
+        text: 'MAP Levy',
+        value: 'map_levy'
+      }, {
+        text: 'Discount',
+        value: 'discount'
+      }, {
+        text: 'Tolai',
+        value: 'tolai'
       }, {
         text: 'Edit',
         value: 'edit'
@@ -7221,16 +7233,16 @@ __webpack_require__.r(__webpack_exports__);
     this.index();
   },
   methods: {
-    addItem: function addItem() {
+    addData: function addData() {
       this.$router.push({
-        name: 'add-item'
+        name: 'add-itemexp'
       });
     },
     index: function index() {
       var _this = this;
 
       this.overlay = true;
-      axios.get('item').then(function (resp) {
+      axios.get("itemexp").then(function (resp) {
         _this.overlay = false;
         _this.itemOrders = resp.data.data;
 
@@ -7242,9 +7254,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.overlay = false;
       });
     },
-    editItem: function editItem(id) {
+    editData: function editData(id) {
+      console.log(id);
       this.$router.push({
-        name: 'add-item',
+        name: 'add-itemexp',
         params: {
           orderid: id
         }
@@ -40314,7 +40327,7 @@ var render = function() {
                                           {
                                             staticClass: "mx-2 float-right",
                                             attrs: { color: "orange" },
-                                            on: { click: _vm.addItem }
+                                            on: { click: _vm.addData }
                                           },
                                           [
                                             _c(
@@ -40322,7 +40335,7 @@ var render = function() {
                                               {
                                                 staticClass: "d-none d-md-flex"
                                               },
-                                              [_vm._v("Add Item")]
+                                              [_vm._v("Add Item Expense")]
                                             ),
                                             _vm._v(" "),
                                             _c("v-icon", [
@@ -40340,7 +40353,7 @@ var render = function() {
                                 ],
                                 null,
                                 false,
-                                762494407
+                                691174098
                               )
                             },
                             [
@@ -40356,7 +40369,9 @@ var render = function() {
                                   )
                                 ]
                               ),
-                              _vm._v("\n            View Item\n            ")
+                              _vm._v(
+                                "\n            View Item Expense\n            "
+                              )
                             ],
                             1
                           )
@@ -40418,7 +40433,7 @@ var render = function() {
                                           },
                                           on: {
                                             click: function($event) {
-                                              return _vm.editItem(item.id)
+                                              return _vm.editData(item.id)
                                             }
                                           }
                                         },
@@ -40433,54 +40448,11 @@ var render = function() {
                                       )
                                     ]
                                   }
-                                },
-                                {
-                                  key: "item.status",
-                                  fn: function(ref) {
-                                    var item = ref.item
-                                    return [
-                                      item.status == "Active"
-                                        ? _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                color: "success",
-                                                text: "",
-                                                small: ""
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                " +
-                                                  _vm._s(item.status) +
-                                                  "\n              "
-                                              )
-                                            ]
-                                          )
-                                        : _c(
-                                            "v-btn",
-                                            {
-                                              attrs: {
-                                                color: "primary",
-                                                text: "",
-                                                small: ""
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                " +
-                                                  _vm._s(item.status) +
-                                                  "\n              "
-                                              )
-                                            ]
-                                          )
-                                    ]
-                                  }
                                 }
                               ],
                               null,
                               false,
-                              2156214492
+                              2297496029
                             )
                           })
                         ],
@@ -118102,8 +118074,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/idowu/repos/apmc/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/idowu/repos/apmc/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\repos\apmc\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\repos\apmc\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

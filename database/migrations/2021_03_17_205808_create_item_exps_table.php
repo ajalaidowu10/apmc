@@ -14,6 +14,7 @@ class CreateItemExpsTable extends Migration
     public function up()
     {
         Schema::create('item_exps', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('item_id');
             $table->date('enter_date');
             $table->decimal('unit');
