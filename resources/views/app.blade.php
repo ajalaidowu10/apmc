@@ -23,5 +23,6 @@
 </head>
 <body>
     <div id="app"></div>
+    <p>{{ asset('js/app.js') }}</p>
 </body>
 </html>
