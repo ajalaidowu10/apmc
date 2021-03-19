@@ -78,7 +78,7 @@ class PermissionSeeder extends Seeder
       $new_permission->module()->associate($module_master);
       $new_permission->slug = 'account-group';
       $new_permission->name = 'Account Group';
-      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->icon = 'mdi-account-network';
       $new_permission->link = '/web-admin/acctgroup';
       $new_permission->save();
 
