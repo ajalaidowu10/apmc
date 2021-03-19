@@ -56,6 +56,7 @@ Route::apiResource('service', 'ServiceController');
 Route::apiResource('serviceorder', 'ServiceOrderController');
 Route::apiResource('journal', 'JournalOrderController');
 Route::apiResource('admin', 'AdminAuthController');
+Route::apiResource('groupcode', 'GroupcodeController');
 
 Route::get('permission/{permissionName}', 'PermissionController@check');
 Route::get('permission/get/{admin}', 'PermissionController@getPermission');
@@ -77,7 +78,6 @@ Route::get('sales/print/invoice/{sale}', 'SalesOrderController@printInvoice');
 Route::get('serviceorder/print/invoice/{serviceorder}', 'ServiceOrderController@printInvoice');
 
 Route::get('itemgroup', 'ItemGroupController@index');
-Route::get('groupcode', 'GroupcodeController@index');
 
 Route::get('account/get/{payment_type_id}/{account_type_id?}/{account_id?}/{groupcode_id?}', 'AccountController@getAccount');
 Route::get('item/get/{item_group_id}', 'ItemController@getItem');

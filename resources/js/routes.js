@@ -50,6 +50,8 @@ import EditUser from './components/admin/user/Edit';
 import Logout from './views/Logout';
 import AcctBal from './components/admin/enquiry/AcctBal';
 import PrintAcctBalReport from './components/admin/enquiry/print/AcctBal';
+import AddAcctGroup from './components/admin/acctgroup/Add';
+import ViewAcctGroup from './components/admin/acctgroup/View';
 
 
 Vue.use(Router);
@@ -304,6 +306,16 @@ const router = new Router({
 				      		path:'enquiry/acctbal',
 				      		name: 'enquiry-acctbal',
 				      		component: AcctBal,
+				      	},
+				      	{
+				      		path:'acctgroup',
+				      		name: 'add-acctgroup',
+				      		component: AddAcctGroup,
+				      	},
+				      	{
+				      		path:'acctgroup',
+				      		name: 'view-acctgroup',
+				      		component: ViewAcctGroup,
 				      	},
 
 				      ]

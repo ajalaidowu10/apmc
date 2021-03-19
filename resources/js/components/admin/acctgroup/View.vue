@@ -28,14 +28,14 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              View Item
+              View Account Group
               <template v-slot:actions>
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
-                  @click="addItem"
+                  @click="addData"
                 >
-                  <span class="d-none d-md-flex">Add Item</span>
+                  <span class="d-none d-md-flex">Add Account Group</span>
                   <v-icon >
                     mdi-notebook-plus-outline
                   </v-icon>
@@ -63,13 +63,24 @@
               >
               <template v-slot:item.edit="{ item }">
                 <v-btn
+                  v-if="item.is_visible"
                   color="primary"
                   text
                   small
-                  @click="editItem(item.id)"
+                  @click="editData(item.id)"
                 >
                   <v-icon>
                     mdi-square-edit-outline
+                  </v-icon>
+                </v-btn>
+                <v-btn
+                  v-else
+                  color="primary"
+                  text
+                  small
+                >
+                  <v-icon>
+                    mdi-square
                   </v-icon>
                 </v-btn>
               </template>
@@ -115,9 +126,9 @@
       alert: false,
       search: '',
       headers: [
-                { text: 'Item Group Type', value: 'item_group' },
-                { text: 'Item Name', value: 'name' },
-                { text: 'Item Price', value: 'price' },
+                { text: 'Account Group Type', value: 'parent_groupcode' },
+                { text: 'Account Group Name', value: 'name' },
+                { text: 'Description', value: 'descp' },
                 { text: 'Edit', value: 'edit' },
                 { text: 'Status', value: 'status' },
               ],
@@ -128,14 +139,14 @@
        this.index();
     },
     methods: {
-              addItem(){
-                this.$router.push({name:'add-item'});
+              addData(){
+                this.$router.push({name:'add-acctgroup'});
               },
               index()
               {
 
                 this.overlay = true;
-                axios.get('item')
+                axios.get(`groupcode`)
                      .then(resp => {
                       this.overlay = false;
                       this.itemOrders = resp.data.data;
@@ -150,8 +161,8 @@
 
               },
               
-              editItem(id){
-                this.$router.push({name:'add-item', params:{orderid:id}});
+              editData(id){
+                this.$router.push({name:'add-acctgroup', params:{orderid:id}});
               },
               
         }

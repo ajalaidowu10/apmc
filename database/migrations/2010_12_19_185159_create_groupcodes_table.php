@@ -18,7 +18,7 @@ class CreateGroupcodesTable extends Migration
             $table->foreignId('parent_groupcode_id');
             $table->string('name');
             $table->string('descp')->default('');
-            $table->boolean('is_visible')->default(0);
+            $table->boolean('is_visible')->default(1);
             $table->softDeletes();
             $table->foreignId('created_by');
             $table->timestamps();

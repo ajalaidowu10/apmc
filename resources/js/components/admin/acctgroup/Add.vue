@@ -19,7 +19,7 @@
                 >
                   mdi-notebook-plus-outline
                 </v-icon>
-                 Add Item
+                 Add Account Group
               </div>
               <div v-else>
                 <v-icon
@@ -28,7 +28,7 @@
                 >
                   mdi-notebook-edit-outline
                 </v-icon>
-                Edit Item
+                Edit Account Group
               </div>
               
               
@@ -36,9 +36,9 @@
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
-                  @click="viewItem"
+                  @click="viewData"
                 >
-                  <span class="d-none d-md-flex">View Item</span>
+                  <span class="d-none d-md-flex">View Account Group</span>
                   <v-icon >
                     mdi-book-search-outline
                   </v-icon>
@@ -54,16 +54,16 @@
               cols="12"
               >
               <v-combobox
-                v-model="form.itemGroup"
-                label="Item Group"
-                :items="itemGroup"
+                v-model="form.parentGroupcode"
+                label="Account Group type"
+                :items="parentGroupcode"
                 item-text="name"
                 item-value="id"
-                :error-messages="itemGroupErrors"
-                @input="$v.form.itemGroup.$touch()"
-                @blur="$v.form.itemGroup.$touch()"
+                :error-messages="parentGroupcodeErrors"
+                @input="$v.form.parentGroupcode.$touch()"
+                @blur="$v.form.parentGroupcode.$touch()"
                 dense
-                @change="setItemGroup($event)"
+                @change="setParentGroupcode($event)"
                 outlined
               ></v-combobox>
             </v-col>
@@ -73,7 +73,7 @@
               <v-text-field
                 outlined
                 dense
-                label="Item Name*"
+                label="Account Group Name*"
                 v-model="form.name"
                 :error-messages="nameErrors"
                 @input="$v.form.name.$touch()"
@@ -87,12 +87,12 @@
               <v-text-field
                 outlined
                 dense
-                label="Item Price*"
-                v-model="form.price"
-                type="number"
-                :error-messages="priceErrors"
-                @input="$v.form.price.$touch()"
-                @blur="$v.form.price.$touch()"
+                label="Account Group Description*"
+                v-model="form.descp"
+                type="text"
+                :error-messages="descpErrors"
+                @input="$v.form.descp.$touch()"
+                @blur="$v.form.descp.$touch()"
                 required
               ></v-text-field>
             </v-col>
@@ -101,7 +101,7 @@
               >
               <v-combobox
                 v-model="form.status"
-                label="Item Status"
+                label="Status"
                 :items="status"
                 item-text="name"
                 item-value="id"
@@ -126,7 +126,7 @@
                dark
                min-width="300"
                x-large
-               @click="deleteItem"
+               @click="deleteData"
                >
                Delete
                <v-icon
@@ -146,7 +146,7 @@
                dark
                min-width="300"
                x-large
-               @click="saveItem"
+               @click="saveData"
                >
                Save
                <v-icon
@@ -179,8 +179,8 @@
      validations: {
          form:{
            name:  {required },
-           price: {required},
-           itemGroup: {required },
+           descp: {required},
+           parentGroupcode: {required },
            status: {required},
          }
      },
@@ -188,13 +188,17 @@
       orderid: 0,
       permission: 'item',
       overlay: false,
-      itemGroup: [],
+      parentGroupcode: [
+                          {'id':1, 'name':'Assets'}, 
+                          {'id':2, 'name':'Profit and Loss'},
+                          {'id':3, 'name':'Liabilities'},
+      ],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       form: {
               name: null,
-              itemGroup:null,
-              itemGroupId:null,
-              price: null,
+              parentGroupcode:null,
+              parentGroupcodeId:null,
+              descp: null,
               status:null,
               statusId:null,
               overlay: false,
@@ -204,22 +208,17 @@
     }),
     created(){
       this.overlay = true;
-      axios.get(`itemgroup`)
-            .then(resp=>{
-              this.itemGroup = transformKeys.camelCase(resp.data.data);
-            })
-            .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
-        axios.get(`item/${this.orderid}`)
+        axios.get(`groupcode/${this.orderid}`)
              .then(resp => {
-              let getItemOrder            = transformKeys.camelCase(resp.data.data);
-              this.form.name              = getItemOrder.name;
-              this.form.price             = getItemOrder.price;
-              this.form.itemGroup         = getItemOrder.itemGroup;
-              this.form.itemGroupId       = getItemOrder.itemGroupId;
-              this.form.status            = getItemOrder.status;
-              this.form.statusId          = getItemOrder.statusId;
+              let getAccountOrder            = transformKeys.camelCase(resp.data.data);
+              this.form.name              = getAccountOrder.name;
+              this.form.descp             = getAccountOrder.descp;
+              this.form.parentGroupcode         = getAccountOrder.parentGroupcode;
+              this.form.parentGroupcodeId       = getAccountOrder.parentGroupcodeId;
+              this.form.status            = getAccountOrder.status;
+              this.form.statusId          = getAccountOrder.statusId;
              })
              .catch(err => Exception.handle(err, 'admin'));
       }
@@ -227,17 +226,17 @@
       
     },
     computed: {
-      itemGroupErrors () {
+      parentGroupcodeErrors () {
         const errors = [];
-        if (!this.$v.form.itemGroup.$dirty) return errors; 
+        if (!this.$v.form.parentGroupcode.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'itemGroupId') {
-            errors.push(this.form.allError.itemGroupId[0]);
+          if (items == 'parentGroupcodeId') {
+            errors.push(this.form.allError.parentGroupcodeId[0]);
             break;
           } 
 
         } 
-        !this.$v.form.itemGroup.required && errors.push('Item Group is required')
+        !this.$v.form.parentGroupcode.required && errors.push('Account Group Type is required')
         return errors
       },
       statusErrors () {
@@ -250,7 +249,7 @@
           } 
 
         } 
-        !this.$v.form.status.required && errors.push('Item Status is required')
+        !this.$v.form.status.required && errors.push('Status is required')
         return errors
       },
       nameErrors () {
@@ -263,55 +262,55 @@
           } 
 
         } 
-        !this.$v.form.name.required && errors.push('Item Name is required')
+        !this.$v.form.name.required && errors.push('Account Group Name is required')
         return errors
       },
-      priceErrors () {
+      descpErrors () {
         const errors = []
-        if (!this.$v.form.price.$dirty) return errors; 
+        if (!this.$v.form.descp.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'price') {
-            errors.push(this.form.allError.price[0]);
+          if (items == 'descp') {
+            errors.push(this.form.allError.descp[0]);
             break;
           } 
 
         } 
-        !this.$v.form.price.required && errors.push('Item Price is required')
+        !this.$v.form.descp.required && errors.push('Description is required')
         return errors
       },
       
     },
     methods: {
-          setItemGroup(data){
-            this.form.itemGroupId = data.id;
+          setParentGroupcode(data){
+            this.form.parentGroupcodeId = data.id;
           },
           setStatus(data){
             this.form.statusId = data.id;
           },
-          viewItem(){
-            this.$router.push({name:'view-item'});
+          viewData(){
+            this.$router.push({name:'view-acctgroup'});
           },
-          deleteItem()
+          deleteData()
           {
             
             swal({
                   title: "Notification!",
-                  text: 'Are you sure you want to Delete this Item',
+                  text: 'Are you sure you want to Delete this Account Group',
                   buttons: ['No', 'Yes']
                 })
             .then((yes) => {
               if (yes) {
                 this.overlay = true;
-                axios.delete(`item/${this.orderid}`)
+                axios.delete(`groupcode/${this.orderid}`)
                      .then(resp => {
-                      this.$router.push({name:'view-item', params: { message: `Item Deleted Successfully` }});
+                      this.$router.push({name:'view-acctgroup', params: { message: `Account Group Deleted Successfully` }});
                      })
                      .catch(err => Exception.handle(err, 'admin'));
                 this.overlay = false;
               }
             })
           },
-          saveItem(){
+          saveData(){
             this.$v.form.$touch();
             if (this.$v.form.$invalid) 
             {
@@ -320,9 +319,9 @@
             this.overlay = true;
             if (this.orderid != 0) 
             {
-              axios.patch(`item/${this.orderid}`, transformKeys.snakeCase(this.form))
+              axios.patch(`groupcode/${this.orderid}`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-item', params: { message: `Item ${resp.data.name} Updated Successfully` }});
+                      this.$router.push({name:'view-acctgroup', params: { message: `Account Group ${resp.data.name} Updated Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;
@@ -332,9 +331,9 @@
             }
             else
             {
-              axios.post('item', transformKeys.snakeCase(this.form))
+              axios.post(`groupcode`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-item', params: { message: `Item ${resp.data.name} Added Successfully` }});
+                      this.$router.push({name:'view-acctgroup', params: { message: `Account Group ${resp.data.name} Added Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;
