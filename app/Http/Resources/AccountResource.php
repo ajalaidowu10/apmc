@@ -26,6 +26,17 @@ class AccountResource extends JsonResource
             'groupcode_id'         => $this->groupcode_id,
             'status_id'            => $this->status_id,
             'status'               => $this->status->name,
+            'phone'                => $this->phone,
+            'email'                => $this->email,
+            'bank_name'            => $this->bank_name,
+            'address_one'          => $this->address_one,
+            'address_two'          => $this->address_two,
+            'ifsc_code'            => $this->ifsc_code,
+            'area'                 => $this->area,
+            'state'                => $this->state,
+            'zip'                  => $this->zip,
+            'credit_days'          => $this->credit_days,
+            'credit_limit'         => $this->credit_limit,
         ];
     }
 }

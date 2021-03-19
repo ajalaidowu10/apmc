@@ -51,7 +51,7 @@
         <v-container>
           <v-row>
             <v-col
-              cols="12"
+              cols="6"
               >
               <v-combobox
                 v-model="form.accountType"
@@ -68,7 +68,7 @@
               ></v-combobox>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
              >
               <v-text-field
                 outlined
@@ -82,7 +82,7 @@
               ></v-text-field>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
              >
               <v-text-field
                 outlined
@@ -97,7 +97,7 @@
               ></v-text-field>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
               >
               <v-combobox
                 v-model="form.crdr"
@@ -114,7 +114,7 @@
               ></v-combobox>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
               >
               <v-combobox
                 v-model="form.groupcode"
@@ -131,7 +131,7 @@
               ></v-combobox>
             </v-col>
             <v-col
-              cols="12"
+              cols="6"
               >
               <v-combobox
                 v-model="form.status"
@@ -146,6 +146,116 @@
                 dense
                 outlined
               ></v-combobox>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.phone"
+                outlined
+                dense
+                label="Phone"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.email"
+                outlined
+                dense
+                label="Email"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.addressOne"
+                outlined
+                dense
+                label="Address One "
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.area"
+                outlined
+                dense
+                label="Area"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.state"
+                outlined
+                dense
+                label="State"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.zip"
+                outlined
+                dense
+                label="ZIP"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.bankName"
+                outlined
+                dense
+                label="Bank Name"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.ifscCode"
+                outlined
+                dense
+                label="IFSC Code"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.creditDays"
+                outlined
+                dense
+                label="Credit Days"
+                type="text"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+             >
+              <v-text-field
+                v-model="form.creditLimit"
+                outlined
+                dense
+                label="Credit Limit"
+                type="text"
+              ></v-text-field>
             </v-col>
           </v-row>
           
@@ -235,7 +345,7 @@
                 },                                                                                                                    
                 {                                                                                                
                   id:3,                                                                                                 
-                  name: "Supplier Account",                                                                               
+                  name: "Consignor Account",                                                                               
                 },                                                                                                                    
                 {                                                                                                
                   id:4,                                                                                                 
@@ -265,6 +375,14 @@
                   id:10,                                                                                         
                   name: "Capital Account",                                                                              
                 }, 
+                {                                                                                                
+                  id:11,                                                                                         
+                  name: "Transporter Account",                                                                              
+                },
+                {                                                                                                
+                  id:12,                                                                                         
+                  name: "Agent Account",                                                                              
+                }, 
       ],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       crdr: [{'id':1, 'name': 'Cr'}, {'id':2, 'name': 'Dr'}],
@@ -280,6 +398,17 @@
               crdrId:null,
               groupcode:null,
               groupcodeId:null,
+              phone: null,
+              email: null,
+              bankName: null,
+              addressOne: null,
+              addressTwo: null,
+              ifscCode: null,
+              area: null,
+              state: null,
+              zip: null,
+              creditDays: null,
+              creditLimit: null,
               overlay: false,
               allError: {},
 
@@ -307,6 +436,18 @@
               this.form.groupcodeId       = getAccountOrder.groupcodeId;
               this.form.status            = getAccountOrder.status;
               this.form.statusId          = getAccountOrder.statusId;
+              this.form.phone             = getAccountOrder.phone;
+              this.form.email             = getAccountOrder.email;
+              this.form.bankName          = getAccountOrder.bankName;
+              this.form.addressOne        = getAccountOrder.addressOne;
+              this.form.addressTwo        = getAccountOrder.addressTwo;
+              this.form.ifscCode          = getAccountOrder.ifscCode;
+              this.form.area              = getAccountOrder.area;
+              this.form.state             = getAccountOrder.state;
+              this.form.zip               = getAccountOrder.zip;
+              this.form.creditDays        = getAccountOrder.creditDays;
+              this.form.creditLimit       = getAccountOrder.creditLimit;
+
              })
              .catch(err => Exception.handle(err, 'admin'));
       }

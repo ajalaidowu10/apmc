@@ -2674,6 +2674,116 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2714,7 +2824,7 @@ __webpack_require__.r(__webpack_exports__);
         name: "Customer Account"
       }, {
         id: 3,
-        name: "Supplier Account"
+        name: "Consignor Account"
       }, {
         id: 4,
         name: "Bank Account"
@@ -2736,6 +2846,12 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         id: 10,
         name: "Capital Account"
+      }, {
+        id: 11,
+        name: "Transporter Account"
+      }, {
+        id: 12,
+        name: "Agent Account"
       }],
       status: [{
         'id': 1,
@@ -2763,6 +2879,17 @@ __webpack_require__.r(__webpack_exports__);
         crdrId: null,
         groupcode: null,
         groupcodeId: null,
+        phone: null,
+        email: null,
+        bankName: null,
+        addressOne: null,
+        addressTwo: null,
+        ifscCode: null,
+        area: null,
+        state: null,
+        zip: null,
+        creditDays: null,
+        creditLimit: null,
         overlay: false,
         allError: {}
       }
@@ -2792,6 +2919,17 @@ __webpack_require__.r(__webpack_exports__);
         _this.form.groupcodeId = getAccountOrder.groupcodeId;
         _this.form.status = getAccountOrder.status;
         _this.form.statusId = getAccountOrder.statusId;
+        _this.form.phone = getAccountOrder.phone;
+        _this.form.email = getAccountOrder.email;
+        _this.form.bankName = getAccountOrder.bankName;
+        _this.form.addressOne = getAccountOrder.addressOne;
+        _this.form.addressTwo = getAccountOrder.addressTwo;
+        _this.form.ifscCode = getAccountOrder.ifscCode;
+        _this.form.area = getAccountOrder.area;
+        _this.form.state = getAccountOrder.state;
+        _this.form.zip = getAccountOrder.zip;
+        _this.form.creditDays = getAccountOrder.creditDays;
+        _this.form.creditLimit = getAccountOrder.creditLimit;
       })["catch"](function (err) {
         return Exception.handle(err, 'admin');
       });
@@ -34685,7 +34823,7 @@ var render = function() {
                         [
                           _c(
                             "v-col",
-                            { attrs: { cols: "12" } },
+                            { attrs: { cols: "6" } },
                             [
                               _c("v-combobox", {
                                 attrs: {
@@ -34722,7 +34860,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-col",
-                            { attrs: { cols: "12" } },
+                            { attrs: { cols: "6" } },
                             [
                               _c("v-text-field", {
                                 attrs: {
@@ -34754,7 +34892,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-col",
-                            { attrs: { cols: "12" } },
+                            { attrs: { cols: "6" } },
                             [
                               _c("v-text-field", {
                                 attrs: {
@@ -34787,7 +34925,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-col",
-                            { attrs: { cols: "12" } },
+                            { attrs: { cols: "6" } },
                             [
                               _c("v-combobox", {
                                 attrs: {
@@ -34824,7 +34962,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-col",
-                            { attrs: { cols: "12" } },
+                            { attrs: { cols: "6" } },
                             [
                               _c("v-combobox", {
                                 attrs: {
@@ -34861,7 +34999,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-col",
-                            { attrs: { cols: "12" } },
+                            { attrs: { cols: "6" } },
                             [
                               _c("v-combobox", {
                                 attrs: {
@@ -34890,6 +35028,236 @@ var render = function() {
                                     _vm.$set(_vm.form, "status", $$v)
                                   },
                                   expression: "form.status"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Phone",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.phone,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "phone", $$v)
+                                  },
+                                  expression: "form.phone"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Email",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.email,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "email", $$v)
+                                  },
+                                  expression: "form.email"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Address One ",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.addressOne,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "addressOne", $$v)
+                                  },
+                                  expression: "form.addressOne"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Area",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.area,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "area", $$v)
+                                  },
+                                  expression: "form.area"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "State",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.state,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "state", $$v)
+                                  },
+                                  expression: "form.state"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "ZIP",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.zip,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "zip", $$v)
+                                  },
+                                  expression: "form.zip"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Bank Name",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.bankName,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "bankName", $$v)
+                                  },
+                                  expression: "form.bankName"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "IFSC Code",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.ifscCode,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "ifscCode", $$v)
+                                  },
+                                  expression: "form.ifscCode"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Credit Days",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.creditDays,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "creditDays", $$v)
+                                  },
+                                  expression: "form.creditDays"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  outlined: "",
+                                  dense: "",
+                                  label: "Credit Limit",
+                                  type: "text"
+                                },
+                                model: {
+                                  value: _vm.form.creditLimit,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "creditLimit", $$v)
+                                  },
+                                  expression: "form.creditLimit"
                                 }
                               })
                             ],

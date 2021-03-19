@@ -14,7 +14,7 @@ class AccountTypeSeeder extends Seeder
     {
         AccountType::create(['name' => 'Standard Code']);
         AccountType::create(['name' => 'Customer Account']);
-        AccountType::create(['name' => 'Supplier Account']);
+        AccountType::create(['name' => 'Consignor Account']);
         AccountType::create(['name' => 'Bank Account']);
         AccountType::create(['name' => 'Cash in hand']);
         AccountType::create(['name' => 'General Account']);
@@ -22,6 +22,8 @@ class AccountTypeSeeder extends Seeder
         AccountType::create(['name' => 'Expenses Account']);
         AccountType::create(['name' => 'Loan Account']);
         AccountType::create(['name' => 'Capital Account']);
+        AccountType::create(['name' => 'Transporter Account']);
+        AccountType::create(['name' => 'Agent Account']);
         
 
     }

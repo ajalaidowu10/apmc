@@ -31,6 +31,20 @@ class AccountRequest extends FormRequest
             'name'                => 'required|string|max:255|unique:accounts,name,'. $this->segment(3),
             'opening_bal'         => 'required|numeric',
             'status_id'           => 'required|integer',
+            'phone'               => 'string|nullable',
+            'email'               => 'email|nullable',
+            'address_one'         => 'string|nullable',
+            'bank_name'           => 'string|nullable',
+            'ifsc_code'           => 'string|nullable',
+            'address_two'         => 'string|nullable',
+            'area'               => 'string|nullable',
+            'state'               => 'string|nullable',
+            'zip'                 => 'string|nullable',
+            'branch'              => 'string|nullable',
+            'acct_no'             => 'string|nullable',
+            'contact_person'      => 'string|nullable',
+            'credit_days'         => 'numeric|nullable',
+            'credit_limit'        => 'numeric|nullable',
 
         ];
     }
