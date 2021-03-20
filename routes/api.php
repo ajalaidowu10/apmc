@@ -57,6 +57,8 @@ Route::apiResource('serviceorder', 'ServiceOrderController');
 Route::apiResource('journal', 'JournalOrderController');
 Route::apiResource('admin', 'AdminAuthController');
 Route::apiResource('groupcode', 'GroupcodeController');
+Route::apiResource('area', 'AreaController');
+Route::apiResource('narration', 'NarrationController');
 
 Route::get('permission/{permissionName}', 'PermissionController@check');
 Route::get('permission/get/{admin}', 'PermissionController@getPermission');

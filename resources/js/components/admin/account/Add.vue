@@ -132,23 +132,6 @@
             </v-col>
             <v-col
               cols="6"
-              >
-              <v-combobox
-                v-model="form.status"
-                label="Account Status"
-                :items="status"
-                item-text="name"
-                item-value="id"
-                :error-messages="statusErrors"
-                @input="$v.form.status.$touch()"
-                @blur="$v.form.status.$touch()"
-                @change="setStatus($event)"
-                dense
-                outlined
-              ></v-combobox>
-            </v-col>
-            <v-col
-              cols="6"
              >
               <v-text-field
                 v-model="form.phone"
@@ -183,13 +166,16 @@
             <v-col
               cols="6"
              >
-              <v-text-field
-                v-model="form.area"
-                outlined
-                dense
-                label="Area"
-                type="text"
-              ></v-text-field>
+             <v-combobox
+               v-model="form.area"
+               label="Area"
+               :items="area"
+               item-text="name"
+               item-value="id"
+               @change="setArea($event)"
+               dense
+               outlined
+             ></v-combobox>
             </v-col>
             <v-col
               cols="6"
@@ -256,6 +242,23 @@
                 label="Credit Limit"
                 type="text"
               ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+              >
+              <v-combobox
+                v-model="form.status"
+                label="Account Status"
+                :items="status"
+                item-text="name"
+                item-value="id"
+                :error-messages="statusErrors"
+                @input="$v.form.status.$touch()"
+                @blur="$v.form.status.$touch()"
+                @change="setStatus($event)"
+                dense
+                outlined
+              ></v-combobox>
             </v-col>
           </v-row>
           
@@ -334,6 +337,7 @@
       permission: "account",
       orderid: 0,
       overlay: false,
+      area: [],
       accountType: [
                 {                                                                                                
                   id:1,                                                                                                 
@@ -419,6 +423,11 @@
       axios.get(`groupcode`)
             .then(resp=>{
               this.groupcode = transformKeys.camelCase(resp.data.data);
+            })
+            .catch(err => Exception.handle(err, 'admin'));
+      axios.get(`area`)
+            .then(resp=>{
+              this.area = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
@@ -541,6 +550,9 @@
           },
           setStatus(data){
             this.form.statusId = data.id;
+          },
+          setArea(data){
+            this.form.area = data.name;
           },
           setCrdr(data){
             this.form.crdrId = data.id;

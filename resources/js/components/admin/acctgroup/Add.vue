@@ -186,7 +186,7 @@
      },
     data: () => ({
       orderid: 0,
-      permission: 'item',
+      permission: 'account-group',
       overlay: false,
       parentGroupcode: [
                           {'id':1, 'name':'Assets'}, 

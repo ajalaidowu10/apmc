@@ -52,6 +52,10 @@ import AcctBal from './components/admin/enquiry/AcctBal';
 import PrintAcctBalReport from './components/admin/enquiry/print/AcctBal';
 import AddAcctGroup from './components/admin/acctgroup/Add';
 import ViewAcctGroup from './components/admin/acctgroup/View';
+import AddArea from './components/admin/area/Add';
+import ViewArea from './components/admin/area/View';
+import AddNarration from './components/admin/narration/Add';
+import ViewNarration from './components/admin/narration/View';
 
 
 Vue.use(Router);
@@ -316,6 +320,26 @@ const router = new Router({
 				      		path:'acctgroup',
 				      		name: 'view-acctgroup',
 				      		component: ViewAcctGroup,
+				      	},
+				      	{
+				      		path:'area',
+				      		name: 'add-area',
+				      		component: AddArea,
+				      	},
+				      	{
+				      		path:'area',
+				      		name: 'view-area',
+				      		component: ViewArea,
+				      	},
+				      	{
+				      		path:'narration',
+				      		name: 'add-narration',
+				      		component: AddNarration,
+				      	},
+				      	{
+				      		path:'narration',
+				      		name: 'view-narration',
+				      		component: ViewNarration,
 				      	},
 
 				      ]

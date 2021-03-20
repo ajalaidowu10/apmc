@@ -122,7 +122,7 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'item',
+      permission: 'account-group',
       alert: false,
       search: '',
       headers: [

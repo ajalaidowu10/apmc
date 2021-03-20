@@ -59,6 +59,23 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'area';
+      $new_permission->name = 'Area';
+      $new_permission->icon = 'mdi-air-horn';
+      $new_permission->link = '/web-admin/area';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'narration';
+      $new_permission->name = 'Narration';
+      $new_permission->icon = 'mdi-message-text';
+      $new_permission->link = '/web-admin/narration';
+      $new_permission->save();
+
+      
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
       $new_permission->slug = 'item';
       $new_permission->name = 'Item';
       $new_permission->icon = 'mdi-star';
