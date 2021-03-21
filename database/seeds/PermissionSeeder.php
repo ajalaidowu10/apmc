@@ -44,8 +44,8 @@ class PermissionSeeder extends Seeder
       $new_permission->module()->associate($module_utility);
       $new_permission->slug = 'backup-restore';
       $new_permission->name = 'Backup/Restore';
-      $new_permission->link = '/web-admin/user';
-      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->link = '/web-admin/backup';
+      $new_permission->icon = 'mdi-backup-restore';
       $new_permission->save();
 
 
@@ -105,7 +105,7 @@ class PermissionSeeder extends Seeder
       $new_permission->slug = 'purchase-entry';
       $new_permission->name = 'Purchase Entry';
       $new_permission->link = '/web-admin/purchase';
-      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->icon = 'mdi-alpha-p-box';
       $new_permission->save();
 
 
@@ -114,7 +114,7 @@ class PermissionSeeder extends Seeder
       $new_permission->slug = 'sales-entry';
       $new_permission->name = 'Sales Entry';
       $new_permission->link = '/web-admin/sales';
-      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->icon = 'mdi-alpha-s-box';
       $new_permission->save();
 
 
@@ -178,7 +178,7 @@ class PermissionSeeder extends Seeder
       $new_permission->slug = 'stock-report';
       $new_permission->link = '/web-admin/enquiry/stock';   
       $new_permission->name = 'Stock Report';
-      $new_permission->icon = 'mdi-reloaad';
+      $new_permission->icon = 'mdi-card-bulleted';
       $new_permission->save();
 
       

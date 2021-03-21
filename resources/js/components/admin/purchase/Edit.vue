@@ -18,14 +18,14 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              Edit Sales
+              Edit Purchase
               <template v-slot:actions>
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
                   @click="viewData"
                 >
-                  <span class="d-none d-md-flex">View Sales</span>
+                  <span class="d-none d-md-flex">View Purchase</span>
                   <v-icon >
                     mdi-book-search-outline
                   </v-icon>
@@ -117,15 +117,16 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'restuarant-sales',
+       permission: 'purchase-entry',
       orderid: 0,
       alert: false,
       search: '',
       headers: [
                 { text: 'S/No', value: 'id' },
-                { text: 'ITEM', value: 'item' },
+                { text: 'Item', value: 'item' },
                 { text: 'QUANTITY', value: 'qty' },
-                { text: 'PRICE', value: 'item_price' },
+                { text: 'GRWT', value: 'grwt' },
+                { text: 'RATE', value: 'rate' },
                 { text: 'AMOUNT', value: 'amount' },
               ],
       itemOrders: [],
@@ -141,10 +142,11 @@
                 this.overlay = true;
                 if (this.$route.params.orderid) {
                   this.orderid = this.$route.params.orderid;
-                  axios.get(`sales/${this.orderid}`)
+                  axios.get(`purchaseorder/${this.orderid}`)
                        .then(resp => {
+                        console.log(resp);
                         let getData = resp.data.data;
-                        this.itemOrders = getData.sales_order_items.filter(data => data.del_record == 0);
+                        this.itemOrders = getData.purchase_order_items.filter(data => data.del_record == 0);
                         this.orderid = getData.id;
                        })
                        .catch(err => Exception.handle(err, 'admin'));
@@ -154,29 +156,24 @@
 
               },
               viewData(){
-                this.$router.push({name:'view-sales'});
+                this.$router.push({name:'view-purchase'});
               },
               editData(){
-                this.$router.push({name:'add-sales', params:{orderid:this.orderid}});
-              },
-              printData(id)
-              {
-                let routeData = this.$router.resolve({name: 'print-sales',  params:{id:id}});
-                window.open(routeData.href, '_blank');
+                this.$router.push({name:'add-purchase', params:{orderid:this.orderid}});
               },
               deleteData()
               {
                 swal({
                       title: "Notification!",
-                      text: 'Are you sure you want to Delete this Sales',
+                      text: 'Are you sure you want to Delete this Purchase',
                       buttons: ['No', 'Yes']
                     })
                 .then((yes) => {
                   if (yes) {
                     this.overlay = true;
-                    axios.delete(`sales/${this.orderid}`)
+                    axios.delete(`purchaseorder/${this.orderid}`)
                          .then(resp => {
-                          this.$router.push({name:'view-sales', params: { message: `Sales Deleted Successfully` }});
+                          this.$router.push({name:'view-purchase', params: { message: `Purchase Deleted Successfully` }});
                          })
                          .catch(err => Exception.handle(err, 'admin'));
                     this.overlay = false;

@@ -28,8 +28,6 @@ class ItemExpRequest extends FormRequest
             'item_id'        => 'required|integer',
             'enter_date'     => 'required|date',
             'comm'           => 'required|numeric',
-            'unit'           => 'required|numeric',
-            'weight_pb'      => 'required|numeric',
             'p_hamali'       => 'required|numeric',
             'b_hamali'       => 'required|numeric',
             'p_levy'         => 'required|numeric',

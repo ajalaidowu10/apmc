@@ -117,7 +117,8 @@
       headers: [
                 { text: 'Item Group Type', value: 'item_group' },
                 { text: 'Item Name', value: 'name' },
-                { text: 'Item Price', value: 'price' },
+                { text: 'Item Unit', value: 'unit' },
+                { text: 'Weight Conversion', value: 'weight_pb' },
                 { text: 'Edit', value: 'edit' },
                 { text: 'Status', value: 'status' },
               ],

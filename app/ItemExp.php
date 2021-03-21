@@ -9,8 +9,8 @@ class ItemExp extends Model
 {
    use SoftDeletes;
    protected $fillable = [
-                           'item_id', 'enter_date', 'unit',
-                           'weight_pb', 'comm', 'p_hamali',
+                           'item_id', 'enter_date', 
+                           'comm', 'p_hamali',
                            'b_hamali', 'p_levy',
                            'b_levy', 'apmc', 'map_levy', 
                            'discount', 'tolai',

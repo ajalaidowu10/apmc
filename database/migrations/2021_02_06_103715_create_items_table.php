@@ -17,7 +17,8 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->foreignId('item_group_id');
             $table->string('name');
-            $table->decimal('price');
+            $table->decimal('unit');
+            $table->decimal('weight_pb');
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('status_id')->default(1);

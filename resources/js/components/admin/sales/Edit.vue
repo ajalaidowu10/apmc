@@ -117,7 +117,7 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'restuarant-sales',
+      permission: 'sales-entry',
       orderid: 0,
       alert: false,
       search: '',

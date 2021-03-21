@@ -17,8 +17,6 @@ class CreateItemExpsTable extends Migration
             $table->id();
             $table->foreignId('item_id');
             $table->date('enter_date');
-            $table->decimal('unit');
-            $table->decimal('weight_pb');
             $table->decimal('comm');
             $table->decimal('p_hamali');
             $table->decimal('b_hamali');

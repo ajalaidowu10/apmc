@@ -59,6 +59,7 @@ Route::apiResource('admin', 'AdminAuthController');
 Route::apiResource('groupcode', 'GroupcodeController');
 Route::apiResource('area', 'AreaController');
 Route::apiResource('narration', 'NarrationController');
+Route::apiResource('purchaseorder', 'PurchaseOrderController');
 
 Route::get('permission/{permissionName}', 'PermissionController@check');
 Route::get('permission/get/{admin}', 'PermissionController@getPermission');

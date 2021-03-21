@@ -30,10 +30,10 @@ import EditSales from './components/admin/sales/Edit';
 import PrintSales from './components/admin/sales/Print';
 import AddService from './components/admin/service/Add';
 import ViewService from './components/admin/service/View';
-import AddServiceOrder from './components/admin/serviceorder/Add';
-import ViewServiceOrder from './components/admin/serviceorder/View';
-import EditServiceOrder from './components/admin/serviceorder/Edit';
-import PrintServiceOrder from './components/admin/serviceorder/Print';
+import AddPurchase from './components/admin/purchase/Add';
+import ViewPurchase from './components/admin/purchase/View';
+import EditPurchase from './components/admin/purchase/Edit';
+import PrintPurchase from './components/admin/purchase/Print';
 import AddJournal from './components/admin/journal/Add';
 import ViewJournal from './components/admin/journal/View';
 import EditJournal from './components/admin/journal/Edit';
@@ -105,9 +105,9 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/serviceorder/invoice/:id',
-				      name: 'print-serviceorder',
-				      component: PrintServiceOrder,
+				      path: '/purchase/invoice/:id',
+				      name: 'print-purchase',
+				      component: PrintPurchase,
 				      props: true,
 				    },
 				    {
@@ -242,19 +242,19 @@ const router = new Router({
 				      		component: EditSales,
 				      	},
 				      	{
-				      		path:'serviceorder',
-				      		name: 'add-serviceorder',
-				      		component: AddServiceOrder,
+				      		path:'purchase',
+				      		name: 'add-purchase',
+				      		component: AddPurchase,
 				      	},
 				      	{
-				      		path:'serviceorder',
-				      		name: 'view-serviceorder',
-				      		component: ViewServiceOrder,
+				      		path:'purchase',
+				      		name: 'view-purchase',
+				      		component: ViewPurchase,
 				      	},
 				      	{
-				      		path:'serviceorder',
-				      		name: 'edit-serviceorder',
-				      		component: EditServiceOrder,
+				      		path:'purchase',
+				      		name: 'edit-purchase',
+				      		component: EditPurchase,
 				      	},
 				      	{
 				      		path:'journal',

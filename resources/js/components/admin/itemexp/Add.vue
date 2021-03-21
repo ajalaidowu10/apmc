@@ -120,36 +120,6 @@
               <v-text-field
                 outlined
                 dense
-                label="Unit*"
-                v-model="form.unit"
-                type="number"
-                :error-messages="unitErrors"
-                @input="$v.form.unit.$touch()"
-                @blur="$v.form.unit.$touch()"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col
-              cols="6"
-             >
-              <v-text-field
-                outlined
-                dense
-                label="Weight Conversion*"
-                v-model="form.weightPb"
-                type="number"
-                :error-messages="weightPbErrors"
-                @input="$v.form.weightPb.$touch()"
-                @blur="$v.form.weightPb.$touch()"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col
-              cols="6"
-             >
-              <v-text-field
-                outlined
-                dense
                 label="Commission*"
                 v-model="form.comm"
                 type="number"
@@ -361,8 +331,6 @@
      mixins: [validationMixin],
      validations: {
          form:{
-           unit: {required},
-           weightPb: {required},
            comm: {required},
            pHamali: {required},
            bHamali: {required},
@@ -387,8 +355,6 @@
               enterDate:  new Date().toISOString().substr(0, 10),
               item:null,
               itemId:null,
-              unit: null,
-              weightPb: null,
               comm: null,
               pHamali: null,
               bHamali: null,
@@ -418,8 +384,6 @@
              .then(resp => {
               let getItemOrder           = transformKeys.camelCase(resp.data.data);
               this.form.enterDate        = getItemOrder.enterDate;
-              this.form.unit             = getItemOrder.unit;
-              this.form.weightPb         = getItemOrder.weightPb;
               this.form.comm             = getItemOrder.comm;
               this.form.pHamali          = getItemOrder.pHamali;
               this.form.bHamali          = getItemOrder.bHamali;
@@ -464,32 +428,6 @@
 
         } 
         !this.$v.form.status.required && errors.push('Status is required')
-        return errors
-      },
-      unitErrors () {
-        const errors = []
-        if (!this.$v.form.unit.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'unit') {
-            errors.push(this.form.allError.unit[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.unit.required && errors.push('Unit is required')
-        return errors
-      },
-      weightPbErrors () {
-        const errors = []
-        if (!this.$v.form.weightPb.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'weightPb') {
-            errors.push(this.form.allError.weightPb[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.weightPb.required && errors.push('Weight Conversion is required')
         return errors
       },
       commErrors () {

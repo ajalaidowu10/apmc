@@ -99,8 +99,6 @@
       headers: [
                 { text: 'Item Name', value: 'item' },
                 { text: 'Date', value: 'enter_date' },
-                { text: 'Unit', value: 'unit' },
-                { text: 'Weight Conversion', value: 'weight_pb' },
                 { text: 'Commission', value: 'comm' },
                 { text: 'P Hamali', value: 'p_hamali' },
                 { text: 'B Hamali', value: 'b_hamali' },

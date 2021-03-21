@@ -14,9 +14,5 @@ class StatusSeeder extends Seeder
     {
         Status::create(['name'=>'Active']);
         Status::create(['name'=>'Inactive']);
-        Status::create(['name'=>'Not Confirmed']);
-        Status::create(['name'=>'Confirmed']);
-        Status::create(['name'=>'Check in']);
-        Status::create(['name'=>'Check out']);
     }
 }

@@ -338,7 +338,7 @@
          }
      },
     data: () => ({
-      permission: 'restuarant-sales',
+      permission: 'sales-entry',
       orderid: 0,
       overlay: false,
       enterDate: new Date().toISOString().substr(0, 10),

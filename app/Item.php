@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
    use SoftDeletes;
-   protected $fillable = ['item_group_id', 'name', 'price', 'status_id','deleted_at'];
+   protected $fillable = ['item_group_id', 'name', 'unit', 'weight_pb', 'status_id','deleted_at'];
 
    public function item_group()
    {

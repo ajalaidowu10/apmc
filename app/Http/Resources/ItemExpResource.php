@@ -18,8 +18,6 @@ class ItemExpResource extends JsonResource
             'id'             => $this->id,
             'enter_date'     => $this->enter_date,
             'comm'           => $this->comm,
-            'unit'           => $this->unit,
-            'weight_pb'      => $this->weight_pb,
             'p_hamali'       => $this->p_hamali,
             'b_hamali'       => $this->b_hamali,
             'p_levy'         => $this->p_levy,

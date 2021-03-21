@@ -19,7 +19,7 @@
                 >
                   mdi-notebook-plus-outline
                 </v-icon>
-                 Add Sales
+                 Add Purchase 
               </div>
               <div v-else>
                 <v-icon
@@ -28,7 +28,7 @@
                 >
                   mdi-notebook-edit-outline
                 </v-icon>
-                Edit Sales
+                Edit Purchase
               </div>
               
               
@@ -38,7 +38,7 @@
                   color="orange"
                   @click="viewData"
                 >
-                  <span class="d-none d-md-flex">View Sales</span>
+                  <span class="d-none d-md-flex">View Purchase</span>
                   <v-icon >
                     mdi-book-search-outline
                   </v-icon>
@@ -58,36 +58,19 @@
                 cols="6"
                 >
                 <v-combobox
-                  v-model="form.cusAcct"
+                  v-model="form.acct"
                   label="Account"
-                  :items="cusAcct"
+                  :items="acct"
                   item-text="name"
                   item-value="id"
-                  :error-messages="cusAcctErrors"
-                  @input="$v.form.cusAcct.$touch()"
-                  @blur="$v.form.cusAcct.$touch()"
+                  :error-messages="acctErrors"
+                  @input="$v.form.acct.$touch()"
+                  @blur="$v.form.acct.$touch()"
                   dense
-                  @change="setCusAcct($event)"
+                  @change="setAcct($event)"
                   outlined
                 >
                 </v-combobox>
-              </v-col>
-              <v-col
-                cols="3"
-                >
-                <v-combobox
-                  label="Booking ID"
-                  :items="booking"
-                  item-text="bookingOrderId"
-                  item-value="bookingOrderId"
-                  dense
-                  @change="setBookingId($event)"
-                  outlined
-                ></v-combobox>
-              </v-col>
-              <v-col
-                cols="3"
-               >
               </v-col>
               <v-col
                 cols="4"
@@ -137,16 +120,26 @@
                 </v-menu>
               </v-col>
               <v-col
-                cols="8"
+                cols="4"
                >
                 <v-text-field
                   outlined
                   dense
-                  label="Narration"
-                  v-model="form.descp"
-                  :error-messages="descpErrors"
-                  @input="$v.form.descp.$touch()"
-                  @blur="$v.form.descp.$touch()"
+                  label="Invoice No."
+                  v-model="form.invoiceNo"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="4"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Motor No."
+                  v-model="form.motorNo"
+                  :error-messages="motorNoErrors"
+                  @input="$v.form.motorNo.$touch()"
+                  @blur="$v.form.motorNo.$touch()"
                   required
                 ></v-text-field>
               </v-col>
@@ -158,7 +151,7 @@
             >
             <v-row>
               <v-col
-                cols="6"
+                cols="3"
                 >
                 <v-combobox
                   v-model="form.item"
@@ -175,7 +168,7 @@
                 ></v-combobox>
               </v-col>
               <v-col
-                cols="3"
+                cols="2"
                >
                 <v-text-field
                   outlined
@@ -186,6 +179,36 @@
                   :error-messages="qtyErrors"
                   @input="$v.form.qty.$touch()"
                   @blur="$v.form.qty.$touch()"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="GRWT"
+                  v-model="form.grwt"
+                  type="number"
+                  :error-messages="grwtErrors"
+                  @input="$v.form.grwt.$touch()"
+                  @blur="$v.form.grwt.$touch()"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Rate"
+                  v-model="form.rate"
+                  type="number"
+                  :error-messages="rateErrors"
+                  @input="$v.form.rate.$touch()"
+                  @blur="$v.form.rate.$touch()"
                   required
                 ></v-text-field>
               </v-col>
@@ -219,7 +242,10 @@
                           QUANTITY
                         </th>
                         <th class="text-left">
-                          PRICE
+                          GRWT
+                        </th>
+                        <th class="text-left">
+                          RATE
                         </th>
                         <th class="text-left">
                           AMOUNT
@@ -234,14 +260,15 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(item, index) in salesOrderItems"
+                        v-for="(item, index) in purchaseOrderItems"
                         :key="index"
                         :class="[index==cartEdit ? 'success lighten-5' : '', item.delRecord ? 'red lighten-5' : '']"
                        >
                         <td>{{ index }}</td>
                         <td>{{ item.item }}</td>
                         <td>{{ item.qty }}</td>
-                        <td>{{ item.itemPrice }}</td>
+                        <td>{{ item.grwt }}</td>
+                        <td>{{ item.rate }}</td>
                         <td>{{ item.amount }}</td>
                         <td v-if="item.delRecord">
                           <v-btn text color="deep-purple accent-4">
@@ -264,14 +291,64 @@
                           </v-btn> 
                         </td>
                       </tr>
-                      <tr v-if="getTotalSalesCartAmount()">
+                      <tr v-if="getTotalPurchaseCartAmount()">
                         <td colspan="2"><strong>TOTAL AMOUNT</strong></td>
-                        <td colspan="2"><strong>{{ getTotalSalesCartQty() }}</strong></td>
-                        <td><strong>{{ getTotalSalesCartAmount() }}</strong></td>
+                        <td><strong>{{ getTotalPurchaseCartQty() }}</strong></td>
+                        <td colspan="2"><strong>{{ getTotalPurchaseCartGrwt() }}</strong></td>
+                        <td><strong>{{ getTotalPurchaseCartAmount() }}</strong></td>
                       </tr>
                     </tbody>
                   </template>
                 </v-simple-table>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Commission"
+                  v-model="form.comm"
+                  type="number"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Other Charges"
+                  v-model="form.otherCharges"
+                  type="number"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Apmc"
+                  v-model="form.apmc"
+                  type="number"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-text-field
+                  outlined
+                  color="success"
+                  dense
+                  disabled
+                  label="Total Amount"
+                  :value="getTotalPurchaseAmount"
+                  type="number"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-card>
@@ -332,31 +409,38 @@
      validations: {
          form:{
            qty:         {required},
+           grwt:         {required},
+           rate:         {required},
            item:        {required},
-           cusAcct:     {required},
-           descp:       {required},
+           acct:     {required},
+           motorNo:       {required},
          }
      },
     data: () => ({
-      permission: 'restuarant-sales',
+      permission: 'purchase-entry',
       orderid: 0,
       overlay: false,
       enterDate: new Date().toISOString().substr(0, 10),
       menuDate: false,
       cartEdit: -1,
-      salesOrderItems: [],
+      purchaseOrderItems: [],
       item: [],
-      booking: [],
-      cusAcct: [],
+      acct: [],
       form: {
               id: 0,
               qty: null,
+              unit: null,
+              comm: 0,
+              apmc: 0,
+              otherCharges: 0,
+              grwt: null,
+              motorNo: null,
+              rate: null, 
               totalQty: null,
               item:null,
               itemId:null,
-              itemPrice:null,
-              cusAcct:null,
-              cusAcctId:null,
+              acct:null,
+              acctId:null,
               overlay: false,
               allError: {},
 
@@ -369,27 +453,25 @@
               this.item = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
-      axios.get(`account/get/0/2`)
+      axios.get(`account/get/0/3`)
             .then(resp=>{
-              this.cusAcct = transformKeys.camelCase(resp.data.data);
-            })
-            .catch(err => Exception.handle(err, 'admin'));
-      axios.get(`booking/get/checkout`)
-            .then(resp=>{
-              this.booking = transformKeys.camelCase(resp.data.data);
+              this.acct = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
-        axios.get(`sales/${this.orderid}`)
+        axios.get(`purchaseorder/${this.orderid}`)
              .then(resp => {
               let getSalesOrder         = transformKeys.camelCase(resp.data.data);
-              this.form.cusAcct         = getSalesOrder.cusAcct;
-              this.form.cusAcctId       = getSalesOrder.cusAcctId;
-              this.form.totalQty        = getSalesOrder.totalQty;
-              this.form.descp           = getSalesOrder.descp;
+              this.form.acct            = getSalesOrder.acct;
+              this.form.apmc            = getSalesOrder.apmc;
+              this.form.comm            = getSalesOrder.comm;
+              this.form.otherCharges    = getSalesOrder.otherCharges;
+              this.form.acctId          = getSalesOrder.acctId;
+              this.form.invoiceNo       = getSalesOrder.invoiceNo;
+              this.form.motorNo         = getSalesOrder.motorNo;
               this.enterDate            = getSalesOrder.enterDate;
-              this.salesOrderItems      = getSalesOrder.salesOrderItems;
+              this.purchaseOrderItems   = getSalesOrder.purchaseOrderItems;
               this.orderid              = getSalesOrder.id;
              })
              .catch(err => Exception.handle(err, 'admin'));
@@ -411,17 +493,17 @@
         !this.$v.form.item.required && errors.push('Item is required')
         return errors
       },
-      cusAcctErrors () {
+      acctErrors () {
         const errors = [];
-        if (!this.$v.form.cusAcct.$dirty) return errors; 
+        if (!this.$v.form.acct.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'cusAcctId') {
-            errors.push(this.form.allError.cusAcctId[0]);
+          if (items == 'acctId') {
+            errors.push(this.form.allError.acctId[0]);
             break;
           } 
 
         } 
-        !this.$v.form.cusAcct.required && errors.push('Account is required')
+        !this.$v.form.acct.required && errors.push('Account is required')
         return errors
       },
       qtyErrors () {
@@ -437,76 +519,106 @@
         !this.$v.form.qty.required && errors.push('Quantity is required')
         return errors
       },
-      descpErrors () {
+      grwtErrors () {
         const errors = []
-        if (!this.$v.form.descp.$dirty) return errors; 
+        if (!this.$v.form.grwt.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'descp') {
-            errors.push(this.form.allError.descp[0]);
+          if (items == 'grwt') {
+            errors.push(this.form.allError.grwt[0]);
             break;
           } 
 
         } 
-        !this.$v.form.descp.required && errors.push('Narration is required')
+        !this.$v.form.grwt.required && errors.push('Growth Weight is required')
         return errors
       },
+      rateErrors () {
+        const errors = []
+        if (!this.$v.form.rate.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'rate') {
+            errors.push(this.form.allError.rate[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.rate.required && errors.push('Rate is required')
+        return errors
+      },
+      motorNoErrors () {
+        const errors = []
+        if (!this.$v.form.motorNo.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'motorNo') {
+            errors.push(this.form.allError.motorNo[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.motorNo.required && errors.push('Motor No. is required')
+        return errors
+      },
+      getTotalPurchaseAmount()
+        {
+          return Number(this.getTotalPurchaseCartAmount()) + Number(this.form.comm) + Number(this.form.otherCharges) + Number(this.form.apmc);
+        },
       
     },
     methods: {
-          setBookingId(data){
-            this.form.cusAcct = data.bookingOrder.accountName;
-            this.form.cusAcctId = data.bookingOrder.accountId;
-          },
           setItem(data){
             this.form.itemId = data.id;
-            this.form.itemPrice = data.price;
+            this.form.unit = data.unit;
             this.form.item = data.name;
           },
-          setCusAcct(data){
-            this.form.cusAcctId = data.id;
-            this.form.cusAcct = data.name;
+          setAcct(data){
+            this.form.acctId = data.id;
+            this.form.acct = data.name;
           },
           viewData(){
-            this.$router.push({name:'view-sales'});
+            this.$router.push({name:'view-purchase'});
           },
-          async createSales(id, item, itemId, itemPrice, qty, delRecord)
+          async createPurchase(id, item, itemId, rate, grwt, unit, qty, delRecord)
           {
             let cartItem = {};
             cartItem.id = id;
             cartItem.itemId = itemId;
             cartItem.item = item;
-            cartItem.itemPrice = itemPrice;
+            cartItem.rate = rate;
+            cartItem.grwt = grwt;
             cartItem.qty = qty;
-            cartItem.amount = cartItem.itemPrice * cartItem.qty;
+            cartItem.unit = unit;
+            cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
             cartItem.delRecord= delRecord;
 
             return cartItem;
           },
-          addSalesCart(cartItem)
+          addPurchaseCart(cartItem)
           {
-            this.salesOrderItems.push(cartItem);
+            this.purchaseOrderItems.push(cartItem);
           },
           setEditCart(cartItem, index)
           {
             this.form.id = cartItem.id;
             this.form.item = cartItem.item;
             this.form.itemId = cartItem.itemId;
-            this.form.itemPrice = cartItem.itemPrice;
+            this.form.rate = cartItem.rate;
             this.form.qty = cartItem.qty;
+            this.form.grwt = cartItem.grwt;
+            this.form.unit = cartItem.unit;
             this.cartEdit = index;
           },
           setDeleteCart(cartItem, index)
           {
             if (this.orderid) {
-             this.deleteSalesCart(cartItem, index);
+             this.deletePurchaseCart(cartItem, index);
             }else{
-              this.removeSalesCart(index);
+              this.removePurchaseCart(index);
             }
             
           },
-          editSalesCart(cartItem, index)
+          editPurchaseCart(cartItem, index)
           {
-            this.salesOrderItems = this.salesOrderItems.map((item, i) => { 
+            this.purchaseOrderItems = this.purchaseOrderItems.map((item, i) => { 
                 if (index == i) 
                 { 
                   item = cartItem;
@@ -514,30 +626,40 @@
               return item; 
             });
           },
-          deleteSalesCart(cartItem, index)
+          deletePurchaseCart(cartItem, index)
           {
             cartItem.delRecord = 1;
-            this.editSalesCart(cartItem, index);
+            this.editPurchaseCart(cartItem, index);
           },
-          removeSalesCart(index)
+          removePurchaseCart(index)
           {
-           this.salesOrderItems.splice(index, 1);
+           this.purchaseOrderItems.splice(index, 1);
           },
-          clearSalesCart(index)
+          clearPurchaseCart(index)
           {
-            this.salesOrderItems = [];
+            this.purchaseOrderItems = [];
           },
-          getTotalSalesCartAmount()
+          getTotalPurchaseCartAmount()
           {
-            if (this.salesOrderItems.length > 0) {
-              return this.salesOrderItems.filter(data => data.delRecord == 0).reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
+            let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+            if (dataArray.length > 0) {
+              return dataArray.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
             }
             return 0;
           },
-          getTotalSalesCartQty()
-          {
-            if (this.salesOrderItems.length > 0) {
-              return this.salesOrderItems.filter(data => data.delRecord == 0).reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+          getTotalPurchaseCartQty()
+          { 
+            let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+            if (dataArray.length > 0) {
+              return dataArray.reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+            }
+            return 0;
+          },
+          getTotalPurchaseCartGrwt()
+          { 
+            let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+            if (dataArray.length > 0) {
+              return dataArray.reduce((prev, cur) => ({qty: Number(prev.grwt) + Number(cur.grwt)})).grwt
             }
             return 0;
           },
@@ -549,58 +671,67 @@
               return;
             }
 
-            this.createSales(this.form.id, this.form.item, this.form.itemId, this.form.itemPrice, this.form.qty, 0)
+            this.createPurchase(
+              this.form.id, this.form.item, this.form.itemId, 
+              this.form.rate, this.form.grwt, this.form.unit, this.form.qty, 0
+              )
                 .then(resp => {
 
                   if (this.cartEdit >= 0) 
                   {
-                    this.editSalesCart(resp, this.cartEdit);
+                    this.editPurchaseCart(resp, this.cartEdit);
                     this.cartEdit = -1;
                   }else {
-                    this.addSalesCart(resp);
+                    this.addPurchaseCart(resp);
                   }
                     
-                  this.form.item = this.form.qty = this.form.itemPrice = null;
+                  this.form.item = this.form.qty = this.form.rate = this.form.grwt = this.form.unit = null;
                   this.$v.form.$reset();
                 })
                 .catch(err => console.log(err));
           },
           clearData(){
-            this.clearSalesCart();
+            this.clearPurchaseCart();
             this.form =    {
                               id: 0,
                               qty: null,
-                              itemPrice:null,
+                              rate:null,
+                              grwt:null,
+                              unit:null,
                               item:null,
                               itemId:null,
-                              cusAcct:null,
-                              cusAcctId:null,
+                              acct:null,
+                              acctId:null,
                               overlay: false,
                               allError: {},
                             }
             this.$v.form.$reset();
           },
           saveData(){
-            if (this.salesOrderItems.length === 0) {
+            if (this.purchaseOrderItems.length === 0) {
                swal('Notification', 'Tranjection is empty');
                return;
             }
             
             let data = {};
-            data['cusAcctId']           = this.form.cusAcctId;
-            data['totalAmount']         = this.getTotalSalesCartAmount();
-            data['totalQty']            = this.getTotalSalesCartQty();
-            data['descp']               = this.form.descp;
-            data['salesOrderItems']     = this.salesOrderItems;
+            data['acctId']              = this.form.acctId;
+            data['motorNo']             = this.form.motorNo;
+            data['invoiceNo']           = this.form.invoiceNo;
+            data['comm']                = this.form.comm;
+            data['apmc']                = this.form.apmc;
+            data['otherCharges']        = this.form.otherCharges;
+            data['totalAmount']         = this.getTotalPurchaseAmount;
+            data['totalQty']            = this.getTotalPurchaseCartQty();
+            data['purchaseOrderItems']  = this.purchaseOrderItems;
             data['enterDate']           = this.enterDate;
 
-
+            console.log(transformKeys.snakeCase(data));
             this.overlay = true;
             if (this.orderid != 0) 
             {
-              axios.patch(`sales/${this.orderid}`, transformKeys.snakeCase(data))
+              axios.patch(`purchaseorder/${this.orderid}`, transformKeys.snakeCase(data))
                     .then(resp =>{
-                      this.$router.push({name:'view-sales', params: { message: `Sales ${resp.data.orderid} Updated Successfully` }});
+                      this.$router.push({name:'view-purchase', params: { message: `Purchase ${resp.data.orderid} Updated Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;
@@ -610,9 +741,9 @@
             }
             else
             {
-              axios.post(`sales`, transformKeys.snakeCase(data))
+              axios.post(`purchaseorder`, transformKeys.snakeCase(data))
                     .then(resp =>{
-                      this.$router.push({name:'view-sales', params: { message: `Sales with ID ${resp.data.orderid} Added Successfully` }});
+                      this.$router.push({name:'view-purchase', params: { message: `Purchase with ID ${resp.data.orderid} Added Successfully` }});
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
