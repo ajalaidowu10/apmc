@@ -76,24 +76,5 @@ class ItemController extends Controller
       return response(null, Response::HTTP_NO_CONTENT);
    }
 
-   /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-   public function getItem(int $item_group_id = 0)
-   {
-       $get_item = Item::where('status_id', 1)->latest();
-
-       if ($item_group_id != 0) 
-       {
-           $get_item = $get_item->where('item_group_id', $item_group_id);
-       } 
-
-       
-       $get_item = $get_item->get();
-
-
-       return ItemResource::collection($get_item);
-   }
+   
 }

@@ -52,23 +52,6 @@
           <v-row>
             <v-col
               cols="12"
-              >
-              <v-combobox
-                v-model="form.itemGroup"
-                label="Item Group"
-                :items="itemGroup"
-                item-text="name"
-                item-value="id"
-                :error-messages="itemGroupErrors"
-                @input="$v.form.itemGroup.$touch()"
-                @blur="$v.form.itemGroup.$touch()"
-                dense
-                @change="setItemGroup($event)"
-                outlined
-              ></v-combobox>
-            </v-col>
-            <v-col
-              cols="12"
              >
               <v-text-field
                 outlined
@@ -196,7 +179,6 @@
            name:  {required },
            unit: {required},
            weightPb: {required},
-           itemGroup: {required },
            status: {required},
          }
      },
@@ -204,12 +186,9 @@
       orderid: 0,
       permission: 'item',
       overlay: false,
-      itemGroup: [],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       form: {
               name: null,
-              itemGroup:null,
-              itemGroupId:null,
               unit: null,
               weightPb: null,
               status:null,
@@ -221,11 +200,6 @@
     }),
     created(){
       this.overlay = true;
-      axios.get(`itemgroup`)
-            .then(resp=>{
-              this.itemGroup = transformKeys.camelCase(resp.data.data);
-            })
-            .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
         axios.get(`item/${this.orderid}`)
@@ -234,8 +208,6 @@
               this.form.name              = getItemOrder.name;
               this.form.unit             = getItemOrder.unit;
               this.form.weightPb             = getItemOrder.weightPb;
-              this.form.itemGroup         = getItemOrder.itemGroup;
-              this.form.itemGroupId       = getItemOrder.itemGroupId;
               this.form.status            = getItemOrder.status;
               this.form.statusId          = getItemOrder.statusId;
              })
@@ -245,19 +217,6 @@
       
     },
     computed: {
-      itemGroupErrors () {
-        const errors = [];
-        if (!this.$v.form.itemGroup.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'itemGroupId') {
-            errors.push(this.form.allError.itemGroupId[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.itemGroup.required && errors.push('Item Group is required')
-        return errors
-      },
       statusErrors () {
         const errors = [];
         if (!this.$v.form.status.$dirty) return errors; 
@@ -313,9 +272,6 @@
       
     },
     methods: {
-          setItemGroup(data){
-            this.form.itemGroupId = data.id;
-          },
           setStatus(data){
             this.form.statusId = data.id;
           },

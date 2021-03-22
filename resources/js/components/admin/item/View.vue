@@ -115,7 +115,6 @@
       alert: false,
       search: '',
       headers: [
-                { text: 'Item Group Type', value: 'item_group' },
                 { text: 'Item Name', value: 'name' },
                 { text: 'Item Unit', value: 'unit' },
                 { text: 'Weight Conversion', value: 'weight_pb' },

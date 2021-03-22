@@ -23,6 +23,7 @@ class AccountTypeSeeder extends Seeder
         AccountType::create(['name' => 'Loan Account']);
         AccountType::create(['name' => 'Capital Account']);
         AccountType::create(['name' => 'Transporter Account']);
+        AccountType::create(['name' => 'Supplier Account']);
         AccountType::create(['name' => 'Agent Account']);
         
 

@@ -25,7 +25,6 @@ class ItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'item_group_id' => 'required|integer',
             'name'          => 'required|string|max:255',
             'unit'          => 'required|numeric',
             'weight_pb'     => 'required|numeric',

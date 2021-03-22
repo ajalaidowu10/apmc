@@ -83,7 +83,6 @@ Route::get('serviceorder/print/invoice/{serviceorder}', 'ServiceOrderController@
 Route::get('itemgroup', 'ItemGroupController@index');
 
 Route::get('account/get/{payment_type_id}/{account_type_id?}/{account_id?}/{groupcode_id?}', 'AccountController@getAccount');
-Route::get('item/get/{item_group_id}', 'ItemController@getItem');
 
 Route::get('cashbank/report/{date_from?}/{date_to?}/{acct_id?}', 'CashbankOrderController@getReport');
 Route::get('cashbank/print/report/{date_from?}/{date_to?}/{acct_id?}', 'CashbankOrderController@printReport');
