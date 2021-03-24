@@ -11,7 +11,7 @@ class PurchaseOrder extends Model
     
     protected $fillable = [
                             'acct_id', 'invoice_no', 'enter_date', 'total_amount', 'motor_no', 
-                            'comm', 'other_charges', 'apmc', 
+                            'other_charges', 'levy', 'apmc', 'map_levy', 'comm', 'tds',
                             'total_qty', 'created_by', 'status_id', 'deleted_at'
                           ];
 

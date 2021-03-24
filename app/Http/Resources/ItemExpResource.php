@@ -26,8 +26,11 @@ class ItemExpResource extends JsonResource
             'map_levy'       => $this->map_levy,
             'discount'       => $this->discount,
             'tolai'          => $this->tolai,
+            'tds'            => $this->tds,
             'item'           => $this->item->name,
             'item_id'        => $this->item_id,
+            'unit'           => $this->item->unit,
+            'weight_pb'      => $this->item->weight_pb,
             'status_id'      => $this->status_id,
             'status'         => $this->status->name,
 

@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
                       StatusSeeder::class,
+                      ItemSeeder::class,
                       ModuleSeeder::class,
                       PermissionSeeder::class,
                       RoleSeeder::class,
@@ -23,9 +24,9 @@ class DatabaseSeeder extends Seeder
                       AccountTypeSeeder::class,
                       TransactypeSeeder::class,
                       AccountSeeder::class,
-                      ItemGroupSeeder::class,
                       CashbankTypeSeeder::class,
                       PaymentTypeSeeder::class,
+
         ]);
     }
 }

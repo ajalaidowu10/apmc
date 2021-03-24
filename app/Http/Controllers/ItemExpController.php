@@ -7,6 +7,7 @@ use App\Http\Requests\ItemExpRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\ItemExpResource;
 use App\ItemExp;
+use DB;
 
 class ItemExpController extends Controller
 {  
@@ -81,18 +82,13 @@ class ItemExpController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-   public function getItemExp(int $item_id = 0)
+   public function getItemExp(string $enter_date)
    {
-       $get_item = ItemExp::where('status_id', 1)->latest();
-
-       if ($item_id != 0) 
-       {
-           $get_item = $get_item->where('item_id', $item_id);
-       } 
-
-       
-       $get_item = $get_item->get();
-
+       $get_item = ItemExp::where('enter_date', '<=', $enter_date)
+                      ->where('status_id', 1)
+                      ->orderBy('created_at', 'DESC')
+                      ->get()
+                      ->unique('item_id');
 
        return ItemExpResource::collection($get_item);
    }

@@ -251,6 +251,21 @@
             </v-col>
             <v-col
               cols="6"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="TDS*"
+                v-model="form.tds"
+                type="number"
+                :error-messages="tdsErrors"
+                @input="$v.form.tds.$touch()"
+                @blur="$v.form.tds.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
               >
               <v-combobox
                 v-model="form.status"
@@ -339,6 +354,7 @@
            apmc: {required},
            mapLevy: {required},
            tolai: {required},
+           tds: {required},
            discount: {required},
            item: {required },
            status: {required},
@@ -363,6 +379,7 @@
               apmc: null,
               mapLevy: null,
               tolai: null,
+              tds: null,
               discount: null,
               status:null,
               statusId:null,
@@ -392,6 +409,7 @@
               this.form.apmc             = getItemOrder.apmc;
               this.form.mapLevy          = getItemOrder.mapLevy;
               this.form.tolai            = getItemOrder.tolai;
+              this.form.tds              = getItemOrder.tds;
               this.form.discount         = getItemOrder.discount;
               this.form.item             = getItemOrder.item;
               this.form.itemId           = getItemOrder.itemId;
@@ -441,6 +459,19 @@
 
         } 
         !this.$v.form.comm.required && errors.push('Commission is required')
+        return errors
+      },
+      tdsErrors () {
+        const errors = []
+        if (!this.$v.form.tds.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'tds') {
+            errors.push(this.form.allError.tds[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.tds.required && errors.push('TDS is required')
         return errors
       },
       pHamaliErrors () {
@@ -626,7 +657,6 @@
             }
             else
             {
-              console.log(this.form);
               axios.post(`itemexp`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
                       this.$router.push({name:'view-itemexp', params: { message: `Item Expense Added Successfully` }});

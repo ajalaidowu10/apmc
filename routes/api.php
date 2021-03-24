@@ -61,6 +61,7 @@ Route::apiResource('area', 'AreaController');
 Route::apiResource('narration', 'NarrationController');
 Route::apiResource('purchaseorder', 'PurchaseOrderController');
 
+
 Route::get('permission/{permissionName}', 'PermissionController@check');
 Route::get('permission/get/{admin}', 'PermissionController@getPermission');
 Route::patch('permission/refresh/{admin}', 'PermissionController@refreshPermission');
@@ -83,6 +84,7 @@ Route::get('serviceorder/print/invoice/{serviceorder}', 'ServiceOrderController@
 Route::get('itemgroup', 'ItemGroupController@index');
 
 Route::get('account/get/{payment_type_id}/{account_type_id?}/{account_id?}/{groupcode_id?}', 'AccountController@getAccount');
+Route::get('get/itemexp/{date_to}', 'ItemExpController@getItemExp');
 
 Route::get('cashbank/report/{date_from?}/{date_to?}/{acct_id?}', 'CashbankOrderController@getReport');
 Route::get('cashbank/print/report/{date_from?}/{date_to?}/{acct_id?}', 'CashbankOrderController@printReport');

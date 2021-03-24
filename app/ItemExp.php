@@ -13,7 +13,7 @@ class ItemExp extends Model
                            'comm', 'p_hamali',
                            'b_hamali', 'p_levy',
                            'b_levy', 'apmc', 'map_levy', 
-                           'discount', 'tolai',
+                           'discount', 'tolai', 'tds',
                            'status_id','deleted_at'
                          ];
 

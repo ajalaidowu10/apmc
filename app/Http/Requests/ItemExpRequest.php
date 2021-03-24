@@ -36,6 +36,7 @@ class ItemExpRequest extends FormRequest
             'map_levy'       => 'required|numeric',
             'discount'       => 'required|numeric',
             'tolai'          => 'required|numeric',
+            'tds'          => 'required|numeric',
             'status_id'      => 'required|integer',
 
         ];

@@ -14,4 +14,9 @@ class Item extends Model
    {
      return $this->belongsTo('App\Status');
    }
+
+   public function item_exps()
+   {
+   		return $this->hasMany('App\ItemExp');
+   }
 }

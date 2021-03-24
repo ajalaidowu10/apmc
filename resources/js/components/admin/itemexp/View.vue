@@ -105,6 +105,7 @@
                 { text: 'P Levy', value: 'p_levy' },
                 { text: 'B Levy', value: 'b_levy' },
                 { text: 'Apmc', value: 'apmc' },
+                { text: 'TDS', value: 'tds' },
                 { text: 'MAP Levy', value: 'map_levy' },
                 { text: 'Discount', value: 'discount' },
                 { text: 'Tolai', value: 'tolai' },
@@ -141,7 +142,6 @@
               },
               
               editData(id){
-                console.log(id);
                 this.$router.push({name:'add-itemexp', params:{orderid:id}});
               },
               

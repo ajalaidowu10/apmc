@@ -157,8 +157,8 @@
                   v-model="form.item"
                   label="Item"
                   :items="item"
-                  item-text="name"
-                  item-value="id"
+                  item-text="item"
+                  item-value="item_id"
                   :error-messages="itemErrors"
                   @input="$v.form.item.$touch()"
                   @blur="$v.form.item.$touch()"
@@ -251,6 +251,12 @@
                           AMOUNT
                         </th>
                         <th class="text-left">
+                          Expense
+                        </th>
+                        <th class="text-left">
+                         Final AMOUNT
+                        </th>
+                        <th class="text-left">
                           EDIT
                         </th>
                         <th class="text-left"> 
@@ -270,6 +276,8 @@
                         <td>{{ item.grwt }}</td>
                         <td>{{ item.rate }}</td>
                         <td>{{ item.amount }}</td>
+                        <td>{{ item.exp }}</td>
+                        <td>{{ item.finalAmount }}</td>
                         <td v-if="item.delRecord">
                           <v-btn text color="deep-purple accent-4">
                             <v-icon>>mdi-trash-can-outline </v-icon>
@@ -309,32 +317,8 @@
                 <v-text-field
                   outlined
                   dense
-                  label="Commission"
-                  v-model="form.comm"
-                  type="number"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="2"
-               >
-                <v-text-field
-                  outlined
-                  dense
                   label="Other Charges"
                   v-model="form.otherCharges"
-                  type="number"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="2"
-               >
-                <v-text-field
-                  outlined
-                  dense
-                  label="Apmc"
-                  v-model="form.apmc"
                   type="number"
                   required
                 ></v-text-field>
@@ -429,9 +413,6 @@
       form: {
               id: 0,
               qty: null,
-              unit: null,
-              comm: 0,
-              apmc: 0,
               otherCharges: 0,
               grwt: null,
               motorNo: null,
@@ -439,6 +420,7 @@
               totalQty: null,
               item:null,
               itemId:null,
+              itemObject: {},
               acct:null,
               acctId:null,
               overlay: false,
@@ -448,8 +430,9 @@
     }),
     created(){
       this.overlay = true;
-      axios.get(`item`)
+      axios.get(`get/itemexp/${this.enterDate}`)
             .then(resp=>{
+              console.log(resp.data.data);
               this.item = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
@@ -464,8 +447,6 @@
              .then(resp => {
               let getSalesOrder         = transformKeys.camelCase(resp.data.data);
               this.form.acct            = getSalesOrder.acct;
-              this.form.apmc            = getSalesOrder.apmc;
-              this.form.comm            = getSalesOrder.comm;
               this.form.otherCharges    = getSalesOrder.otherCharges;
               this.form.acctId          = getSalesOrder.acctId;
               this.form.invoiceNo       = getSalesOrder.invoiceNo;
@@ -480,6 +461,9 @@
       
     },
     computed: {
+      comm(){
+        
+      },
       itemErrors () {
         const errors = [];
         if (!this.$v.form.item.$dirty) return errors; 
@@ -560,15 +544,15 @@
       },
       getTotalPurchaseAmount()
         {
-          return Number(this.getTotalPurchaseCartAmount()) + Number(this.form.comm) + Number(this.form.otherCharges) + Number(this.form.apmc);
+          return Number(this.getTotalPurchaseCartAmount()) +  Number(this.form.otherCharges);
         },
       
     },
     methods: {
           setItem(data){
-            this.form.itemId = data.id;
-            this.form.unit = data.unit;
-            this.form.item = data.name;
+            this.form.itemId = data.item_id;
+            this.form.item = data.item;
+            this.form.itemObject = data;
           },
           setAcct(data){
             this.form.acctId = data.id;
@@ -577,7 +561,7 @@
           viewData(){
             this.$router.push({name:'view-purchase'});
           },
-          async createPurchase(id, item, itemId, rate, grwt, unit, qty, delRecord)
+          async createPurchase(id, item, itemId, rate, grwt, itemObject, qty, delRecord)
           {
             let cartItem = {};
             cartItem.id = id;
@@ -586,9 +570,33 @@
             cartItem.rate = rate;
             cartItem.grwt = grwt;
             cartItem.qty = qty;
-            cartItem.unit = unit;
+            cartItem.itemObject = itemObject;
+            cartItem.unit = itemObject.unit;
+            cartItem.weight_pb = itemObject.weight_pb;
+            cartItem.tolai = itemObject.tolai;
+            cartItem.tds = itemObject.tds;
+            cartItem.pLevy = itemObject.pLevy;
+            cartItem.bLevy = itemObject.bLevy;
+            cartItem.pHamali = itemObject.pHamali;
+            cartItem.bHamali = itemObject.bHamali;
+            cartItem.mapLevy = itemObject.mapLevy;
+            cartItem.apmc = itemObject.apmc;
+            cartItem.comm = itemObject.comm;
+            cartItem.discount = itemObject.discount;
+
             cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
+            cartItem.levy =  (cartItem.qty >= cartItem.weight_pb) ? cartItem.bLevy : cartItem.pLevy;
+
+            cartItem.newLevy = cartItem.levy * cartItem.qty;
+            cartItem.newApmc = cartItem.apmc/100 * cartItem.amount;
+            cartItem.newMapLevy = cartItem.mapLevy * cartItem.grwt;
+            cartItem.newComm = cartItem.comm/100 *cartItem.amount;
+            cartItem.newTds = cartItem.tds/100 * cartItem.newComm;
+            cartItem.exp = cartItem.newLevy + cartItem.newApmc + cartItem.newMapLevy + cartItem.newComm;
+            cartItem.finalAmount = cartItem.exp + cartItem.amount;
             cartItem.delRecord= delRecord;
+
+            console.log(cartItem);
 
             return cartItem;
           },
@@ -604,7 +612,7 @@
             this.form.rate = cartItem.rate;
             this.form.qty = cartItem.qty;
             this.form.grwt = cartItem.grwt;
-            this.form.unit = cartItem.unit;
+            this.form.itemObject = cartItem.itemObject;
             this.cartEdit = index;
           },
           setDeleteCart(cartItem, index)
@@ -673,7 +681,7 @@
 
             this.createPurchase(
               this.form.id, this.form.item, this.form.itemId, 
-              this.form.rate, this.form.grwt, this.form.unit, this.form.qty, 0
+              this.form.rate, this.form.grwt, this.form.itemObject, this.form.qty, 0
               )
                 .then(resp => {
 
