@@ -276,8 +276,6 @@
                         <td>{{ item.grwt }}</td>
                         <td>{{ item.rate }}</td>
                         <td>{{ item.amount }}</td>
-                        <td>{{ item.exp }}</td>
-                        <td>{{ item.finalAmount }}</td>
                         <td v-if="item.delRecord">
                           <v-btn text color="deep-purple accent-4">
                             <v-icon>>mdi-trash-can-outline </v-icon>
@@ -311,6 +309,78 @@
               </v-col>
             </v-row>
             <v-row>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="LEVY"
+                  type="number"
+                  :value="levy"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="APMC"
+                  type="number"
+                  :value="apmc"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="MAP LEVY"
+                  type="number"
+                  :value="mapLevy"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="COMM"
+                  type="number"
+                  :value="comm"
+                ></v-text-field>
+              </v-col>
+                <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="TDS"
+                  type="number"
+                  :value="tds"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="FINAL AMOUNT"
+                  type="number"
+                  :value="finalAmount"
+                ></v-text-field>
+              </v-col>
               <v-col
                 cols="2"
                >
@@ -461,7 +531,52 @@
       
     },
     computed: {
+      levy(){
+        let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          return dataArray.reduce((prev, cur) => ({newLevy: Number(prev.newLevy) + Number(cur.newLevy)})).newLevy.toFixed(2);
+        }
+        return 0;
+        
+      },
+      apmc(){
+        let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          return dataArray.reduce((prev, cur) => ({newApmc: Number(prev.newApmc) + Number(cur.newApmc)})).newApmc.toFixed(2);
+        }
+        return 0;
+        
+      },
+      mapLevy(){
+        let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          return dataArray.reduce((prev, cur) => ({newMapLevy: Number(prev.newMapLevy) + Number(cur.newMapLevy)})).newMapLevy.toFixed(2);
+        }
+        return 0;
+        
+      },
       comm(){
+        let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          return dataArray.reduce((prev, cur) => ({newComm: Number(prev.newComm) + Number(cur.newComm)})).newComm.toFixed(2);
+        }
+        return 0;
+        
+      },
+      tds(){
+        let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          return dataArray.reduce((prev, cur) => ({newTds: Number(prev.newTds) + Number(cur.newTds)})).newTds.toFixed(2);
+        }
+        return 0;
+        
+      },
+      finalAmount(){
+        let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          return dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount.toFixed(2);
+        }
+        return 0;
         
       },
       itemErrors () {
@@ -544,7 +659,7 @@
       },
       getTotalPurchaseAmount()
         {
-          return Number(this.getTotalPurchaseCartAmount()) +  Number(this.form.otherCharges);
+          return Number(this.finalAmount) +  Number(this.form.otherCharges);
         },
       
     },
@@ -667,7 +782,7 @@
           { 
             let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
             if (dataArray.length > 0) {
-              return dataArray.reduce((prev, cur) => ({qty: Number(prev.grwt) + Number(cur.grwt)})).grwt
+              return dataArray.reduce((prev, cur) => ({grwt: Number(prev.grwt) + Number(cur.grwt)})).grwt
             }
             return 0;
           },
