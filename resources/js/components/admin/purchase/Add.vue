@@ -665,7 +665,7 @@
     },
     methods: {
           setItem(data){
-            this.form.itemId = data.item_id;
+            this.form.itemId = data.itemId;
             this.form.item = data.item;
             this.form.itemObject = data;
           },
@@ -687,7 +687,7 @@
             cartItem.qty = qty;
             cartItem.itemObject = itemObject;
             cartItem.unit = itemObject.unit;
-            cartItem.weight_pb = itemObject.weight_pb;
+            cartItem.weightPb = itemObject.weightPb;
             cartItem.tolai = itemObject.tolai;
             cartItem.tds = itemObject.tds;
             cartItem.pLevy = itemObject.pLevy;
@@ -701,7 +701,7 @@
 
             cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
             cartItem.unitGrwt = cartItem.grwt/ cartItem.qty;
-            cartItem.levy =  (cartItem.unitGrwt >= cartItem.weight_pb) ? cartItem.bLevy : cartItem.pLevy;
+            cartItem.levy =  (cartItem.unitGrwt >= cartItem.weightPb) ? cartItem.bLevy : cartItem.pLevy;
 
             cartItem.newLevy = cartItem.levy * cartItem.qty;
             cartItem.newApmc = cartItem.apmc/100 * cartItem.amount;
