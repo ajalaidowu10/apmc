@@ -700,7 +700,8 @@
             cartItem.discount = itemObject.discount;
 
             cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
-            cartItem.levy =  (cartItem.qty >= cartItem.weight_pb) ? cartItem.bLevy : cartItem.pLevy;
+            cartItem.unitGrwt = cartItem.grwt/ cartItem.qty;
+            cartItem.levy =  (cartItem.unitGrwt >= cartItem.weight_pb) ? cartItem.bLevy : cartItem.pLevy;
 
             cartItem.newLevy = cartItem.levy * cartItem.qty;
             cartItem.newApmc = cartItem.apmc/100 * cartItem.amount;
