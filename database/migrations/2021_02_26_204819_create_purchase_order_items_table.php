@@ -21,6 +21,12 @@ class CreatePurchaseOrderItemsTable extends Migration
             $table->decimal('grwt');
             $table->decimal('rate');
             $table->decimal('amount');
+            $table->decimal('levy');
+            $table->decimal('map_levy');
+            $table->decimal('apmc');
+            $table->decimal('comm');
+            $table->decimal('tds');
+            $table->decimal('final_amount');
             $table->boolean('del_record')->default(0);
             $table->timestamps();
             $table->softDeletes();

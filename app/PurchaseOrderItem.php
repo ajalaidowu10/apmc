@@ -10,7 +10,11 @@ class PurchaseOrderItem extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['purchase_order_id', 'item_id', 'qty', 'grwt', 'rate', 'del_record', 'amount', 'deleted_at'];
+    protected $fillable = [
+                            'purchase_order_id', 'item_id', 'qty', 'grwt', 
+                            'rate', 'del_record', 'amount', 'levy', 'map_levy',
+                            'apmc', 'comm', 'tds', 'final_amount', 'deleted_at'
+                        ];
 
     public function purchase_order()
     {

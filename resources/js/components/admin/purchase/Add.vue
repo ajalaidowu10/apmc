@@ -418,7 +418,7 @@
                x-large
                @click="clearData"
                >
-               New Sales
+               New Purchase
              </v-btn>
             </v-col>
             <v-col
@@ -524,6 +524,7 @@
               this.enterDate            = getSalesOrder.enterDate;
               this.purchaseOrderItems   = getSalesOrder.purchaseOrderItems;
               this.orderid              = getSalesOrder.id;
+              console.log(this.purchaseOrderItems);
              })
              .catch(err => Exception.handle(err, 'admin'));
       }
@@ -534,7 +535,7 @@
       levy(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({newLevy: Number(prev.newLevy) + Number(cur.newLevy)})).newLevy.toFixed(2);
+          return dataArray.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy.toFixed(2);
         }
         return 0;
         
@@ -542,7 +543,7 @@
       apmc(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({newApmc: Number(prev.newApmc) + Number(cur.newApmc)})).newApmc.toFixed(2);
+          return dataArray.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc.toFixed(2);
         }
         return 0;
         
@@ -550,7 +551,7 @@
       mapLevy(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({newMapLevy: Number(prev.newMapLevy) + Number(cur.newMapLevy)})).newMapLevy.toFixed(2);
+          return dataArray.reduce((prev, cur) => ({mapLevy: Number(prev.mapLevy) + Number(cur.mapLevy)})).mapLevy.toFixed(2);
         }
         return 0;
         
@@ -558,7 +559,7 @@
       comm(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({newComm: Number(prev.newComm) + Number(cur.newComm)})).newComm.toFixed(2);
+          return dataArray.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm.toFixed(2);
         }
         return 0;
         
@@ -566,7 +567,7 @@
       tds(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({newTds: Number(prev.newTds) + Number(cur.newTds)})).newTds.toFixed(2);
+          return dataArray.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds.toFixed(2);
         }
         return 0;
         
@@ -689,26 +690,26 @@
             cartItem.unit = itemObject.unit;
             cartItem.weightPb = itemObject.weightPb;
             cartItem.tolai = itemObject.tolai;
-            cartItem.tds = itemObject.tds;
+            cartItem.iniTds = itemObject.tds;
             cartItem.pLevy = itemObject.pLevy;
             cartItem.bLevy = itemObject.bLevy;
             cartItem.pHamali = itemObject.pHamali;
             cartItem.bHamali = itemObject.bHamali;
-            cartItem.mapLevy = itemObject.mapLevy;
-            cartItem.apmc = itemObject.apmc;
-            cartItem.comm = itemObject.comm;
+            cartItem.iniMapLevy = itemObject.mapLevy;
+            cartItem.iniApmc = itemObject.apmc;
+            cartItem.iniComm = itemObject.comm;
             cartItem.discount = itemObject.discount;
 
             cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
             cartItem.unitGrwt = cartItem.grwt/ cartItem.qty;
-            cartItem.levy =  (cartItem.unitGrwt >= cartItem.weightPb) ? cartItem.bLevy : cartItem.pLevy;
+            cartItem.iniLevy =  (cartItem.unitGrwt >= cartItem.weightPb) ? cartItem.bLevy : cartItem.pLevy;
 
-            cartItem.newLevy = cartItem.levy * cartItem.qty;
-            cartItem.newApmc = cartItem.apmc/100 * cartItem.amount;
-            cartItem.newMapLevy = cartItem.mapLevy * cartItem.grwt;
-            cartItem.newComm = cartItem.comm/100 *cartItem.amount;
-            cartItem.newTds = cartItem.tds/100 * cartItem.newComm;
-            cartItem.exp = cartItem.newLevy + cartItem.newApmc + cartItem.newMapLevy + cartItem.newComm;
+            cartItem.levy = cartItem.iniLevy * cartItem.qty;
+            cartItem.apmc = cartItem.iniApmc/100 * cartItem.amount;
+            cartItem.mapLevy = cartItem.iniMapLevy * cartItem.grwt;
+            cartItem.comm = cartItem.iniComm/100 *cartItem.amount;
+            cartItem.tds = cartItem.iniTds/100 * cartItem.comm;
+            cartItem.exp = cartItem.levy + cartItem.apmc + cartItem.mapLevy + cartItem.comm;
             cartItem.finalAmount = cartItem.exp + cartItem.amount;
             cartItem.delRecord= delRecord;
 
@@ -841,15 +842,18 @@
             data['acctId']              = this.form.acctId;
             data['motorNo']             = this.form.motorNo;
             data['invoiceNo']           = this.form.invoiceNo;
-            data['comm']                = this.form.comm;
-            data['apmc']                = this.form.apmc;
+            data['comm']                = this.comm;
+            data['apmc']                = this.apmc;
+            data['levy']                = this.levy;
+            data['apmc']                = this.apmc;
+            data['mapLevy']             = this.mapLevy;
+            data['tds']                 = this.tds;
             data['otherCharges']        = this.form.otherCharges;
             data['totalAmount']         = this.getTotalPurchaseAmount;
             data['totalQty']            = this.getTotalPurchaseCartQty();
             data['purchaseOrderItems']  = this.purchaseOrderItems;
             data['enterDate']           = this.enterDate;
 
-            console.log(transformKeys.snakeCase(data));
             this.overlay = true;
             if (this.orderid != 0) 
             {

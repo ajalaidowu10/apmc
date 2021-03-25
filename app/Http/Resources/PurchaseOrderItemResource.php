@@ -22,6 +22,12 @@ class PurchaseOrderItemResource extends JsonResource
             'grwt'           => $this->grwt,
             'rate'           => $this->rate,
             'amount'         => $this->amount,
+            'map_levy'       => $this->map_levy,
+            'levy'           => $this->levy,
+            'apmc'           => $this->apmc,
+            'comm'           => $this->comm,
+            'tds'            => $this->tds,
+            'final_amount'   => $this->final_amount,
             'del_record'     => $this->del_record,
         ];
     }
