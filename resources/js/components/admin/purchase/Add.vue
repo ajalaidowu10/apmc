@@ -502,7 +502,6 @@
       this.overlay = true;
       axios.get(`get/itemexp/${this.enterDate}`)
             .then(resp=>{
-              console.log(resp.data.data);
               this.item = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
@@ -524,7 +523,6 @@
               this.enterDate            = getSalesOrder.enterDate;
               this.purchaseOrderItems   = getSalesOrder.purchaseOrderItems;
               this.orderid              = getSalesOrder.id;
-              console.log(this.purchaseOrderItems);
              })
              .catch(err => Exception.handle(err, 'admin'));
       }
@@ -535,7 +533,8 @@
       levy(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy.toFixed(2);
+          let result = dataArray.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy;
+          return parseFloat(result).toFixed(2);
         }
         return 0;
         
@@ -543,7 +542,8 @@
       apmc(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc.toFixed(2);
+          let result = dataArray.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc;
+          return parseFloat(result).toFixed(2);
         }
         return 0;
         
@@ -551,7 +551,8 @@
       mapLevy(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({mapLevy: Number(prev.mapLevy) + Number(cur.mapLevy)})).mapLevy.toFixed(2);
+          let result = dataArray.reduce((prev, cur) => ({mapLevy: Number(prev.mapLevy) + Number(cur.mapLevy)})).mapLevy;
+          return parseFloat(result).toFixed(2);
         }
         return 0;
         
@@ -559,7 +560,8 @@
       comm(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm.toFixed(2);
+          let result = dataArray.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm;
+          return parseFloat(result).toFixed(2);
         }
         return 0;
         
@@ -567,7 +569,8 @@
       tds(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds.toFixed(2);
+          let result = dataArray.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds;
+          return parseFloat(result).toFixed(2);
         }
         return 0;
         
@@ -575,7 +578,8 @@
       finalAmount(){
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
-          return dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount.toFixed(2);
+          let result = dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount;
+          return parseFloat(result).toFixed(2);
         }
         return 0;
         
@@ -712,8 +716,6 @@
             cartItem.exp = cartItem.levy + cartItem.apmc + cartItem.mapLevy + cartItem.comm;
             cartItem.finalAmount = cartItem.exp + cartItem.amount;
             cartItem.delRecord= delRecord;
-
-            console.log(cartItem);
 
             return cartItem;
           },
