@@ -15,13 +15,21 @@ class SalesOrderItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'             => $this->id,
-            'item_id'        => $this->item_id,
-            'item'           => $this->item->name,
-            'qty'            => $this->qty,
-            'item_price'     => $this->item_price,
-            'amount'         => $this->amount,
-            'del_record'     => $this->del_record,
+            'id'                => $this->id,
+            'item_id'           => $this->item_id,
+            'item'              => $this->item->name,
+            'qty'               => $this->qty,
+            'grwt'              => $this->grwt,
+            'rate'              => $this->rate,
+            'amount'            => $this->amount,
+            'map_levy'          => $this->map_levy,
+            'levy'              => $this->levy,
+            'apmc'              => $this->apmc,
+            'comm'              => $this->comm,
+            'tds'               => $this->tds,
+            'final_amount'      => $this->final_amount,
+            'item_exp_object'   => json_decode($this->item_exp_object),
+            'del_record'        => $this->del_record,
         ];
     }
 }

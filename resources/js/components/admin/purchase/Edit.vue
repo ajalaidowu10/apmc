@@ -117,7 +117,7 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-       permission: 'purchase-entry',
+      permission: 'purchase-entry',
       orderid: 0,
       alert: false,
       search: '',
@@ -144,7 +144,6 @@
                   this.orderid = this.$route.params.orderid;
                   axios.get(`purchaseorder/${this.orderid}`)
                        .then(resp => {
-                        console.log(resp);
                         let getData = resp.data.data;
                         this.itemOrders = getData.purchase_order_items.filter(data => data.del_record == 0);
                         this.orderid = getData.id;

@@ -25,11 +25,19 @@ class SalesOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'cus_acct_id'           => 'required|integer',
+            'acct_id'               => 'required|integer',
+            'invoice_no'            => 'nullable|string',
+            'enter_date'            => 'required|date',
+            'other_charges'         => 'required|numeric',
+            'levy'                  => 'required|numeric',
+            'apmc'                  => 'required|numeric',
+            'map_levy'              => 'required|numeric',
+            'comm'                  => 'required|numeric',
+            'tds'                   => 'required|numeric',
             'total_qty'             => 'required|numeric',
             'total_amount'          => 'required|numeric',
-            'descp'                 => 'required|string',
-            'sales_order_items'     => 'required|array',
+            'motor_no'              => 'required|string',
+            'sales_order_items'   => 'required|array',
 
         ];
     }

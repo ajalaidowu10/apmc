@@ -154,6 +154,7 @@
                 cols="3"
                 >
                 <v-combobox
+                  ref="myBtn"
                   v-model="form.item"
                   label="Item"
                   :items="item"
@@ -490,7 +491,7 @@
               totalQty: null,
               item:null,
               itemId:null,
-              itemObject: {},
+              itemExpObject: {},
               acct:null,
               acctId:null,
               overlay: false,
@@ -672,7 +673,7 @@
           setItem(data){
             this.form.itemId = data.itemId;
             this.form.item = data.item;
-            this.form.itemObject = data;
+            this.form.itemExpObject = data;
           },
           setAcct(data){
             this.form.acctId = data.id;
@@ -681,7 +682,7 @@
           viewData(){
             this.$router.push({name:'view-purchase'});
           },
-          async createPurchase(id, item, itemId, rate, grwt, itemObject, qty, delRecord)
+          async createPurchase(id, item, itemId, rate, grwt, itemExpObject, qty, delRecord)
           {
             let cartItem = {};
             cartItem.id = id;
@@ -690,19 +691,19 @@
             cartItem.rate = rate;
             cartItem.grwt = grwt;
             cartItem.qty = qty;
-            cartItem.itemObject = itemObject;
-            cartItem.unit = itemObject.unit;
-            cartItem.weightPb = itemObject.weightPb;
-            cartItem.tolai = itemObject.tolai;
-            cartItem.iniTds = itemObject.tds;
-            cartItem.pLevy = itemObject.pLevy;
-            cartItem.bLevy = itemObject.bLevy;
-            cartItem.pHamali = itemObject.pHamali;
-            cartItem.bHamali = itemObject.bHamali;
-            cartItem.iniMapLevy = itemObject.mapLevy;
-            cartItem.iniApmc = itemObject.apmc;
-            cartItem.iniComm = itemObject.comm;
-            cartItem.discount = itemObject.discount;
+            cartItem.itemExpObject = itemExpObject;
+            cartItem.unit = itemExpObject.unit;
+            cartItem.weightPb = itemExpObject.weightPb;
+            cartItem.tolai = itemExpObject.tolai;
+            cartItem.iniTds = itemExpObject.tds;
+            cartItem.pLevy = itemExpObject.pLevy;
+            cartItem.bLevy = itemExpObject.bLevy;
+            cartItem.pHamali = itemExpObject.pHamali;
+            cartItem.bHamali = itemExpObject.bHamali;
+            cartItem.iniMapLevy = itemExpObject.mapLevy;
+            cartItem.iniApmc = itemExpObject.apmc;
+            cartItem.iniComm = itemExpObject.comm;
+            cartItem.discount = itemExpObject.discount;
 
             cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
             cartItem.unitGrwt = cartItem.grwt/ cartItem.qty;
@@ -731,7 +732,7 @@
             this.form.rate = cartItem.rate;
             this.form.qty = cartItem.qty;
             this.form.grwt = cartItem.grwt;
-            this.form.itemObject = cartItem.itemObject;
+            this.form.itemExpObject = cartItem.itemExpObject;
             this.cartEdit = index;
           },
           setDeleteCart(cartItem, index)
@@ -800,7 +801,7 @@
 
             this.createPurchase(
               this.form.id, this.form.item, this.form.itemId, 
-              this.form.rate, this.form.grwt, this.form.itemObject, this.form.qty, 0
+              this.form.rate, this.form.grwt, this.form.itemExpObject, this.form.qty, 0
               )
                 .then(resp => {
 
@@ -815,7 +816,6 @@
                   this.form.item = this.form.qty = this.form.rate = this.form.grwt = this.form.unit = null;
                   this.$v.form.$reset();
                 })
-                .catch(err => console.log(err));
           },
           clearData(){
             this.clearPurchaseCart();
@@ -866,7 +866,6 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
                     });
             }
             else
@@ -877,7 +876,6 @@
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
                     });
             }
             this.overlay = false;

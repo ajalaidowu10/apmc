@@ -13,8 +13,17 @@ class PurchaseOrderItem extends Model
     protected $fillable = [
                             'purchase_order_id', 'item_id', 'qty', 'grwt', 
                             'rate', 'del_record', 'amount', 'levy', 'map_levy',
-                            'apmc', 'comm', 'tds', 'final_amount', 'deleted_at'
+                            'apmc', 'comm', 'tds', 'final_amount', 'item_exp_object', 'deleted_at'
                         ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($purchase_order_items) {
+            $purchase_order_items->item_exp_object = json_encode($purchase_order_items->item_exp_object);
+        });
+    }
 
     public function purchase_order()
     {
@@ -25,6 +34,5 @@ class PurchaseOrderItem extends Model
     {
       return $this->belongsTo('App\Item');
     }
-
 
 }

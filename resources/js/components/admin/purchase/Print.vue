@@ -18,7 +18,7 @@
   export default {
     created(){
       this.overlay = true;
-      axios.get(`serviceorder/print/invoice/${this.$route.params.id}/`)
+      axios.get(`purchase/print/invoice/${this.$route.params.id}/`)
            .then(resp => {
             this.page = resp.data;
           })
@@ -28,7 +28,7 @@
       this.overlay = false;
     },
     data: () => ({
-       permission: 'service-order',
+       permission: 'purchase-entry',
       overlay: false,
       page: null,
     }),

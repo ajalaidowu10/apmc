@@ -38,38 +38,38 @@ class SalesOrderController extends Controller
     public function store(SalesOrderRequest $request)
     {
 
-        $sale_order_items = $request->input('sales_order_items');
+        $sales_order_items = $request->input('sales_order_items');
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
 
         DB::beginTransaction();
           try 
           {
-              $sale = new SalesOrder($request->all());
-              $sale->save();
-              $sale->sales_order_items()->createMany($sale_order_items);
+              $salesorder = new SalesOrder($request->all());
+              $salesorder->save();
+              $salesorder->sales_order_items()->createMany($sales_order_items);
 
                 Ledger::create([
-                                'tran_id'           => $sale->id, 
-                                'transactype_id'    => 6, 
-                                'acct_one_id'       => 5,
-                                'acct_two_id'       => $sale->cus_acct_id,
-                                'amount'            => $sale->total_amount,
-                                'enter_date'        => $sale->enter_date,
+                                'tran_id'           => $salesorder->id, 
+                                'transactype_id'    => 3, 
+                                'acct_one_id'       => 1,
+                                'acct_two_id'       => $salesorder->acct_id,
+                                'amount'            => $salesorder->total_amount,
+                                'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 1,
-                                'descp'             => $sale->descp,
+                                'descp'             => 'Item Sales From '.$salesorder->acct->name,
                                 'created_by'        => Auth::guard('admin')->user()->id,
                             ]);
 
                 Ledger::create([
-                                'tran_id'           => $sale->id, 
-                                'transactype_id'    => 6, 
-                                'acct_one_id'       => $sale->cus_acct_id,
-                                'acct_two_id'       => 5,
-                                'amount'            => $sale->total_amount,
-                                'enter_date'        => $sale->enter_date,
+                                'tran_id'           => $salesorder->id, 
+                                'transactype_id'    => 3, 
+                                'acct_one_id'       => $salesorder->acct_id,
+                                'acct_two_id'       => 1,
+                                'amount'            => $salesorder->total_amount,
+                                'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 2,
-                                'descp'             => $sale->descp,
+                                'descp'             => 'Item Sales From '.$salesorder->acct->name,
                                 'created_by'        => Auth::guard('admin')->user()->id,
                             ]);
 
@@ -82,31 +82,31 @@ class SalesOrderController extends Controller
 
         DB::commit();
 
-      return response(['orderid' => $sale->id], Response::HTTP_CREATED);
+      return response(['orderid' => $salesorder->id], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\SalesOrder  $sale
+     * @param  \App\SalesOrder  $salesorder
      * @return \Illuminate\Http\Response
      */
-    public function show(SalesOrder $sale)
+    public function show(SalesOrder $salesorder)
     {
-       return new SalesOrderResource($sale);
+       return new SalesOrderResource($salesorder);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SalesOrder  $sale
+     * @param  \App\SalesOrder  $salesorder
      * @return \Illuminate\Http\Response
      */
-    public function update(SalesOrderRequest $request, SalesOrder $sale)
+    public function update(SalesOrderRequest $request, SalesOrder $salesorder)
     {
-          $sale->update($request->all());
-          $sale_order_items = $request->input('sales_order_items');
+          $salesorder->update($request->all());
+          $sales_order_items = $request->input('sales_order_items');
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
 
@@ -114,35 +114,35 @@ class SalesOrderController extends Controller
             try 
             {
 
-                SalesOrderItem::where('sales_order_id', $sale->id)->delete();
-                Ledger::where('tran_id', $sale->id)
-                              ->where('transactype_id', 6)
+                SalesOrderItem::where('sales_order_id', $salesorder->id)->delete();
+                Ledger::where('tran_id', $salesorder->id)
+                              ->where('transactype_id', 3)
                               ->delete();
 
-                $sale->update($request->all());
-                $sale->sales_order_items()->createMany($sale_order_items);
+                $salesorder->update($request->all());
+                $salesorder->sales_order_items()->createMany($sales_order_items);
 
                   Ledger::create([
-                                  'tran_id'           => $sale->id, 
-                                  'transactype_id'    => 6, 
-                                  'acct_one_id'       => 5,
-                                  'acct_two_id'       => $sale->cus_acct_id,
-                                  'amount'            => $sale->total_amount,
-                                  'enter_date'        => $sale->enter_date,
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => 1,
+                                  'acct_two_id'       => $salesorder->acct_id,
+                                  'amount'            => $salesorder->total_amount,
+                                  'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 1,
-                                  'descp'             => $sale->descp,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
                                   'created_by'        => Auth::guard('admin')->user()->id,
                               ]);
 
                   Ledger::create([
-                                  'tran_id'           => $sale->id, 
-                                  'transactype_id'    => 6, 
-                                  'acct_one_id'       => $sale->cus_acct_id,
-                                  'acct_two_id'       => 5,
-                                  'amount'            => $sale->total_amount,
-                                  'enter_date'        => $sale->enter_date,
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => $salesorder->acct_id,
+                                  'acct_two_id'       => 1,
+                                  'amount'            => $salesorder->total_amount,
+                                  'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 2,
-                                  'descp'             => $sale->descp,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
                                   'created_by'        => Auth::guard('admin')->user()->id,
                               ]);
 
@@ -157,27 +157,27 @@ class SalesOrderController extends Controller
 
           DB::commit();
 
-        return response(['orderid' => $sale->id], Response::HTTP_ACCEPTED);
+        return response(['orderid' => $salesorder->id], Response::HTTP_ACCEPTED);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SalesOrder  $sale
+     * @param  \App\SalesOrder  $salesorder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SalesOrder $sale)
+    public function destroy(SalesOrder $salesorder)
     {
-       $sale->delete();
-       Ledger::where('tran_id', $sale->id)
-                     ->where('transactype_id', 6)
+       $salesorder->delete();
+       Ledger::where('tran_id', $salesorder->id)
+                     ->where('transactype_id', 3)
                      ->delete();
        return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function printInvoice(SalesOrder $sale)
+    public function printInvoice(SalesOrder $salesorder)
     {
-      return view('print.sales_invoice', ['data' => $sale]);
+      return view('print.sales_invoice', ['data' => $salesorder]);
     }
 
     

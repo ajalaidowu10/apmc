@@ -117,15 +117,16 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'sales-entry',
+       permission: 'sales-entry',
       orderid: 0,
       alert: false,
       search: '',
       headers: [
                 { text: 'S/No', value: 'id' },
-                { text: 'ITEM', value: 'item' },
+                { text: 'Item', value: 'item' },
                 { text: 'QUANTITY', value: 'qty' },
-                { text: 'PRICE', value: 'item_price' },
+                { text: 'GRWT', value: 'grwt' },
+                { text: 'RATE', value: 'rate' },
                 { text: 'AMOUNT', value: 'amount' },
               ],
       itemOrders: [],
@@ -141,7 +142,7 @@
                 this.overlay = true;
                 if (this.$route.params.orderid) {
                   this.orderid = this.$route.params.orderid;
-                  axios.get(`sales/${this.orderid}`)
+                  axios.get(`salesorder/${this.orderid}`)
                        .then(resp => {
                         let getData = resp.data.data;
                         this.itemOrders = getData.sales_order_items.filter(data => data.del_record == 0);
@@ -159,11 +160,6 @@
               editData(){
                 this.$router.push({name:'add-sales', params:{orderid:this.orderid}});
               },
-              printData(id)
-              {
-                let routeData = this.$router.resolve({name: 'print-sales',  params:{id:id}});
-                window.open(routeData.href, '_blank');
-              },
               deleteData()
               {
                 swal({
@@ -174,7 +170,7 @@
                 .then((yes) => {
                   if (yes) {
                     this.overlay = true;
-                    axios.delete(`sales/${this.orderid}`)
+                    axios.delete(`salesorder/${this.orderid}`)
                          .then(resp => {
                           this.$router.push({name:'view-sales', params: { message: `Sales Deleted Successfully` }});
                          })

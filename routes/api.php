@@ -17,21 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::group([
 
     'middleware' => 'api',
-    'prefix' => 'auth'
-
-], function ($router) {
-
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('signup', 'AuthController@signup');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
-});
-
-Route::group([
-
-    'middleware' => 'api',
     'prefix' => 'admin-auth'
 
 ], function ($router) {
@@ -46,14 +31,9 @@ Route::group([
 
 Route::apiResource('item', 'ItemController');
 Route::apiResource('itemexp', 'ItemExpController');
-Route::apiResource('room', 'RoomController');
-Route::apiResource('booking', 'BookingOrderController');
 Route::apiResource('cashbank', 'CashbankOrderController');
 Route::apiResource('account', 'AccountController');
-Route::apiResource('roomgroup', 'RoomGroupController');
-Route::apiResource('sales', 'SalesOrderController');
-Route::apiResource('service', 'ServiceController');
-Route::apiResource('serviceorder', 'ServiceOrderController');
+Route::apiResource('salesorder', 'SalesOrderController');
 Route::apiResource('journal', 'JournalOrderController');
 Route::apiResource('admin', 'AdminAuthController');
 Route::apiResource('groupcode', 'GroupcodeController');
@@ -66,22 +46,9 @@ Route::get('permission/{permissionName}', 'PermissionController@check');
 Route::get('permission/get/{admin}', 'PermissionController@getPermission');
 Route::patch('permission/refresh/{admin}', 'PermissionController@refreshPermission');
 
-Route::get('booking/search/{room_group_id}/{from_date}/{to_date}/{num_of_room}/{booking_id?}', 'BookingOrderController@search');
-Route::post('booking/adminstore', 'BookingOrderController@adminStore');
-Route::get('booking/roominfo/{booking}', 'BookingOrderController@getRoomInfo');
-Route::get('booking/confirm/{booking}', 'BookingOrderController@confirm');
-Route::get('booking/get/avalroom', 'BookingOrderController@avalRoom');
-Route::get('booking/get/checkin', 'BookingOrderController@getCheckin');
-Route::get('booking/get/checkout', 'BookingOrderController@getCheckout');
-Route::get('booking/get/invoice', 'BookingOrderController@getInvoice');
-Route::post('booking/store/checkin', 'BookingOrderController@storeCheckin');
-Route::post('booking/store/checkout', 'BookingOrderController@storeCheckout');
-Route::get('booking/print/invoice/{booking}', 'BookingOrderController@printInvoice');
+
 Route::get('cashbank/print/receipt/{cashbank}', 'CashbankOrderController@printReceipt');
 Route::get('sales/print/invoice/{sale}', 'SalesOrderController@printInvoice');
-Route::get('serviceorder/print/invoice/{serviceorder}', 'ServiceOrderController@printInvoice');
-
-Route::get('itemgroup', 'ItemGroupController@index');
 
 Route::get('account/get/{payment_type_id}/{account_type_id?}/{account_id?}/{groupcode_id?}', 'AccountController@getAccount');
 Route::get('get/itemexp/{date_to}', 'ItemExpController@getItemExp');
@@ -100,5 +67,3 @@ Route::get('ledger/get/acct/{acct_type_id?}/{group?}/{acct_id?}', 'LedgerControl
 
 
 Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'LedgerController@getBalance');
-Route::post('send/enquiry', 'MainController@sendEnquiry');
-Route::get('terms-and-conditions', 'MainController@terms');

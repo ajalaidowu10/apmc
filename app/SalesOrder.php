@@ -9,21 +9,25 @@ class SalesOrder extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['cus_acct_id', 'enter_date', 'total_amount', 'descp', 'total_qty', 'created_by', 'status_id', 'deleted_at'];
+    protected $fillable = [
+                            'acct_id', 'invoice_no', 'enter_date', 'total_amount', 'motor_no', 
+                            'other_charges', 'levy', 'apmc', 'map_levy', 'comm', 'tds',
+                            'total_qty', 'created_by', 'status_id', 'deleted_at'
+                          ];
 
-   	public function sales_order_items()
-   	{
-   	  return $this->hasMany('App\SalesOrderItem');
-   	}
+    public function sales_order_items()
+    {
+      return $this->hasMany('App\SalesOrderItem');
+    }
 
     public function created_by()
     {
       return $this->belongsTo('App\Admin');
     }
 
-    public function cus_acct()
+    public function acct()
     {
-      return $this->belongsTo('App\Account', 'cus_acct_id');
+      return $this->belongsTo('App\Account');
     }
 
     public function status()

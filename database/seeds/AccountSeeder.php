@@ -316,6 +316,28 @@ class AccountSeeder extends Seeder
                               ]);
       $opening_bal->save();
 
+      $account = new Account([
+                        'account_type_id' => 2, 
+                        'name' => 'Customer one',
+                        'opening_bal'=> 0,
+                        'crdr_id' => 2,
+                        'groupcode_id' => 10,
+                        'is_visible' => 0,
+                    ]);
+      $account->save();
+      $opening_bal = new Ledger([
+                                  'tran_id' => $account->id, 
+                                  'transactype_id' => 1, 
+                                  'acct_one_id' => $account->id,
+                                  'acct_two_id' => $account->id,
+                                  'amount' => 0,
+                                  'enter_date' => $account->created_at,
+                                  'crdr_id' => $account->crdr_id,
+                                  'descp' => $account->name.' '.' Opening Balance of '
+                                            .$account->opening_bal.' '.$account->crdr->name,
+                              ]);
+      $opening_bal->save();
+
 
     }
 }

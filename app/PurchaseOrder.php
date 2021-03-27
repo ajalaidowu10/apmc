@@ -27,7 +27,7 @@ class PurchaseOrder extends Model
 
     public function acct()
     {
-      return $this->belongsTo('App\Account', 'acct_id');
+      return $this->belongsTo('App\Account');
     }
 
     public function status()

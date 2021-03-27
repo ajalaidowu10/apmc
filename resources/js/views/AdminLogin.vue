@@ -54,13 +54,6 @@
             <v-container class="mt-n5">
               <v-row>
                 <v-col cols="6">
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    to="/"
-                  >
-                    Back
-                  </v-btn>
                 </v-col>
                 <v-col cols="6">
                   <v-btn

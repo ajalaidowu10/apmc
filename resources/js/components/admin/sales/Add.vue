@@ -19,7 +19,7 @@
                 >
                   mdi-notebook-plus-outline
                 </v-icon>
-                 Add Sales
+                 Add Sales 
               </div>
               <div v-else>
                 <v-icon
@@ -58,36 +58,19 @@
                 cols="6"
                 >
                 <v-combobox
-                  v-model="form.cusAcct"
+                  v-model="form.acct"
                   label="Account"
-                  :items="cusAcct"
+                  :items="acct"
                   item-text="name"
                   item-value="id"
-                  :error-messages="cusAcctErrors"
-                  @input="$v.form.cusAcct.$touch()"
-                  @blur="$v.form.cusAcct.$touch()"
+                  :error-messages="acctErrors"
+                  @input="$v.form.acct.$touch()"
+                  @blur="$v.form.acct.$touch()"
                   dense
-                  @change="setCusAcct($event)"
+                  @change="setAcct($event)"
                   outlined
                 >
                 </v-combobox>
-              </v-col>
-              <v-col
-                cols="3"
-                >
-                <v-combobox
-                  label="Booking ID"
-                  :items="booking"
-                  item-text="bookingOrderId"
-                  item-value="bookingOrderId"
-                  dense
-                  @change="setBookingId($event)"
-                  outlined
-                ></v-combobox>
-              </v-col>
-              <v-col
-                cols="3"
-               >
               </v-col>
               <v-col
                 cols="4"
@@ -137,16 +120,26 @@
                 </v-menu>
               </v-col>
               <v-col
-                cols="8"
+                cols="4"
                >
                 <v-text-field
                   outlined
                   dense
-                  label="Narration"
-                  v-model="form.descp"
-                  :error-messages="descpErrors"
-                  @input="$v.form.descp.$touch()"
-                  @blur="$v.form.descp.$touch()"
+                  label="Invoice No."
+                  v-model="form.invoiceNo"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="4"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Motor No."
+                  v-model="form.motorNo"
+                  :error-messages="motorNoErrors"
+                  @input="$v.form.motorNo.$touch()"
+                  @blur="$v.form.motorNo.$touch()"
                   required
                 ></v-text-field>
               </v-col>
@@ -158,14 +151,15 @@
             >
             <v-row>
               <v-col
-                cols="6"
+                cols="3"
                 >
                 <v-combobox
+                  ref="myBtn"
                   v-model="form.item"
                   label="Item"
                   :items="item"
-                  item-text="name"
-                  item-value="id"
+                  item-text="item"
+                  item-value="item_id"
                   :error-messages="itemErrors"
                   @input="$v.form.item.$touch()"
                   @blur="$v.form.item.$touch()"
@@ -175,7 +169,7 @@
                 ></v-combobox>
               </v-col>
               <v-col
-                cols="3"
+                cols="2"
                >
                 <v-text-field
                   outlined
@@ -186,6 +180,36 @@
                   :error-messages="qtyErrors"
                   @input="$v.form.qty.$touch()"
                   @blur="$v.form.qty.$touch()"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="GRWT"
+                  v-model="form.grwt"
+                  type="number"
+                  :error-messages="grwtErrors"
+                  @input="$v.form.grwt.$touch()"
+                  @blur="$v.form.grwt.$touch()"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Rate"
+                  v-model="form.rate"
+                  type="number"
+                  :error-messages="rateErrors"
+                  @input="$v.form.rate.$touch()"
+                  @blur="$v.form.rate.$touch()"
                   required
                 ></v-text-field>
               </v-col>
@@ -219,10 +243,19 @@
                           QUANTITY
                         </th>
                         <th class="text-left">
-                          PRICE
+                          GRWT
+                        </th>
+                        <th class="text-left">
+                          RATE
                         </th>
                         <th class="text-left">
                           AMOUNT
+                        </th>
+                        <th class="text-left">
+                          Expense
+                        </th>
+                        <th class="text-left">
+                         Final AMOUNT
                         </th>
                         <th class="text-left">
                           EDIT
@@ -241,7 +274,8 @@
                         <td>{{ index }}</td>
                         <td>{{ item.item }}</td>
                         <td>{{ item.qty }}</td>
-                        <td>{{ item.itemPrice }}</td>
+                        <td>{{ item.grwt }}</td>
+                        <td>{{ item.rate }}</td>
                         <td>{{ item.amount }}</td>
                         <td v-if="item.delRecord">
                           <v-btn text color="deep-purple accent-4">
@@ -266,12 +300,110 @@
                       </tr>
                       <tr v-if="getTotalSalesCartAmount()">
                         <td colspan="2"><strong>TOTAL AMOUNT</strong></td>
-                        <td colspan="2"><strong>{{ getTotalSalesCartQty() }}</strong></td>
+                        <td><strong>{{ getTotalSalesCartQty() }}</strong></td>
+                        <td colspan="2"><strong>{{ getTotalSalesCartGrwt() }}</strong></td>
                         <td><strong>{{ getTotalSalesCartAmount() }}</strong></td>
                       </tr>
                     </tbody>
                   </template>
                 </v-simple-table>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="LEVY"
+                  type="number"
+                  :value="levy"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="APMC"
+                  type="number"
+                  :value="apmc"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="MAP LEVY"
+                  type="number"
+                  :value="mapLevy"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="COMM"
+                  type="number"
+                  :value="comm"
+                ></v-text-field>
+              </v-col>
+                <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="TDS"
+                  type="number"
+                  :value="tds"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  disabled
+                  label="FINAL AMOUNT"
+                  type="number"
+                  :value="finalAmount"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="2"
+               >
+                <v-text-field
+                  outlined
+                  dense
+                  label="Other Charges"
+                  v-model="form.otherCharges"
+                  type="number"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-text-field
+                  outlined
+                  color="success"
+                  dense
+                  disabled
+                  label="Total Amount"
+                  :value="getTotalSalesAmount"
+                  type="number"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-card>
@@ -332,9 +464,11 @@
      validations: {
          form:{
            qty:         {required},
+           grwt:         {required},
+           rate:         {required},
            item:        {required},
-           cusAcct:     {required},
-           descp:       {required},
+           acct:     {required},
+           motorNo:       {required},
          }
      },
     data: () => ({
@@ -346,17 +480,20 @@
       cartEdit: -1,
       salesOrderItems: [],
       item: [],
-      booking: [],
-      cusAcct: [],
+      acct: [],
       form: {
               id: 0,
               qty: null,
+              otherCharges: 0,
+              grwt: null,
+              motorNo: null,
+              rate: null, 
               totalQty: null,
               item:null,
               itemId:null,
-              itemPrice:null,
-              cusAcct:null,
-              cusAcctId:null,
+              itemExpObject: {},
+              acct:null,
+              acctId:null,
               overlay: false,
               allError: {},
 
@@ -364,30 +501,26 @@
     }),
     created(){
       this.overlay = true;
-      axios.get(`item`)
+      axios.get(`get/itemexp/${this.enterDate}`)
             .then(resp=>{
               this.item = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
       axios.get(`account/get/0/2`)
             .then(resp=>{
-              this.cusAcct = transformKeys.camelCase(resp.data.data);
-            })
-            .catch(err => Exception.handle(err, 'admin'));
-      axios.get(`booking/get/checkout`)
-            .then(resp=>{
-              this.booking = transformKeys.camelCase(resp.data.data);
+              this.acct = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
-        axios.get(`sales/${this.orderid}`)
+        axios.get(`salesorder/${this.orderid}`)
              .then(resp => {
               let getSalesOrder         = transformKeys.camelCase(resp.data.data);
-              this.form.cusAcct         = getSalesOrder.cusAcct;
-              this.form.cusAcctId       = getSalesOrder.cusAcctId;
-              this.form.totalQty        = getSalesOrder.totalQty;
-              this.form.descp           = getSalesOrder.descp;
+              this.form.acct            = getSalesOrder.acct;
+              this.form.otherCharges    = getSalesOrder.otherCharges;
+              this.form.acctId          = getSalesOrder.acctId;
+              this.form.invoiceNo       = getSalesOrder.invoiceNo;
+              this.form.motorNo         = getSalesOrder.motorNo;
               this.enterDate            = getSalesOrder.enterDate;
               this.salesOrderItems      = getSalesOrder.salesOrderItems;
               this.orderid              = getSalesOrder.id;
@@ -398,6 +531,60 @@
       
     },
     computed: {
+      levy(){
+        let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          let result = dataArray.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy;
+          return parseFloat(result).toFixed(2);
+        }
+        return 0;
+        
+      },
+      apmc(){
+        let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          let result = dataArray.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc;
+          return parseFloat(result).toFixed(2);
+        }
+        return 0;
+        
+      },
+      mapLevy(){
+        let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          let result = dataArray.reduce((prev, cur) => ({mapLevy: Number(prev.mapLevy) + Number(cur.mapLevy)})).mapLevy;
+          return parseFloat(result).toFixed(2);
+        }
+        return 0;
+        
+      },
+      comm(){
+        let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          let result = dataArray.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm;
+          return parseFloat(result).toFixed(2);
+        }
+        return 0;
+        
+      },
+      tds(){
+        let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          let result = dataArray.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds;
+          return parseFloat(result).toFixed(2);
+        }
+        return 0;
+        
+      },
+      finalAmount(){
+        let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+        if (dataArray.length > 0) {
+          let result = dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount;
+          return parseFloat(result).toFixed(2);
+        }
+        return 0;
+        
+      },
       itemErrors () {
         const errors = [];
         if (!this.$v.form.item.$dirty) return errors; 
@@ -411,17 +598,17 @@
         !this.$v.form.item.required && errors.push('Item is required')
         return errors
       },
-      cusAcctErrors () {
+      acctErrors () {
         const errors = [];
-        if (!this.$v.form.cusAcct.$dirty) return errors; 
+        if (!this.$v.form.acct.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'cusAcctId') {
-            errors.push(this.form.allError.cusAcctId[0]);
+          if (items == 'acctId') {
+            errors.push(this.form.allError.acctId[0]);
             break;
           } 
 
         } 
-        !this.$v.form.cusAcct.required && errors.push('Account is required')
+        !this.$v.form.acct.required && errors.push('Account is required')
         return errors
       },
       qtyErrors () {
@@ -437,47 +624,98 @@
         !this.$v.form.qty.required && errors.push('Quantity is required')
         return errors
       },
-      descpErrors () {
+      grwtErrors () {
         const errors = []
-        if (!this.$v.form.descp.$dirty) return errors; 
+        if (!this.$v.form.grwt.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'descp') {
-            errors.push(this.form.allError.descp[0]);
+          if (items == 'grwt') {
+            errors.push(this.form.allError.grwt[0]);
             break;
           } 
 
         } 
-        !this.$v.form.descp.required && errors.push('Narration is required')
+        !this.$v.form.grwt.required && errors.push('Growth Weight is required')
         return errors
       },
+      rateErrors () {
+        const errors = []
+        if (!this.$v.form.rate.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'rate') {
+            errors.push(this.form.allError.rate[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.rate.required && errors.push('Rate is required')
+        return errors
+      },
+      motorNoErrors () {
+        const errors = []
+        if (!this.$v.form.motorNo.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'motorNo') {
+            errors.push(this.form.allError.motorNo[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.motorNo.required && errors.push('Motor No. is required')
+        return errors
+      },
+      getTotalSalesAmount()
+        {
+          return Number(this.finalAmount) +  Number(this.form.otherCharges);
+        },
       
     },
     methods: {
-          setBookingId(data){
-            this.form.cusAcct = data.bookingOrder.accountName;
-            this.form.cusAcctId = data.bookingOrder.accountId;
-          },
           setItem(data){
-            this.form.itemId = data.id;
-            this.form.itemPrice = data.price;
-            this.form.item = data.name;
+            this.form.itemId = data.itemId;
+            this.form.item = data.item;
+            this.form.itemExpObject = data;
           },
-          setCusAcct(data){
-            this.form.cusAcctId = data.id;
-            this.form.cusAcct = data.name;
+          setAcct(data){
+            this.form.acctId = data.id;
+            this.form.acct = data.name;
           },
           viewData(){
             this.$router.push({name:'view-sales'});
           },
-          async createSales(id, item, itemId, itemPrice, qty, delRecord)
+          async createSales(id, item, itemId, rate, grwt, itemExpObject, qty, delRecord)
           {
             let cartItem = {};
             cartItem.id = id;
             cartItem.itemId = itemId;
             cartItem.item = item;
-            cartItem.itemPrice = itemPrice;
+            cartItem.rate = rate;
+            cartItem.grwt = grwt;
             cartItem.qty = qty;
-            cartItem.amount = cartItem.itemPrice * cartItem.qty;
+            cartItem.itemExpObject = itemExpObject;
+            cartItem.unit = itemExpObject.unit;
+            cartItem.weightPb = itemExpObject.weightPb;
+            cartItem.tolai = itemExpObject.tolai;
+            cartItem.iniTds = itemExpObject.tds;
+            cartItem.pLevy = itemExpObject.pLevy;
+            cartItem.bLevy = itemExpObject.bLevy;
+            cartItem.pHamali = itemExpObject.pHamali;
+            cartItem.bHamali = itemExpObject.bHamali;
+            cartItem.iniMapLevy = itemExpObject.mapLevy;
+            cartItem.iniApmc = itemExpObject.apmc;
+            cartItem.iniComm = itemExpObject.comm;
+            cartItem.discount = itemExpObject.discount;
+
+            cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
+            cartItem.unitGrwt = cartItem.grwt/ cartItem.qty;
+            cartItem.iniLevy =  (cartItem.unitGrwt >= cartItem.weightPb) ? cartItem.bLevy : cartItem.pLevy;
+
+            cartItem.levy = cartItem.iniLevy * cartItem.qty;
+            cartItem.apmc = cartItem.iniApmc/100 * cartItem.amount;
+            cartItem.mapLevy = cartItem.iniMapLevy * cartItem.grwt;
+            cartItem.comm = cartItem.iniComm/100 *cartItem.amount;
+            cartItem.tds = cartItem.iniTds/100 * cartItem.comm;
+            cartItem.exp = cartItem.levy + cartItem.apmc + cartItem.mapLevy + cartItem.comm;
+            cartItem.finalAmount = cartItem.exp + cartItem.amount;
             cartItem.delRecord= delRecord;
 
             return cartItem;
@@ -491,8 +729,10 @@
             this.form.id = cartItem.id;
             this.form.item = cartItem.item;
             this.form.itemId = cartItem.itemId;
-            this.form.itemPrice = cartItem.itemPrice;
+            this.form.rate = cartItem.rate;
             this.form.qty = cartItem.qty;
+            this.form.grwt = cartItem.grwt;
+            this.form.itemExpObject = cartItem.itemExpObject;
             this.cartEdit = index;
           },
           setDeleteCart(cartItem, index)
@@ -529,15 +769,25 @@
           },
           getTotalSalesCartAmount()
           {
-            if (this.salesOrderItems.length > 0) {
-              return this.salesOrderItems.filter(data => data.delRecord == 0).reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
+            let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+            if (dataArray.length > 0) {
+              return dataArray.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
             }
             return 0;
           },
           getTotalSalesCartQty()
-          {
-            if (this.salesOrderItems.length > 0) {
-              return this.salesOrderItems.filter(data => data.delRecord == 0).reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+          { 
+            let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+            if (dataArray.length > 0) {
+              return dataArray.reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+            }
+            return 0;
+          },
+          getTotalSalesCartGrwt()
+          { 
+            let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
+            if (dataArray.length > 0) {
+              return dataArray.reduce((prev, cur) => ({grwt: Number(prev.grwt) + Number(cur.grwt)})).grwt
             }
             return 0;
           },
@@ -549,7 +799,10 @@
               return;
             }
 
-            this.createSales(this.form.id, this.form.item, this.form.itemId, this.form.itemPrice, this.form.qty, 0)
+            this.createSales(
+              this.form.id, this.form.item, this.form.itemId, 
+              this.form.rate, this.form.grwt, this.form.itemExpObject, this.form.qty, 0
+              )
                 .then(resp => {
 
                   if (this.cartEdit >= 0) 
@@ -560,21 +813,22 @@
                     this.addSalesCart(resp);
                   }
                     
-                  this.form.item = this.form.qty = this.form.itemPrice = null;
+                  this.form.item = this.form.qty = this.form.rate = this.form.grwt = this.form.unit = null;
                   this.$v.form.$reset();
                 })
-                .catch(err => console.log(err));
           },
           clearData(){
             this.clearSalesCart();
             this.form =    {
                               id: 0,
                               qty: null,
-                              itemPrice:null,
+                              rate:null,
+                              grwt:null,
+                              unit:null,
                               item:null,
                               itemId:null,
-                              cusAcct:null,
-                              cusAcctId:null,
+                              acct:null,
+                              acctId:null,
                               overlay: false,
                               allError: {},
                             }
@@ -587,36 +841,41 @@
             }
             
             let data = {};
-            data['cusAcctId']           = this.form.cusAcctId;
-            data['totalAmount']         = this.getTotalSalesCartAmount();
+            data['acctId']              = this.form.acctId;
+            data['motorNo']             = this.form.motorNo;
+            data['invoiceNo']           = this.form.invoiceNo;
+            data['comm']                = this.comm;
+            data['apmc']                = this.apmc;
+            data['levy']                = this.levy;
+            data['apmc']                = this.apmc;
+            data['mapLevy']             = this.mapLevy;
+            data['tds']                 = this.tds;
+            data['otherCharges']        = this.form.otherCharges;
+            data['totalAmount']         = this.getTotalSalesAmount;
             data['totalQty']            = this.getTotalSalesCartQty();
-            data['descp']               = this.form.descp;
-            data['salesOrderItems']     = this.salesOrderItems;
+            data['salesOrderItems']  = this.salesOrderItems;
             data['enterDate']           = this.enterDate;
-
 
             this.overlay = true;
             if (this.orderid != 0) 
             {
-              axios.patch(`sales/${this.orderid}`, transformKeys.snakeCase(data))
+              axios.patch(`salesorder/${this.orderid}`, transformKeys.snakeCase(data))
                     .then(resp =>{
                       this.$router.push({name:'view-sales', params: { message: `Sales ${resp.data.orderid} Updated Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
                     });
             }
             else
             {
-              axios.post(`sales`, transformKeys.snakeCase(data))
+              axios.post(`salesorder`, transformKeys.snakeCase(data))
                     .then(resp =>{
                       this.$router.push({name:'view-sales', params: { message: `Sales with ID ${resp.data.orderid} Added Successfully` }});
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
                     });
             }
             this.overlay = false;

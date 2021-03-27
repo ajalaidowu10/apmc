@@ -27,6 +27,7 @@ class CreatePurchaseOrderItemsTable extends Migration
             $table->decimal('comm');
             $table->decimal('tds');
             $table->decimal('final_amount');
+            $table->longText('item_exp_object');
             $table->boolean('del_record')->default(0);
             $table->timestamps();
             $table->softDeletes();

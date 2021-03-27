@@ -1,35 +1,22 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import PrintBooking from './components/admin/booking/Print';
-import ViewCheckin from './components/admin/booking/Checkin';
-import ViewCheckout from './components/admin/booking/Checkout';
-import UserLogin from './views/UserLogin';
 import AdminLogin from './views/AdminLogin';
-import Signup from './views/Signup';
-import Terms from './views/Terms';
 import WebAdmin from './views/WebAdmin';
 import AddItem from './components/admin/item/Add';
 import ViewItem from './components/admin/item/View';
 import AddItemExp from './components/admin/itemexp/Add';
 import ViewItemExp from './components/admin/itemexp/View';
-import AddRoom from './components/admin/room/Add';
-import ViewRoom from './components/admin/room/View';
 import AddAccount from './components/admin/account/Add';
 import ViewAccount from './components/admin/account/View';
-import ViewInvoice from './components/admin/booking/Invoice';
 import AddCashbank from './components/admin/cashbank/Add';
 import ViewCashbank from './components/admin/cashbank/View';
 import PrintCashbank from './components/admin/cashbank/Print';
 import EditCashbank from './components/admin/cashbank/Edit';
-import AddGroupRoom from './components/admin/roomgroup/Add';
-import ViewGroupRoom from './components/admin/roomgroup/View';
 import AddSales from './components/admin/sales/Add';
 import ViewSales from './components/admin/sales/View';
 import EditSales from './components/admin/sales/Edit';
 import PrintSales from './components/admin/sales/Print';
-import AddService from './components/admin/service/Add';
-import ViewService from './components/admin/service/View';
 import AddPurchase from './components/admin/purchase/Add';
 import ViewPurchase from './components/admin/purchase/View';
 import EditPurchase from './components/admin/purchase/Edit';
@@ -111,22 +98,6 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/booking/invocie/:id',
-				      name: 'print-booking',
-				      component: PrintBooking,
-				      props: true,
-				    },
-				    {
-				      path: '/login',
-				      name: 'login',
-				      component: UserLogin,
-				    },
-				    {
-				      path: '/signup',
-				      name: 'signup',
-				      component: Signup,
-				    },
-				    {
 				      path: '/web-admin',
 				      name: 'web-admin',
 				      component: WebAdmin,
@@ -155,51 +126,6 @@ const router = new Router({
 				      		path:'itemexp',
 				      		name: 'view-itemexp',
 				      		component: ViewItemExp,
-				      	},
-				      	{
-				      		path:'service',
-				      		name: 'add-service',
-				      		component: AddService,
-				      	},
-				      	{
-				      		path:'service',
-				      		name: 'view-service',
-				      		component: ViewService,
-				      	},
-				      	{
-				      	  path: 'checkin',
-				      	  name: 'view-checkin',
-				      	  component: ViewCheckin,
-				      	},
-				      	{
-				      	  path: 'invoice',
-				      	  name: 'view-invoice',
-				      	  component: ViewInvoice,
-				      	},
-				      	{
-				      	  path: 'checkout',
-				      	  name: 'checkout',
-				      	  component: ViewCheckout,
-				      	},
-				      	{
-				      		path:'roomgroup',
-				      		name: 'add-roomgroup',
-				      		component: AddGroupRoom,
-				      	},
-				      	{
-				      		path:'roomgroup',
-				      		name: 'view-roomgroup',
-				      		component: ViewGroupRoom,
-				      	},
-				      	{
-				      		path:'room',
-				      		name: 'add-room',
-				      		component: AddRoom,
-				      	},
-				      	{
-				      		path:'room',
-				      		name: 'view-room',
-				      		component: ViewRoom,
 				      	},
 				      	{
 				      		path:'account',

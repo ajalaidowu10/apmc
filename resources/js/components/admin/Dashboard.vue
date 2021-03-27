@@ -355,10 +355,10 @@
       },
     },
     created(){
-       this.getLedgerAcct();
-       this.getBooking();
-       this.getCheckin();
-       this.getRoom();
+       // this.getLedgerAcct();
+       // this.getBooking();
+       // this.getCheckin();
+       // this.getRoom();
 
     },
     methods: {
