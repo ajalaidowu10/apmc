@@ -159,17 +159,20 @@
               </v-col>
               <v-col
                 cols="3"
-               >
-                <v-text-field
-                  outlined
-                  dense
-                  label="Narration"
+                >
+                <v-combobox
                   v-model="form.descp"
+                  label="Narration"
+                  :items="narration"
+                  item-text="name"
+                  item-value="name"
                   :error-messages="descpErrors"
                   @input="$v.form.descp.$touch()"
                   @blur="$v.form.descp.$touch()"
-                  required
-                ></v-text-field>
+                  dense
+                  @change="setNarration($event)"
+                  outlined
+                ></v-combobox>
               </v-col>
               <v-col
                 cols="2"
@@ -331,6 +334,7 @@
       menuDate: false,
       cartEdit: -1,
       journalOrderItems: [],
+      narration: [],
       crdr: [
                       {                                                                                                
                         id:1,                                                                                                 
@@ -348,6 +352,7 @@
               crdr:null,
               crdrId:null,
               acctOne:null,
+              descp: null,
               acctOneId:null,
               overlay: false,
               allError: {},
@@ -359,6 +364,11 @@
       axios.get(`account`)
             .then(resp=>{
               this.acctOne = transformKeys.camelCase(resp.data.data);
+            })
+            .catch(err => Exception.handle(err, 'admin'));
+      axios.get(`narration`)
+            .then(resp=>{
+              this.narration = transformKeys.camelCase(resp.data.data);
             })
             .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
@@ -434,6 +444,9 @@
           setCrdr(data){
             this.form.crdrId = data.id;
             this.form.crdr = data.name;
+          },
+          setNarration(data){
+            this.form.descp = data.name;
           },
           setAccountOne(data){
             this.form.acctOneId = data.id;

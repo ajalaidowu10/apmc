@@ -4693,6 +4693,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4725,6 +4728,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       orderid: 0,
       permission: 'cash-bank',
       overlay: false,
+      narration: [],
       enterDate: new Date().toISOString().substr(0, 10),
       menuDate: false,
       cartEdit: -1,
@@ -4753,6 +4757,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         paymentType: null,
         paymentTypeId: null,
         acctOne: null,
+        descp: null,
         acctOneId: null,
         acctTwo: null,
         acctTwoId: null,
@@ -4767,6 +4772,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.overlay = true;
     axios.get("account").then(function (resp) {
       _this.acctTwo = _utils_transformKeys__WEBPACK_IMPORTED_MODULE_3__["default"].camelCase(resp.data.data);
+    })["catch"](function (err) {
+      return Exception.handle(err, 'admin');
+    });
+    axios.get("narration").then(function (resp) {
+      _this.narration = _utils_transformKeys__WEBPACK_IMPORTED_MODULE_3__["default"].camelCase(resp.data.data);
     })["catch"](function (err) {
       return Exception.handle(err, 'admin');
     });
@@ -4887,6 +4897,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setAccountTwo: function setAccountTwo(data) {
       this.form.acctTwoId = data.id;
       this.form.acctTwo = data.name;
+    },
+    setNarration: function setNarration(data) {
+      this.form.descp = data.name;
     },
     setPaymentType: function setPaymentType(data) {
       var _this2 = this;
@@ -7664,6 +7677,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -7694,6 +7710,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       menuDate: false,
       cartEdit: -1,
       journalOrderItems: [],
+      narration: [],
       crdr: [{
         id: 1,
         name: "Cr"
@@ -7708,6 +7725,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         crdr: null,
         crdrId: null,
         acctOne: null,
+        descp: null,
         acctOneId: null,
         overlay: false,
         allError: {}
@@ -7720,6 +7738,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.overlay = true;
     axios.get("account").then(function (resp) {
       _this.acctOne = _utils_transformKeys__WEBPACK_IMPORTED_MODULE_3__["default"].camelCase(resp.data.data);
+    })["catch"](function (err) {
+      return Exception.handle(err, 'admin');
+    });
+    axios.get("narration").then(function (resp) {
+      _this.narration = _utils_transformKeys__WEBPACK_IMPORTED_MODULE_3__["default"].camelCase(resp.data.data);
     })["catch"](function (err) {
       return Exception.handle(err, 'admin');
     });
@@ -7800,6 +7823,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setCrdr: function setCrdr(data) {
       this.form.crdrId = data.id;
       this.form.crdr = data.name;
+    },
+    setNarration: function setNarration(data) {
+      this.form.descp = data.name;
     },
     setAccountOne: function setAccountOne(data) {
       this.form.acctOneId = data.id;
@@ -10688,29 +10714,33 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     closingBal: function closingBal() {
-      return Number(this.open_bal) - Number(this.total);
+      var result = Number(this.open_bal) - Number(this.total);
+      return Number(result).toFixed(2);
     },
     total: function total() {
-      return Number(this.totalDebit) - Number(this.totalCredit);
+      var result = Number(this.totalDebit) - Number(this.totalCredit);
+      return Number(result).toFixed(2);
     },
     totalDebit: function totalDebit() {
       if (this.itemOrders.length > 0) {
-        return this.itemOrders.reduce(function (prev, cur) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
           return {
             debit: Number(prev.debit) + Number(cur.debit)
           };
         }).debit;
+        return Number(result).toFixed(2);
       }
 
       return 0;
     },
     totalCredit: function totalCredit() {
       if (this.itemOrders.length > 0) {
-        return this.itemOrders.reduce(function (prev, cur) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
           return {
             credit: Number(prev.credit) + Number(cur.credit)
           };
         }).credit;
+        return Number(result).toFixed(2);
       }
 
       return 0;
@@ -11044,22 +11074,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     totalDebit: function totalDebit(itemArray) {
       if (itemArray.length > 0) {
-        return itemArray.reduce(function (prev, cur) {
+        var result = itemArray.reduce(function (prev, cur) {
           return {
             debit: Number(prev.debit) + Number(cur.debit)
           };
         }).debit;
+        return Number(result).toFixed(2);
       }
 
       return 0;
     },
     totalCredit: function totalCredit(itemArray) {
       if (itemArray.length > 0) {
-        return itemArray.reduce(function (prev, cur) {
+        var result = itemArray.reduce(function (prev, cur) {
           return {
             credit: Number(prev.credit) + Number(cur.credit)
           };
         }).credit;
+        return Number(result).toFixed(2);
       }
 
       return 0;
@@ -11369,29 +11401,33 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     closingBal: function closingBal() {
-      return Number(this.open_bal) - Number(this.total);
+      var result = Number(this.open_bal) - Number(this.total);
+      return Number(result).toFixed(2);
     },
     total: function total() {
-      return Number(this.totalDebit) - Number(this.totalCredit);
+      var result = Number(this.totalDebit) - Number(this.totalCredit);
+      return Number(result).toFixed(2);
     },
     totalDebit: function totalDebit() {
       if (this.itemOrders.length > 0) {
-        return this.itemOrders.reduce(function (prev, cur) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
           return {
             debit: Number(prev.debit) + Number(cur.debit)
           };
         }).debit;
+        return Number(result).toFixed(2);
       }
 
       return 0;
     },
     totalCredit: function totalCredit() {
       if (this.itemOrders.length > 0) {
-        return this.itemOrders.reduce(function (prev, cur) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
           return {
             credit: Number(prev.credit) + Number(cur.credit)
           };
         }).credit;
+        return Number(result).toFixed(2);
       }
 
       return 0;
@@ -12986,9 +13022,6 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: 'Account Name',
         value: 'acct'
-      }, {
-        text: 'Invoice No.',
-        value: 'invoice_no'
       }, {
         text: 'Motor No.',
         value: 'motor_no'
@@ -35884,13 +35917,15 @@ var render = function() {
                                 "v-col",
                                 { attrs: { cols: "3" } },
                                 [
-                                  _c("v-text-field", {
+                                  _c("v-combobox", {
                                     attrs: {
-                                      outlined: "",
-                                      dense: "",
                                       label: "Narration",
+                                      items: _vm.narration,
+                                      "item-text": "name",
+                                      "item-value": "name",
                                       "error-messages": _vm.descpErrors,
-                                      required: ""
+                                      dense: "",
+                                      outlined: ""
                                     },
                                     on: {
                                       input: function($event) {
@@ -35898,6 +35933,9 @@ var render = function() {
                                       },
                                       blur: function($event) {
                                         return _vm.$v.form.descp.$touch()
+                                      },
+                                      change: function($event) {
+                                        return _vm.setNarration($event)
                                       }
                                     },
                                     model: {
@@ -39549,13 +39587,15 @@ var render = function() {
                                 "v-col",
                                 { attrs: { cols: "3" } },
                                 [
-                                  _c("v-text-field", {
+                                  _c("v-combobox", {
                                     attrs: {
-                                      outlined: "",
-                                      dense: "",
                                       label: "Narration",
+                                      items: _vm.narration,
+                                      "item-text": "name",
+                                      "item-value": "name",
                                       "error-messages": _vm.descpErrors,
-                                      required: ""
+                                      dense: "",
+                                      outlined: ""
                                     },
                                     on: {
                                       input: function($event) {
@@ -39563,6 +39603,9 @@ var render = function() {
                                       },
                                       blur: function($event) {
                                         return _vm.$v.form.descp.$touch()
+                                      },
+                                      change: function($event) {
+                                        return _vm.setNarration($event)
                                       }
                                     },
                                     model: {
@@ -45767,28 +45810,6 @@ var render = function() {
                                     ],
                                     1
                                   )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-col",
-                                { attrs: { cols: "4" } },
-                                [
-                                  _c("v-text-field", {
-                                    attrs: {
-                                      outlined: "",
-                                      dense: "",
-                                      label: "Invoice No."
-                                    },
-                                    model: {
-                                      value: _vm.form.invoiceNo,
-                                      callback: function($$v) {
-                                        _vm.$set(_vm.form, "invoiceNo", $$v)
-                                      },
-                                      expression: "form.invoiceNo"
-                                    }
-                                  })
                                 ],
                                 1
                               ),

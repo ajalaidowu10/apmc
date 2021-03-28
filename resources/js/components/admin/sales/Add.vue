@@ -119,7 +119,7 @@
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col
+              <!-- <v-col
                 cols="4"
                >
                 <v-text-field
@@ -128,7 +128,7 @@
                   label="Invoice No."
                   v-model="form.invoiceNo"
                 ></v-text-field>
-              </v-col>
+              </v-col> -->
               <v-col
                 cols="4"
                >

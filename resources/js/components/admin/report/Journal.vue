@@ -252,14 +252,18 @@
               },
               totalDebit(itemArray){
                 if (itemArray.length > 0) {
-                  return itemArray.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+                  let result = itemArray.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+
+                  return Number(result).toFixed(2);
                 }
                 return 0;
               },
 
               totalCredit(itemArray){
                 if (itemArray.length > 0) {
-                  return itemArray.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+                  let result = itemArray.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+
+                  return Number(result).toFixed(2);
                 }
                 return 0;
               },

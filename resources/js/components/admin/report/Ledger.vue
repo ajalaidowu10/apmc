@@ -249,21 +249,29 @@
     }),
     computed:{
       closingBal(){
-        return  Number(this.open_bal) - Number(this.total);
+        let result = Number(this.open_bal) - Number(this.total);
+
+        return Number(result).toFixed(2);
       },
       total(){
-        return  Number(this.totalDebit) - Number(this.totalCredit);
+        let result = Number(this.totalDebit) - Number(this.totalCredit);
+
+        return Number(result).toFixed(2);
       },
       totalDebit(){
         if (this.itemOrders.length > 0) {
-          return this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+          let result = this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+
+          return Number(result).toFixed(2);
         }
         return 0;
       },
 
       totalCredit(){
         if (this.itemOrders.length > 0) {
-          return this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+          let result = this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+
+          return Number(result).toFixed(2);
         }
         return 0;
       },
