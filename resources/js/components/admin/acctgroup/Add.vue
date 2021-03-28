@@ -124,7 +124,7 @@
                color="red"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="deleteData"
                >
@@ -144,7 +144,7 @@
                color="primary"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="saveData"
                >

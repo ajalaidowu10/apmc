@@ -9436,7 +9436,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -11625,7 +11624,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
 //
 //
 //
@@ -33818,7 +33816,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteAccount }
@@ -33855,7 +33852,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveAccount }
@@ -34486,7 +34482,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -34523,7 +34518,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -35068,7 +35062,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -35105,7 +35098,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -36290,7 +36282,6 @@ var render = function() {
                                   attrs: {
                                     color: "blue",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.clearData }
@@ -36316,7 +36307,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -36586,7 +36576,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.editData }
@@ -36621,7 +36610,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -37732,7 +37720,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteItem }
@@ -37769,7 +37756,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveItem }
@@ -38815,7 +38801,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -38852,7 +38837,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveItem }
@@ -40027,7 +40011,6 @@ var render = function() {
                                   attrs: {
                                     color: "blue",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.clearData }
@@ -40053,7 +40036,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -40290,7 +40272,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.editData }
@@ -40325,7 +40306,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -41074,7 +41054,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -41111,7 +41090,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -41809,7 +41787,6 @@ var render = function() {
                                 { attrs: { cols: "3" } },
                                 [
                                   _c("v-combobox", {
-                                    ref: "myBtn",
                                     attrs: {
                                       label: "Item",
                                       items: _vm.item,
@@ -42554,7 +42531,6 @@ var render = function() {
                                   attrs: {
                                     color: "blue",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.clearData }
@@ -42580,7 +42556,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -42819,7 +42794,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.editData }
@@ -42854,7 +42828,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -45870,7 +45843,6 @@ var render = function() {
                                 { attrs: { cols: "3" } },
                                 [
                                   _c("v-combobox", {
-                                    ref: "myBtn",
                                     attrs: {
                                       label: "Item",
                                       items: _vm.item,
@@ -46615,7 +46587,6 @@ var render = function() {
                                   attrs: {
                                     color: "blue",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.clearData }
@@ -46641,7 +46612,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -46878,7 +46848,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.editData }
@@ -46913,7 +46882,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteData }
@@ -47555,7 +47523,6 @@ var render = function() {
                                       attrs: {
                                         color: "red",
                                         dark: "",
-                                        "min-width": "300",
                                         "x-large": ""
                                       },
                                       on: { click: _vm.deleteUser }
@@ -47592,7 +47559,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveUser }
@@ -47839,7 +47805,6 @@ var render = function() {
                                   attrs: {
                                     color: "primary",
                                     dark: "",
-                                    "min-width": "300",
                                     "x-large": ""
                                   },
                                   on: { click: _vm.saveData }
@@ -113821,8 +113786,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\repos\apmc\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\repos\apmc\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/idowu/repos/apmc/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/idowu/repos/apmc/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

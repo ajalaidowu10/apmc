@@ -154,7 +154,6 @@
                 cols="3"
                 >
                 <v-combobox
-                  ref="myBtn"
                   v-model="form.item"
                   label="Item"
                   :items="item"
@@ -415,7 +414,7 @@
                color="blue"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="clearData"
                >
@@ -429,7 +428,7 @@
                color="primary"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="saveData"
                >

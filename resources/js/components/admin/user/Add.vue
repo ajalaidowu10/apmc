@@ -121,7 +121,7 @@
                color="red"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="deleteUser"
                >
@@ -141,7 +141,7 @@
                color="primary"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="saveUser"
                >
