@@ -162,7 +162,7 @@
                       Account
                     </th>
                     <th class="text-left">
-                      Motor No.
+                      Invoice No.
                     </th>
                     <th class="text-left">
                       Item
@@ -207,7 +207,7 @@
                     <td>{{ item.sno }}</td>
                     <td>{{ item.enter_date }}</td>
                     <td>{{ item.acct_name }}</td>
-                    <td>{{ item.motor_no }}</td>
+                    <td>{{ item.invoice_no }}</td>
                     <td>{{ item.item_name }}</td>
                     <td>{{ item.qty }}</td>
                     <td>{{ item.grwt }}</td>

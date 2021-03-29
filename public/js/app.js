@@ -43503,7 +43503,7 @@ var render = function() {
                               _c(
                                 "v-btn",
                                 {
-                                  staticClass: "pa-10",
+                                  staticClass: "pa-10 text-right",
                                   attrs: {
                                     color: "primary",
                                     dark: "",
@@ -46727,7 +46727,7 @@ var render = function() {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                    Motor No.\n                  "
+                                                "\n                    Invoice No.\n                  "
                                               )
                                             ]
                                           ),
@@ -46865,7 +46865,7 @@ var render = function() {
                                               ]),
                                               _vm._v(" "),
                                               _c("td", [
-                                                _vm._v(_vm._s(item.motor_no))
+                                                _vm._v(_vm._s(item.invoice_no))
                                               ]),
                                               _vm._v(" "),
                                               _c("td", [
@@ -47009,7 +47009,7 @@ var render = function() {
                               ],
                               null,
                               false,
-                              99349006
+                              2500993742
                             )
                           })
                         ],

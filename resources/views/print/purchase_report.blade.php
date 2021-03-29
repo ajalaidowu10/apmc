@@ -42,7 +42,7 @@
 						    Account
 						  </th>
 						  <th style="text-align: left;">
-						    Motor No.
+						    Invoice No.
 						  </th>
 						  <th style="text-align: left;">
 						    Item
@@ -110,7 +110,7 @@
 								<td>{{ $report->sno }}</td>
 								<td>{{ $report->enter_date }}</td>
 								<td>{{ $report->acct_name }}</td>
-								<td>{{ $report->motor_no }}</td>
+								<td>{{ $report->invoice_no }}</td>
 								<td>{{ $report->item_name }}</td>
 								<td>{{ $report->qty }}</td>
 								<td>{{ $report->grwt }}</td>

@@ -184,7 +184,7 @@ class PurchaseOrderController extends Controller
                         ->leftJoin('items as t', 't.id', '=', 'o.item_id')
                         ->select(
                           DB::raw(
-                                  'oi.id sno, a.name acct_name, t.name item_name, oi.enter_date enter_date, oi.motor_no motor_no, o.*'
+                                  'oi.id sno, a.name acct_name, t.name item_name, DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enter_date, oi.invoice_no invoice_no, o.*'
                                 )
                         )
                         ->where('o.deleted_at', '=', null)
