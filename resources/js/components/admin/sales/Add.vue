@@ -251,12 +251,6 @@
                           AMOUNT
                         </th>
                         <th class="text-left">
-                          Expense
-                        </th>
-                        <th class="text-left">
-                         Final AMOUNT
-                        </th>
-                        <th class="text-left">
                           EDIT
                         </th>
                         <th class="text-left"> 

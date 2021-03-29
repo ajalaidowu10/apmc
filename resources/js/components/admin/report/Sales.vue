@@ -18,7 +18,7 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              Report Journal
+              Report Sales
             </v-banner>
           </v-col>
         </v-row>
@@ -275,13 +275,13 @@
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
-                      .catch(err => Exception.handle(err, 'admin'));
+                      // .catch(err => Exception.handle(err, 'admin'));
                 axios.get(`journal/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                      .then(resp => {
                       this.itemOrders = resp.data;
                     })
                      .catch(err => {
-                      Exception.handle(err, 'admin');
+                      // Exception.handle(err, 'admin');
                     });
                 this.overlay = false;
               },
@@ -295,7 +295,7 @@
                         this.itemOrders = resp.data;
                       })
                        .catch(err => {
-                        Exception.handle(err, 'admin');
+                        // Exception.handle(err, 'admin');
                       });
                 this.overlay = false;
               },

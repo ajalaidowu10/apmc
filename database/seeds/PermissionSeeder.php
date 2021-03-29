@@ -130,9 +130,9 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'journal';
+      $new_permission->slug = 'purchase';
       $new_permission->name = 'Journal';
-      $new_permission->link = '/web-admin/journal';
+      $new_permission->link = '/web-admin/sales';
       $new_permission->icon = 'mdi-notebook-multiple';
       $new_permission->save();
 
@@ -154,6 +154,22 @@ class PermissionSeeder extends Seeder
       $new_permission->name = 'Journal';
       $new_permission->link = '/web-admin/report/journal';
       $new_permission->icon = 'mdi-notebook-multiple';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'purchase-report';
+      $new_permission->name = 'Purchase';
+      $new_permission->link = '/web-admin/report/purchase';
+      $new_permission->icon = 'mdi-alpha-p-box';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'sales-report';
+      $new_permission->name = 'Sales';
+      $new_permission->link = '/web-admin/report/sales';
+      $new_permission->icon = 'mdi-alpha-s-box';
       $new_permission->save();
 
       $new_permission = new Permission();

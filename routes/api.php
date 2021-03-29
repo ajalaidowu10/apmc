@@ -42,6 +42,7 @@ Route::apiResource('narration', 'NarrationController');
 Route::apiResource('purchaseorder', 'PurchaseOrderController');
 
 
+
 Route::get('permission/{permissionName}', 'PermissionController@check');
 Route::get('permission/get/{admin}', 'PermissionController@getPermission');
 Route::patch('permission/refresh/{admin}', 'PermissionController@refreshPermission');
@@ -58,6 +59,9 @@ Route::get('cashbank/print/report/{date_from?}/{date_to?}/{acct_id?}', 'Cashbank
 
 Route::get('journal/report/{date_from?}/{date_to?}/{acct_id?}', 'JournalOrderController@getReport');
 Route::get('journal/print/report/{date_from?}/{date_to?}/{acct_id?}', 'JournalOrderController@printReport');
+
+Route::get('purchase/report/{date_from?}/{date_to?}/{acct_id?}', 'PurchaseOrderController@getReport');
+Route::get('purchase/print/report/{date_from?}/{date_to?}/{acct_id?}', 'PurchaseOrderController@printReport');
 
 Route::get('ledger/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@getReport');
 Route::get('ledger/print/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@printReport');

@@ -43,6 +43,11 @@ import AddArea from './components/admin/area/Add';
 import ViewArea from './components/admin/area/View';
 import AddNarration from './components/admin/narration/Add';
 import ViewNarration from './components/admin/narration/View';
+import ReportPurchase from './components/admin/report/Purchase';
+import PrintPurchaseReport from './components/admin/report/print/Purchase';
+import ReportSales from './components/admin/report/Sales';
+import PrintSalesReport from './components/admin/report/print/Sales';
+
 
 
 Vue.use(Router);
@@ -71,6 +76,18 @@ const router = new Router({
 				      path: '/journal/print/report/:dateFrom/:dateTo/:acctId',
 				      name: 'print-journal-report',
 				      component: PrintJournalReport,
+				      props: true,
+				    },
+				    {
+				      path: '/purchase/print/report/:dateFrom/:dateTo/:acctId',
+				      name: 'print-purchase-report',
+				      component: PrintPurchaseReport,
+				      props: true,
+				    },
+				    {
+				      path: '/sales/print/report/:dateFrom/:dateTo/:acctId',
+				      name: 'print-sales-report',
+				      component: PrintSalesReport,
 				      props: true,
 				    },
 				    {
@@ -206,6 +223,16 @@ const router = new Router({
 				      		path:'report/journal',
 				      		name: 'report-journal',
 				      		component: ReportJournal,
+				      	},
+				      	{
+				      		path:'report/purchase',
+				      		name: 'report-purchase',
+				      		component: ReportPurchase,
+				      	},
+				      	{
+				      		path:'report/sales',
+				      		name: 'report-sales',
+				      		component: ReportSales,
 				      	},
 				      	{
 				      		path:'report/ledger',

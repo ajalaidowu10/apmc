@@ -11,6 +11,7 @@ use App\PurchaseOrderItem;
 use App\Ledger;
 use Auth;
 use DB;
+use DateTime;
 
 class PurchaseOrderController extends Controller
 {   
@@ -175,9 +176,60 @@ class PurchaseOrderController extends Controller
        return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function printInvoice(PurchaseOrder $purchaseorder)
+    public function getReport(string $date_from='', string $date_to='', int $acct_id = 0)
     {
-      return view('print.purchase_invoice', ['data' => $purchaseorder]);
+      $get_report = DB::table('purchase_order_items as o')
+                        ->leftJoin('purchase_orders as oi', 'oi.id', '=', 'o.purchase_order_id')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'oi.acct_id')
+                        ->leftJoin('items as t', 't.id', '=', 'o.item_id')
+                        ->select(
+                          DB::raw(
+                                  'oi.id sno, a.name acct_name, t.name item_name, oi.enter_date enter_date, oi.motor_no motor_no, o.*'
+                                )
+                        )
+                        ->where('o.deleted_at', '=', null)
+                        ->where('oi.deleted_at', '=', null)
+                        ->where('o.del_record', '=', 0);
+
+                          if ($date_from != '') 
+                          {
+                              $get_report = $get_report->where('oi.enter_date', '>=', $date_from);
+                          } 
+
+                          if ($date_to != '') 
+                          {
+                              $get_report = $get_report->where('oi.enter_date', '<=', $date_to);
+                          }
+
+                          if ($acct_id != 0) 
+                          {
+                              $get_report = $get_report->where('oi.acct_id', '=', $acct_id);
+                          }
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function printReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    {
+      $get_report = $this->getReport($date_from, $date_to, $acct_id);
+
+      $acct_name = "";
+      $date_from = new DateTime($date_from);
+      $date_to = new DateTime($date_to);
+
+      if ($acct_id != 0) 
+      {
+       $get_acct = \App\Account::find($acct_id);
+       $acct_name = $get_acct->name;
+      }
+
+      return view('print.purchase_report', [
+                                              'get_report'    => $get_report,
+                                              'date_from'     => $date_from,
+                                              'date_to'       => $date_to,
+                                              'acct_id'       => $acct_id,
+                                              'acct_name'     => $acct_name,
+                                           ]);
     }
 
     
