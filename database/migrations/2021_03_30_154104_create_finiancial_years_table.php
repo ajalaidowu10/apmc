@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompaniesTable extends Migration
+class CreateFiniancialYearsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,18 @@ class CreateCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('finiancial_years', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('invoice_header_path')->nullable();
-            $table->string('invoice_footer_path')->nullable();
-            $table->string('receipt_header_path')->nullable();
-            $table->string('receipt_footer_path')->nullable();
+            $table->foreignId('company_id');
+            $table->date('from');
+            $table->date('to');
             $table->foreignId('status_id')->default(1);
             $table->foreignId('created_by');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('created_by')->references('id')->on('admins');
             $table->foreign('status_id')->references('id')->on('statuses');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 
@@ -39,6 +35,6 @@ class CreateCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('finiancial_years');
     }
 }

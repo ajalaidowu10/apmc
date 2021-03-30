@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
                       AccountSeeder::class,
                       CashbankTypeSeeder::class,
                       PaymentTypeSeeder::class,
-
+                      CompanySeeder::class,
+                      FiniancialYearSeeder::class,
         ]);
     }
 }
