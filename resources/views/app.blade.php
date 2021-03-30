@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Apmc') }}| Softwey Solutions</title>
     
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon" />
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}?v=12692725" defer></script>
 
@@ -24,4 +25,5 @@
 <body>
     <div id="app"></div>
 </body>
+
 </html>

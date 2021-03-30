@@ -99,6 +99,22 @@ class PermissionSeeder extends Seeder
       $new_permission->link = '/web-admin/acctgroup';
       $new_permission->save();
 
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'company';
+      $new_permission->name = 'Company';
+      $new_permission->icon = 'mdi-account-supervisor-circle';
+      $new_permission->link = '/web-admin/company';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'financial-year';
+      $new_permission->name = 'Financialyear';
+      $new_permission->icon = 'mdi-bullseye-arrow';
+      $new_permission->link = '/web-admin/fyear';
+      $new_permission->save();
+
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_data_entry);
@@ -132,7 +148,7 @@ class PermissionSeeder extends Seeder
       $new_permission->module()->associate($module_data_entry);
       $new_permission->slug = 'purchase';
       $new_permission->name = 'Journal';
-      $new_permission->link = '/web-admin/sales';
+      $new_permission->link = '/web-admin/journal';
       $new_permission->icon = 'mdi-notebook-multiple';
       $new_permission->save();
 

@@ -63,6 +63,9 @@ Route::get('journal/print/report/{date_from?}/{date_to?}/{acct_id?}', 'JournalOr
 Route::get('purchase/report/{date_from?}/{date_to?}/{acct_id?}', 'PurchaseOrderController@getReport');
 Route::get('purchase/print/report/{date_from?}/{date_to?}/{acct_id?}', 'PurchaseOrderController@printReport');
 
+Route::get('sales/report/{date_from?}/{date_to?}/{acct_id?}', 'SalesOrderController@getReport');
+Route::get('sales/print/report/{date_from?}/{date_to?}/{acct_id?}', 'SalesOrderController@printReport');
+
 Route::get('ledger/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@getReport');
 Route::get('ledger/print/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@printReport');
 Route::get('acctbal/print/report/{acct}/{date_to?}', 'LedgerController@printAcctBal');

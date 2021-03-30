@@ -420,7 +420,7 @@
               >
               <v-btn
                color="primary"
-               class="pa-10 text-right"
+               class="pa-10"
                dark
                 
                x-large

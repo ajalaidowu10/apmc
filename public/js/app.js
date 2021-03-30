@@ -11773,55 +11773,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       permission: 'purchase-report',
-      headers: [{
-        text: 'S/No',
-        value: 'sno'
-      }, {
-        text: 'Date',
-        value: 'date'
-      }, {
-        text: 'Account Name',
-        value: 'acct_name'
-      }, {
-        text: 'Motor No.',
-        value: 'motor_no'
-      }, {
-        text: 'Item',
-        value: 'item_name'
-      }, {
-        text: 'Qty',
-        value: 'qty'
-      }, {
-        text: 'Grwt',
-        value: 'grwt'
-      }, {
-        text: 'Rate',
-        value: 'rate'
-      }, {
-        text: 'Amount',
-        value: 'amount'
-      }, {
-        text: 'Levy',
-        value: 'levy'
-      }, {
-        text: 'Map Levy',
-        value: 'map_levy'
-      }, {
-        text: 'Apmc',
-        value: 'apmc'
-      }, {
-        text: 'Qty',
-        value: 'qty'
-      }, {
-        text: 'Comm',
-        value: 'comm'
-      }, {
-        text: 'Tds',
-        value: 'tds'
-      }, {
-        text: 'Final Amount',
-        value: 'final_amount'
-      }],
       acctId: 0,
       acct: [],
       dateFrom: new Date().toISOString().substr(0, 10),
@@ -12234,13 +12185,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      permission: 'journal-report',
-      search: '',
-      journalTypeId: 0,
+      permission: 'sales-report',
       acctId: 0,
       acct: [],
       dateFrom: new Date().toISOString().substr(0, 10),
@@ -12252,58 +12244,144 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    journal: function journal() {
-      var journal = new Set();
-      this.itemOrders.forEach(function (item) {
-        return journal.add(item.order_id);
-      });
-      return Array.from(journal);
+    totalQty: function totalQty() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            qty: Number(prev.qty) + Number(cur.qty)
+          };
+        }).qty;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalGrwt: function totalGrwt() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            grwt: Number(prev.grwt) + Number(cur.grwt)
+          };
+        }).grwt;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalRate: function totalRate() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            rate: Number(prev.rate) + Number(cur.rate)
+          };
+        }).rate;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalAmount: function totalAmount() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            amount: Number(prev.amount) + Number(cur.amount)
+          };
+        }).amount;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalLevy: function totalLevy() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            levy: Number(prev.levy) + Number(cur.levy)
+          };
+        }).levy;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalMapLevy: function totalMapLevy() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            map_levy: Number(prev.map_levy) + Number(cur.map_levy)
+          };
+        }).map_levy;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalApmc: function totalApmc() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            apmc: Number(prev.apmc) + Number(cur.apmc)
+          };
+        }).apmc;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalComm: function totalComm() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            comm: Number(prev.comm) + Number(cur.comm)
+          };
+        }).comm;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalTds: function totalTds() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            tds: Number(prev.tds) + Number(cur.tds)
+          };
+        }).tds;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
+    },
+    totalFinalAmount: function totalFinalAmount() {
+      if (this.itemOrders.length > 0) {
+        var result = this.itemOrders.reduce(function (prev, cur) {
+          return {
+            final_amount: Number(prev.final_amount) + Number(cur.final_amount)
+          };
+        }).final_amount;
+        return Number(result).toFixed(2);
+      }
+
+      return 0;
     }
   },
   created: function created() {
     this.index();
   },
   methods: {
-    journalItem: function journalItem(order_id) {
-      return this.itemOrders.filter(function (item) {
-        return item.order_id === order_id;
-      });
-    },
-    totalDebit: function totalDebit(itemArray) {
-      if (itemArray.length > 0) {
-        var result = itemArray.reduce(function (prev, cur) {
-          return {
-            debit: Number(prev.debit) + Number(cur.debit)
-          };
-        }).debit;
-        return Number(result).toFixed(2);
-      }
-
-      return 0;
-    },
-    totalCredit: function totalCredit(itemArray) {
-      if (itemArray.length > 0) {
-        var result = itemArray.reduce(function (prev, cur) {
-          return {
-            credit: Number(prev.credit) + Number(cur.credit)
-          };
-        }).credit;
-        return Number(result).toFixed(2);
-      }
-
-      return 0;
-    },
     index: function index() {
       var _this = this;
 
       this.overlay = true;
-      axios.get("account").then(function (resp) {
+      axios.get("account/get/0/2").then(function (resp) {
         _this.acct = _utils_transformKeys__WEBPACK_IMPORTED_MODULE_0__["default"].camelCase(resp.data.data);
-      }); // .catch(err => Exception.handle(err, 'admin'));
-
-      axios.get("journal/report/".concat(this.dateFrom, "/").concat(this.dateTo, "/").concat(this.acctId)).then(function (resp) {
+      })["catch"](function (err) {
+        return Exception.handle(err, 'admin');
+      });
+      axios.get("sales/report/".concat(this.dateFrom, "/").concat(this.dateTo, "/").concat(this.acctId)).then(function (resp) {
         _this.itemOrders = resp.data;
-      })["catch"](function (err) {// Exception.handle(err, 'admin');
+      })["catch"](function (err) {
+        Exception.handle(err, 'admin');
       });
       this.overlay = false;
     },
@@ -12314,15 +12392,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.overlay = true;
-      axios.get("journal/report/".concat(this.dateFrom, "/").concat(this.dateTo, "/").concat(this.acctId)).then(function (resp) {
+      axios.get("sales/report/".concat(this.dateFrom, "/").concat(this.dateTo, "/").concat(this.acctId)).then(function (resp) {
         _this2.itemOrders = resp.data;
-      })["catch"](function (err) {// Exception.handle(err, 'admin');
+      })["catch"](function (err) {
+        Exception.handle(err, 'admin');
       });
       this.overlay = false;
     },
     printReport: function printReport() {
       var routeData = this.$router.resolve({
-        name: 'print-journal-report',
+        name: 'print-sales-report',
         params: {
           dateFrom: this.dateFrom,
           dateTo: this.dateTo,
@@ -12558,7 +12637,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.overlay = true;
-    axios.get("journal/print/report/".concat(this.$route.params.dateFrom, "/").concat(this.$route.params.dateTo, "/").concat(this.$route.params.acctId)).then(function (resp) {
+    axios.get("sales/print/report/".concat(this.$route.params.dateFrom, "/").concat(this.$route.params.dateTo, "/").concat(this.$route.params.acctId)).then(function (resp) {
       _this.page = resp.data;
     })["catch"](function (err) {
       console.log(err);
@@ -12567,7 +12646,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      permission: 'journal-report',
+      permission: 'sales-report',
       overlay: false,
       page: null
     };
@@ -43503,7 +43582,7 @@ var render = function() {
                               _c(
                                 "v-btn",
                                 {
-                                  staticClass: "pa-10 text-right",
+                                  staticClass: "pa-10",
                                   attrs: {
                                     color: "primary",
                                     dark: "",
@@ -47520,7 +47599,7 @@ var render = function() {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                    DATE\n                  "
+                                                "\n                    S/No.\n                  "
                                               )
                                             ]
                                           ),
@@ -47530,7 +47609,7 @@ var render = function() {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                    ACCOUNT\n                  "
+                                                "\n                    Date\n                  "
                                               )
                                             ]
                                           ),
@@ -47540,7 +47619,7 @@ var render = function() {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                    NARRATION\n                  "
+                                                "\n                    Account\n                  "
                                               )
                                             ]
                                           ),
@@ -47550,7 +47629,7 @@ var render = function() {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                    DEBIT ₹\n                  "
+                                                "\n                    Item\n                  "
                                               )
                                             ]
                                           ),
@@ -47560,7 +47639,97 @@ var render = function() {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                " \n                    CREDIT ₹\n                  "
+                                                "\n                    Qty\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                "\n                    Grwt\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                "\n                    Rate\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                "\n                    Amount\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                "\n                    Levy\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                "\n                    Map Levy\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                "\n                    Apmc\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                " \n                    Comm\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                " \n                    Tds\n                  "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "th",
+                                            { staticClass: "text-left" },
+                                            [
+                                              _vm._v(
+                                                " \n                    Final Amount\n                  "
                                               )
                                             ]
                                           )
@@ -47570,102 +47739,154 @@ var render = function() {
                                       _c(
                                         "tbody",
                                         [
-                                          _vm._l(_vm.journal, function(
-                                            group,
+                                          _vm._l(_vm.itemOrders, function(
+                                            item,
                                             index
                                           ) {
-                                            return [
-                                              _vm._l(
-                                                _vm.journalItem(group),
-                                                function(item, innerIndex) {
-                                                  return _c("tr", [
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(item.enter_date)
-                                                      )
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(item.acct_name)
-                                                      )
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(_vm._s(item.descp))
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          item.debit == 0
-                                                            ? ""
-                                                            : item.debit
-                                                        )
-                                                      )
-                                                    ]),
-                                                    _vm._v(" "),
-                                                    _c("td", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          item.credit == 0
-                                                            ? ""
-                                                            : item.credit
-                                                        )
-                                                      )
-                                                    ])
-                                                  ])
-                                                }
-                                              ),
+                                            return _c("tr", { key: index }, [
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.sno))
+                                              ]),
                                               _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.enter_date))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.acct_name))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.item_name))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.qty))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.grwt))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.rate))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.amount))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.levy))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.map_levy))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.apmc))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.comm))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(item.tds))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(
+                                                  _vm._s(item.final_amount)
+                                                )
+                                              ])
+                                            ])
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "tr",
+                                            {
+                                              staticClass: "blue-grey lighten-5"
+                                            },
+                                            [
                                               _c(
-                                                "tr",
-                                                {
-                                                  staticClass:
-                                                    "blue-grey lighten-5"
-                                                },
+                                                "td",
+                                                { attrs: { colspan: "4" } },
                                                 [
-                                                  _c(
-                                                    "td",
-                                                    { attrs: { colspan: "3" } },
-                                                    [
-                                                      _c("strong", [
-                                                        _vm._v("TOTAL")
-                                                      ])
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("strong", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.totalDebit(
-                                                            _vm.journalItem(
-                                                              group
-                                                            )
-                                                          )
-                                                        )
-                                                      )
-                                                    ])
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("strong", [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.totalCredit(
-                                                            _vm.journalItem(
-                                                              group
-                                                            )
-                                                          )
-                                                        )
-                                                      )
-                                                    ])
+                                                  _c("strong", [
+                                                    _vm._v("TOTAL")
                                                   ])
                                                 ]
-                                              )
+                                              ),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalQty))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalGrwt))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalRate))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(
+                                                    _vm._s(_vm.totalAmount)
+                                                  )
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalLevy))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(
+                                                    _vm._s(_vm.totalMapLevy)
+                                                  )
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalApmc))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalComm))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(_vm._s(_vm.totalTds))
+                                                ])
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _c("strong", [
+                                                  _vm._v(
+                                                    _vm._s(_vm.totalFinalAmount)
+                                                  )
+                                                ])
+                                              ])
                                             ]
-                                          })
+                                          )
                                         ],
                                         2
                                       )
@@ -47676,7 +47897,7 @@ var render = function() {
                               ],
                               null,
                               false,
-                              3892147620
+                              1502407721
                             )
                           })
                         ],

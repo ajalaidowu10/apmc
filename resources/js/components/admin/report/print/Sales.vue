@@ -18,7 +18,7 @@
   export default {
     created(){
       this.overlay = true;
-      axios.get(`journal/print/report/${this.$route.params.dateFrom}/${this.$route.params.dateTo}/${this.$route.params.acctId}`)
+      axios.get(`sales/print/report/${this.$route.params.dateFrom}/${this.$route.params.dateTo}/${this.$route.params.acctId}`)
            .then(resp => {
             this.page = resp.data;
           })
@@ -28,7 +28,7 @@
       this.overlay = false;
     },
     data: () => ({
-      permission: 'journal-report',
+      permission: 'sales-report',
       overlay: false,
       page: null,
     }),
