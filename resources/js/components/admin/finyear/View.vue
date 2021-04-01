@@ -28,14 +28,14 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              View Account Group
+              View Financial Year
               <template v-slot:actions>
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
                   @click="addData"
                 >
-                  <span class="d-none d-md-flex">Add Account Group</span>
+                  <span class="d-none d-md-flex">Add Financial Year</span>
                   <v-icon >
                     mdi-notebook-plus-outline
                   </v-icon>
@@ -122,13 +122,13 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'account-group',
+      permission: 'fin-year',
       alert: false,
       search: '',
       headers: [
-                { text: 'Account Group Type', value: 'parent_groupcode' },
-                { text: 'Account Group Name', value: 'name' },
-                { text: 'Description', value: 'descp' },
+                { text: 'Company', value: 'company' },
+                { text: 'Year From', value: 'from_date' },
+                { text: 'Year To', value: 'to_date' },
                 { text: 'Edit', value: 'edit' },
                 { text: 'Status', value: 'status' },
               ],
@@ -140,13 +140,13 @@
     },
     methods: {
               addData(){
-                this.$router.push({name:'add-acctgroup'});
+                this.$router.push({name:'add-finyear'});
               },
               index()
               {
 
                 this.overlay = true;
-                axios.get(`groupcode`)
+                axios.get(`finyear`)
                      .then(resp => {
                       this.overlay = false;
                       this.itemOrders = resp.data.data;
@@ -162,7 +162,7 @@
               },
               
               editData(id){
-                this.$router.push({name:'add-acctgroup', params:{orderid:id}});
+                this.$router.push({name:'add-finyear', params:{orderid:id}});
               },
               
         }

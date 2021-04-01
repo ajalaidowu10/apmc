@@ -79,15 +79,15 @@ class CompanyController extends Controller
    {
        $created_by = ['created_by' => Auth::guard('admin')->user()->id];
        $request->merge($created_by);
-       if (!empty($company->{$type.'_path'})) {
-           if (Storage::exists('public/images/company/' . $company->{$type.'_path'}))
+       if (!empty($company->{$type})) {
+           if (Storage::exists('public/images/company/' . $company->{$type}))
            {
-               Storage::delete('public/images/company/' . $company->{$type.'_path'});
+               Storage::delete('public/images/company/' . $company->{$type});
            }
        }
        $filename = "image-" . time() . '.' . $request->{$type}->getClientOriginalExtension();
        $request->{$type}->move(storage_path('app/public/images/company'), $filename);
-       $company->{$type.'_path'} = $filename;
+       $company->{$type} = $filename;
        $company->save(); 
 
        return response(['name' => $company->name], Response::HTTP_ACCEPTED);

@@ -19,7 +19,7 @@
                 >
                   mdi-notebook-plus-outline
                 </v-icon>
-                 Add Account Group
+                 Add Financial Year
               </div>
               <div v-else>
                 <v-icon
@@ -28,7 +28,7 @@
                 >
                   mdi-notebook-edit-outline
                 </v-icon>
-                Edit Account Group
+                Edit Financial Year
               </div>
               
               
@@ -38,7 +38,7 @@
                   color="orange"
                   @click="viewData"
                 >
-                  <span class="d-none d-md-flex">View Account Group</span>
+                  <span class="d-none d-md-flex">View Financial Year</span>
                   <v-icon >
                     mdi-book-search-outline
                   </v-icon>
@@ -54,47 +54,112 @@
               cols="12"
               >
               <v-combobox
-                v-model="form.parentGroupcode"
-                label="Account Group type"
-                :items="parentGroupcode"
+                v-model="form.company"
+                label="Company"
+                :items="company"
                 item-text="name"
                 item-value="id"
-                :error-messages="parentGroupcodeErrors"
-                @input="$v.form.parentGroupcode.$touch()"
-                @blur="$v.form.parentGroupcode.$touch()"
+                :error-messages="companyErrors"
+                @input="$v.form.company.$touch()"
+                @blur="$v.form.company.$touch()"
                 dense
-                @change="setParentGroupcode($event)"
+                @change="setCompany($event)"
                 outlined
               ></v-combobox>
             </v-col>
             <v-col
-              cols="12"
-             >
-              <v-text-field
-                outlined
-                dense
-                label="Account Group Name*"
-                v-model="form.name"
-                :error-messages="nameErrors"
-                @input="$v.form.name.$touch()"
-                @blur="$v.form.name.$touch()"
-                required
-              ></v-text-field>
+              cols="4"
+              >
+              <v-menu
+                ref="menuFrom"
+                v-model="menuFrom"
+                :close-on-content-click="false"
+                :return-value.sync="form.fromDate"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    outlined
+                    dense
+                    v-model="form.fromDate"
+                    label="Year From"
+                    append-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="form.fromDate"
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="menuFrom = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menuFrom.save(form.fromDate)"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
             </v-col>
             <v-col
-              cols="12"
-             >
-              <v-text-field
-                outlined
-                dense
-                label="Account Group Description*"
-                v-model="form.descp"
-                type="text"
-                :error-messages="descpErrors"
-                @input="$v.form.descp.$touch()"
-                @blur="$v.form.descp.$touch()"
-                required
-              ></v-text-field>
+              cols="4"
+              >
+              <v-menu
+                ref="menuTo"
+                v-model="menuTo"
+                :close-on-content-click="false"
+                :return-value.sync="form.toDate"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    outlined
+                    dense
+                    v-model="form.toDate"
+                    label="Year To"
+                    append-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="form.toDate"
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="menuTo = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menuTo.save(form.toDate)"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
             </v-col>
             <v-col
               cols="12"
@@ -180,25 +245,23 @@
          form:{
            name:  {required },
            descp: {required},
-           parentGroupcode: {required },
+           company: {required },
            status: {required},
          }
      },
     data: () => ({
       orderid: 0,
-      permission: 'account-group',
+      permission: 'fin-year',
+      menuFrom: false,
+      menuTo: false,
       overlay: false,
-      parentGroupcode: [
-                          {'id':1, 'name':'Assets'}, 
-                          {'id':2, 'name':'Profit and Loss'},
-                          {'id':3, 'name':'Liabilities'},
-      ],
+      company: [],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       form: {
-              name: null,
-              parentGroupcode:null,
-              parentGroupcodeId:null,
-              descp: null,
+              company:null,
+              companyId:null,
+              fromDate: new Date().toISOString().substr(0, 10),
+              toDate: new Date().toISOString().substr(0, 10),
               status:null,
               statusId:null,
               overlay: false,
@@ -208,15 +271,20 @@
     }),
     created(){
       this.overlay = true;
+      axios.get(`company`)
+      .then(resp=>{
+        this.company = transformKeys.camelCase(resp.data.data);
+      })
+      .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
-        axios.get(`groupcode/${this.orderid}`)
+        axios.get(`finyear/${this.orderid}`)
              .then(resp => {
-              let getAccountOrder            = transformKeys.camelCase(resp.data.data);
-              this.form.name              = getAccountOrder.name;
-              this.form.descp             = getAccountOrder.descp;
-              this.form.parentGroupcode         = getAccountOrder.parentGroupcode;
-              this.form.parentGroupcodeId       = getAccountOrder.parentGroupcodeId;
+              let getAccountOrder         = transformKeys.camelCase(resp.data.data);
+              this.form.company           = getAccountOrder.company;
+              this.form.companyId         = getAccountOrder.companyId;
+              this.form.fromDate          = getAccountOrder.fromDate;
+              this.form.toDate         = getAccountOrder.toDate;
               this.form.status            = getAccountOrder.status;
               this.form.statusId          = getAccountOrder.statusId;
              })
@@ -226,17 +294,17 @@
       
     },
     computed: {
-      parentGroupcodeErrors () {
+      companyErrors () {
         const errors = [];
-        if (!this.$v.form.parentGroupcode.$dirty) return errors; 
+        if (!this.$v.form.company.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'parentGroupcodeId') {
-            errors.push(this.form.allError.parentGroupcodeId[0]);
+          if (items == 'companyId') {
+            errors.push(this.form.allError.companyId[0]);
             break;
           } 
 
         } 
-        !this.$v.form.parentGroupcode.required && errors.push('Account Group Type is required')
+        !this.$v.form.company.required && errors.push('Financial Year Type is required')
         return errors
       },
       statusErrors () {
@@ -252,58 +320,31 @@
         !this.$v.form.status.required && errors.push('Status is required')
         return errors
       },
-      nameErrors () {
-        const errors = []
-        if (!this.$v.form.name.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'name') {
-            errors.push(this.form.allError.name[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.name.required && errors.push('Account Group Name is required')
-        return errors
-      },
-      descpErrors () {
-        const errors = []
-        if (!this.$v.form.descp.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'descp') {
-            errors.push(this.form.allError.descp[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.descp.required && errors.push('Description is required')
-        return errors
-      },
-      
     },
     methods: {
-          setParentGroupcode(data){
-            this.form.parentGroupcodeId = data.id;
+          setCompany(data){
+            this.form.companyId = data.id;
           },
           setStatus(data){
             this.form.statusId = data.id;
           },
           viewData(){
-            this.$router.push({name:'view-acctgroup'});
+            this.$router.push({name:'view-finyear'});
           },
           deleteData()
           {
             
             swal({
                   title: "Notification!",
-                  text: 'Are you sure you want to Delete this Account Group',
+                  text: 'Are you sure you want to Delete this Financial Year',
                   buttons: ['No', 'Yes']
                 })
             .then((yes) => {
               if (yes) {
                 this.overlay = true;
-                axios.delete(`groupcode/${this.orderid}`)
+                axios.delete(`finyear/${this.orderid}`)
                      .then(resp => {
-                      this.$router.push({name:'view-acctgroup', params: { message: `Account Group Deleted Successfully` }});
+                      this.$router.push({name:'view-finyear', params: { message: `Financial Year Deleted Successfully` }});
                      })
                      .catch(err => Exception.handle(err, 'admin'));
                 this.overlay = false;
@@ -319,9 +360,9 @@
             this.overlay = true;
             if (this.orderid != 0) 
             {
-              axios.patch(`groupcode/${this.orderid}`, transformKeys.snakeCase(this.form))
+              axios.patch(`finyear/${this.orderid}`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-acctgroup', params: { message: `Account Group ${resp.data.name} Updated Successfully` }});
+                      this.$router.push({name:'view-finyear', params: { message: `Financial Year ${resp.data.name} Updated Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;
@@ -331,9 +372,9 @@
             }
             else
             {
-              axios.post(`groupcode`, transformKeys.snakeCase(this.form))
+              axios.post(`finyear`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-acctgroup', params: { message: `Account Group ${resp.data.name} Added Successfully` }});
+                      this.$router.push({name:'view-finyear', params: { message: `Financial Year ${resp.data.name} Added Successfully` }});
                     })
                     .catch(err => {
                       this.overlay = false;

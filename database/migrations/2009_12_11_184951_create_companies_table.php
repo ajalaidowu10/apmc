@@ -19,10 +19,10 @@ class CreateCompaniesTable extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('address');
-            $table->string('invheader_path')->nullable();
-            $table->string('invfooter_path')->nullable();
-            $table->string('recheader_path')->nullable();
-            $table->string('recfooter_path')->nullable();
+            $table->string('invheader')->nullable();
+            $table->string('invfooter')->nullable();
+            $table->string('recheader')->nullable();
+            $table->string('recfooter')->nullable();
             $table->foreignId('status_id')->default(1);
             $table->foreignId('created_by');
             $table->softDeletes();

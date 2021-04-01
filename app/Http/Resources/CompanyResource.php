@@ -25,7 +25,7 @@ class CompanyResource extends JsonResource
             'invheader_path'   => $this->invheader_path,
             'invfooter_path'   => $this->invfooter_path,
             'recheader_path'   => $this->recheader_path,
-            'recfooter'        => $this->recfooter,
+            'recfooter_path'   => $this->recfooter_path,
 
         ];
     }

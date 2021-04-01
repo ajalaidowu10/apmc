@@ -41,6 +41,7 @@ Route::apiResource('area', 'AreaController');
 Route::apiResource('narration', 'NarrationController');
 Route::apiResource('purchaseorder', 'PurchaseOrderController');
 Route::apiResource('company', 'CompanyController');
+Route::apiResource('finyear', 'FinancialYearController');
 
 
 Route::post('company/upload/{company}/{type}', 'CompanyController@upload');

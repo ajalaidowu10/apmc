@@ -109,10 +109,10 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
-      $new_permission->slug = 'financial-year';
+      $new_permission->slug = 'fin-year';
       $new_permission->name = 'Financial Year';
       $new_permission->icon = 'mdi-bullseye-arrow';
-      $new_permission->link = '/web-admin/fyear';
+      $new_permission->link = '/web-admin/finyear';
       $new_permission->save();
 
 

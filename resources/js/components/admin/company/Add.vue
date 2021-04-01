@@ -138,11 +138,11 @@
                 @change="addFiles('invheader')">
               </v-file-input>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="6">
                 Invoice Header
-                <img :ref="'invheader'" :src="invheaderPathUrl" class="img-fluid" title="Invoice Header" />
+                <img :ref="'invheader'" :src="form.invheaderPath" class="img-fluid" title="Invoice Header" />
             </v-col>
-            <!-- <v-col
+            <v-col
               cols="12"
              >
               <v-file-input accept="image/*" 
@@ -154,9 +154,9 @@
                 @change="addFiles('invfooter')">
               </v-file-input>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="6">
                 Invoice Footer
-                <img :ref="'invfooter'" :src="getImgUrl(form.invfooterPath)" class="img-fluid" title="Invoice Footer" />
+                <img :ref="'invfooter'" :src="form.invfooterPath" class="img-fluid" title="Invoice Footer" />
             </v-col>
 
             <v-col
@@ -171,9 +171,9 @@
                 @change="addFiles('recheader')">
               </v-file-input>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="6">
                 Receipt Header
-                <img :ref="'recheader'" :src="getImgUrl(form.recheaderPath)" class="img-fluid" title="Receipt Header" />
+                <img :ref="'recheader'" :src="form.recheaderPath" class="img-fluid" title="Receipt Header" />
             </v-col>
             <v-col
               cols="12"
@@ -187,10 +187,10 @@
                 @change="addFiles('recfooter')">
               </v-file-input>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="6">
                 Receipt Footer
-                <img :ref="'recfooter'" :src="getImgUrl(form.recfooterPath)" class="img-fluid" title="Receipt Footer" />
-            </v-col> -->
+                <img :ref="'recfooter'" :src="form.recfooterPath" class="img-fluid" title="Receipt Footer" />
+            </v-col>
           </v-row>
           
           <v-row>
@@ -304,8 +304,7 @@
               this.form.invheaderPath     = getCompanyOrder.invheaderPath;
               this.form.invfooterPath     = getCompanyOrder.invfooterPath;
               this.form.recheaderPath     = getCompanyOrder.recheaderPath;
-              this.form.recfooter         = getCompanyOrder.recfooter;
-              console.log(this.form);
+              this.form.recfooterPath     = getCompanyOrder.recfooterPath;
              })
              .catch(err => Exception.handle(err, 'admin'));
       }
@@ -313,11 +312,6 @@
       
     },
     computed: {
-      invheaderPathUrl(){
-        let result = this.form.invheaderPath ? require('storage/company/image-1617270033.jpg') : '//placehold.it/400/99cc77'
-        console.log(result);
-        return result;
-      },
       statusErrors () {
         const errors = [];
         if (!this.$v.form.status.$dirty) return errors; 
@@ -399,17 +393,13 @@
                               this.overlay = true;
                               axios.post(`company/upload/${this.orderid}/${type}`, data)
                                    .then(resp => {
-                                     console.log(resp.data);
+                                     console.log('upload successful');
                                    })
-                                   .catch(err => console.log(err));
-                                   // .catch(err => Exception.handle(err, 'admin'));
+                                   .catch(err => Exception.handle(err, 'admin'));
                               this.overlay = false;
                           }
                           reader.readAsDataURL(this.form.[type]);
           },
-          // getImgUrl(img){
-          //   return img == null ? require("/images/company/" + img) : '//placehold.it/400/99cc77';
-          // },
           setStatus(data){
             this.form.statusId = data.id;
           },
@@ -443,6 +433,10 @@
               return;
             }
             this.overlay = true;
+              delete this.form.invheader;
+              delete this.form.invfooter;
+              delete this.form.recheader;
+              delete this.form.recfooter;
             if (this.orderid != 0) 
             {
               axios.patch(`company/${this.orderid}`, transformKeys.snakeCase(this.form))
