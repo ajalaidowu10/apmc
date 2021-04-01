@@ -243,8 +243,6 @@
      mixins: [validationMixin],
      validations: {
          form:{
-           name:  {required },
-           descp: {required},
            company: {required },
            status: {required},
          }
@@ -275,7 +273,7 @@
       .then(resp=>{
         this.company = transformKeys.camelCase(resp.data.data);
       })
-      .catch(err => Exception.handle(err, 'admin'));
+      // .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
         axios.get(`finyear/${this.orderid}`)
@@ -284,11 +282,11 @@
               this.form.company           = getAccountOrder.company;
               this.form.companyId         = getAccountOrder.companyId;
               this.form.fromDate          = getAccountOrder.fromDate;
-              this.form.toDate         = getAccountOrder.toDate;
+              this.form.toDate            = getAccountOrder.toDate;
               this.form.status            = getAccountOrder.status;
               this.form.statusId          = getAccountOrder.statusId;
              })
-             .catch(err => Exception.handle(err, 'admin'));
+             // .catch(err => Exception.handle(err, 'admin'));
       }
       this.overlay = false;
       
@@ -346,7 +344,7 @@
                      .then(resp => {
                       this.$router.push({name:'view-finyear', params: { message: `Financial Year Deleted Successfully` }});
                      })
-                     .catch(err => Exception.handle(err, 'admin'));
+                     // .catch(err => Exception.handle(err, 'admin'));
                 this.overlay = false;
               }
             })
@@ -372,6 +370,7 @@
             }
             else
             {
+              console.log('hell');
               axios.post(`finyear`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
                       this.$router.push({name:'view-finyear', params: { message: `Financial Year ${resp.data.name} Added Successfully` }});
