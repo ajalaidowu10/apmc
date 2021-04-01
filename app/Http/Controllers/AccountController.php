@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\AccountResource;
 use App\Account;
 use App\Ledger;
+use Auth;
 
 class AccountController extends Controller
 {  
@@ -83,6 +84,8 @@ class AccountController extends Controller
     */
    public function store(AccountRequest $request)
    {
+       $created_by = ['created_by' => Auth::guard('admin')->user()->id];
+       $request->merge($created_by);
        $account = new Account($request->all());
        $account->save();
 
@@ -125,6 +128,8 @@ class AccountController extends Controller
     */
    public function update(AccountRequest $request, Account $account)
    {
+       $created_by = ['created_by' => Auth::guard('admin')->user()->id];
+       $request->merge($created_by);
        $account->update($request->all());
        $opening_bal = Ledger::where('tran_id', $account->id)
                               ->where('transactype_id', 1)

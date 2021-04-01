@@ -47,6 +47,10 @@ import ReportPurchase from './components/admin/report/Purchase';
 import PrintPurchaseReport from './components/admin/report/print/Purchase';
 import ReportSales from './components/admin/report/Sales';
 import PrintSalesReport from './components/admin/report/print/Sales';
+import AddCompany from './components/admin/company/Add';
+import ViewCompany from './components/admin/company/View';
+import AddFinYear from './components/admin/finyear/Add';
+import ViewFinYear from './components/admin/finyear/View';
 
 
 
@@ -153,6 +157,26 @@ const router = new Router({
 				      		path:'account',
 				      		name: 'view-account',
 				      		component: ViewAccount,
+				      	},
+				      	{
+				      		path:'company',
+				      		name: 'add-company',
+				      		component: AddCompany,
+				      	},
+				      	{
+				      		path:'company',
+				      		name: 'view-company',
+				      		component: ViewCompany,
+				      	},
+				      	{
+				      		path:'finyear',
+				      		name: 'add-finyear',
+				      		component: AddFinYear,
+				      	},
+				      	{
+				      		path:'finyear',
+				      		name: 'view-finyear',
+				      		component: ViewFinYear,
 				      	},
 				      	{
 				      		path:'cashbank',

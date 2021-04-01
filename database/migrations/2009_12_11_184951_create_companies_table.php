@@ -16,13 +16,13 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('phone');
             $table->string('address');
-            $table->string('invoice_header_path')->nullable();
-            $table->string('invoice_footer_path')->nullable();
-            $table->string('receipt_header_path')->nullable();
-            $table->string('receipt_footer_path')->nullable();
+            $table->string('invheader_path')->nullable();
+            $table->string('invfooter_path')->nullable();
+            $table->string('recheader_path')->nullable();
+            $table->string('recfooter_path')->nullable();
             $table->foreignId('status_id')->default(1);
             $table->foreignId('created_by');
             $table->softDeletes();

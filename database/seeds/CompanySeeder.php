@@ -12,6 +12,6 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
-        Company::create(['name' => 'ABC', 'email' => 'abc@softwey.com', 'phone' => '08072156721', 'created_by' => 1]);
+        Company::create(['name' => 'ABC', 'email' => 'abc@softwey.com', 'phone' => '08072156721', 'address' => 'Lagos', 'created_by' => 1]);
     }
 }

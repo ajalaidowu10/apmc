@@ -40,6 +40,10 @@ Route::apiResource('groupcode', 'GroupcodeController');
 Route::apiResource('area', 'AreaController');
 Route::apiResource('narration', 'NarrationController');
 Route::apiResource('purchaseorder', 'PurchaseOrderController');
+Route::apiResource('company', 'CompanyController');
+
+
+Route::post('company/upload/{company}/{type}', 'CompanyController@upload');
 
 
 

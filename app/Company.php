@@ -10,8 +10,8 @@ class Company extends Model
     use SoftDeletes;
 
     protected $fillable = [
-    						 'name', 'phone', 'email', 'address', 'status_id', 'invoice_header_path', 
-    						 'invoice_footer_path', 'receipt_header_path', 'receipt_footer_path'
+    						 'name', 'phone', 'email', 'address', 'status_id', 'created_by', 'invheader_path', 
+    						 'invfooter_path', 'recheader_path', 'recfooter_path'
     					  ];
 
    public function status()
