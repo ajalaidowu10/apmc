@@ -21,22 +21,22 @@ class Company extends Model
 
    public function getInvheaderPathAttribute()
    {
-       return $this->invheader ? asset('apmc/images/company/'.$this->invheader) : asset('apmc/images/company/default.png');
+       return $this->invheader ? asset('apmc/public/images/company/'.$this->invheader) : asset('apmc/public/images/company/default.png');
    }
 
    public function getInvfooterPathAttribute()
    {
-       return $this->invheader ? asset('apmc/images/company/'.$this->invheader) : asset('apmc/images/company/default.png');
+       return $this->invheader ? asset('apmc/public/images/company/'.$this->invheader) : asset('apmc/public/images/company/default.png');
    }
 
    public function getRecheaderPathAttribute()
    {
-       return $this->recheader ? asset('apmc/images/company/'.$this->recheader) : asset('apmc/images/company/default.png');
+       return $this->recheader ? asset('apmc/public/images/company/'.$this->recheader) : asset('apmc/public/images/company/default.png');
    }
 
    public function getRecfooterPathAttribute()
    {
-       return $this->recheader ? asset('apmc/images/company/'.$this->recheader) : asset('apmc/images/company/default.png');
+       return $this->recheader ? asset('apmc/public/images/company/'.$this->recheader) : asset('apmc/public/images/company/default.png');
    }
 
 }
