@@ -194,6 +194,32 @@
         !this.$v.form.password.required && errors.push('Password is required.')
         return errors
       },
+      companyErrors () {
+        const errors = [];
+        if (!this.$v.form.company.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'companyId') {
+            errors.push(this.form.allError.companyId[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.company.required && errors.push('Company is required')
+        return errors
+      },
+      finyearErrors () {
+        const errors = [];
+        if (!this.$v.form.finyear.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'finyearId') {
+            errors.push(this.form.allError.finyearId[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.finyear.required && errors.push('Financial Year is required')
+        return errors
+      },
     },
     methods:{
       clear(){
@@ -211,7 +237,13 @@
         Admin.login(this.form)
         .then(resp => {
           this.form.loading = false;
+          axios.get(`company`)
+          .then(resp=>{
+            this.company = transformKeys.camelCase(resp.data.data);
+          })
+
           this.showFinyear = true;
+
           this.clear();
           // Admin.responseAfterLogin(resp);
         })
