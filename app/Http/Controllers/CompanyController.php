@@ -7,7 +7,7 @@ use App\Http\Requests\CompanyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\CompanyResource;
 use App\Company;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File; 
 use Auth;
 
 class CompanyController extends Controller
@@ -80,13 +80,13 @@ class CompanyController extends Controller
        $created_by = ['created_by' => Auth::guard('admin')->user()->id];
        $request->merge($created_by);
        if (!empty($company->{$type})) {
-           if (Storage::exists('public/images/company/' . $company->{$type}))
+           if (File::exists('images/company/' . $company->{$type}))
            {
-               Storage::delete('public/images/company/' . $company->{$type});
+               File::delete('images/company/' . $company->{$type});
            }
        }
        $filename = "image-" . time() . '.' . $request->{$type}->getClientOriginalExtension();
-       $request->{$type}->move(storage_path('app/public/images/company'), $filename);
+       $request->{$type}->move(public_path('images/company'), $filename);
        $company->{$type} = $filename;
        $company->save(); 
 

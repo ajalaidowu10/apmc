@@ -21,22 +21,22 @@ class Company extends Model
 
    public function getInvheaderPathAttribute()
    {
-       return asset(\Storage::url($this->invheader ? 'images/company/'.$this->invheader : 'images/company/default.png'));
+       return $this->invheader ? asset('images/company/'.$this->invheader) : asset('images/company/default.png');
    }
 
    public function getInvfooterPathAttribute()
    {
-       return asset(\Storage::url($this->invheader ? 'images/company/'.$this->invheader : 'images/company/default.png'));
+       return $this->invheader ? asset('images/company/'.$this->invheader) : asset('images/company/default.png');
    }
 
    public function getRecheaderPathAttribute()
    {
-       return asset(\Storage::url($this->recheader ? 'images/company/'.$this->recheader : 'images/company/default.png'));
+       return $this->recheader ? asset('images/company/'.$this->recheader) : asset('images/company/default.png');
    }
 
    public function getRecfooterPathAttribute()
    {
-       return asset(\Storage::url($this->recheader ? 'images/company/'.$this->recheader : 'images/company/default.png'));
+       return $this->recheader ? asset('images/company/'.$this->recheader) : asset('images/company/default.png');
    }
 
 }

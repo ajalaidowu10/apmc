@@ -243,8 +243,6 @@
      mixins: [validationMixin],
      validations: {
          form:{
-           name:  {required },
-           descp: {required},
            company: {required },
            status: {required},
          }
@@ -372,6 +370,7 @@
             }
             else
             {
+              console.log('Hello');
               axios.post(`finyear`, transformKeys.snakeCase(this.form))
                     .then(resp =>{
                       this.$router.push({name:'view-finyear', params: { message: `Financial Year ${resp.data.name} Added Successfully` }});
