@@ -393,7 +393,7 @@
                               this.overlay = true;
                               axios.post(`company/upload/${this.orderid}/${type}`, data)
                                    .then(resp => {
-                                     console.log('upload successful');
+                                     console.log(resp.data.name);
                                    })
                                    .catch(err => Exception.handle(err, 'admin'));
                               this.overlay = false;

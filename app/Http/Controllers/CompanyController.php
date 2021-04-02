@@ -90,7 +90,7 @@ class CompanyController extends Controller
        $company->{$type} = $filename;
        $company->save(); 
 
-       return response(['name' => $company->name], Response::HTTP_ACCEPTED);
+       return response(['name' => $company->{$type}], Response::HTTP_ACCEPTED);
    }
 
    /**

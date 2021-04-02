@@ -21,7 +21,3 @@ Route::view('/{any}/{any1}/{any2}/{any3}', 'app');
 Route::view('/{any}/{any1}/{any2}/{any3}/{any4}', 'app');
 Route::view('/{any}/{any1}/{any2}/{any3}/{any4}/{any5}', 'app');
 Route::view('/{any}/{any1}/{any2}/{any3}/{any4}/{any5}/{any6}', 'app');
-
-Route::get('/foo', function () {
-    Artisan::call('storage:link');
-});
