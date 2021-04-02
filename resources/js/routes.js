@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import AdminLogin from './views/AdminLogin';
+import FinancialYear from './views/FinancialYear';
 import WebAdmin from './views/WebAdmin';
 import AddItem from './components/admin/item/Add';
 import ViewItem from './components/admin/item/View';
@@ -325,6 +326,11 @@ const router = new Router({
 				      path: '/web-admin/login',
 				      name: 'admin-login',
 				      component: AdminLogin,
+				    },
+				    {
+				      path: '/web-admin/financial-year',
+				      name: 'financial-year',
+				      component: FinancialYear,
 				    },
 				    {
 				      path: '/logout',

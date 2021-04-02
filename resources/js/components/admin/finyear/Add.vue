@@ -304,7 +304,7 @@
           } 
 
         } 
-        !this.$v.form.company.required && errors.push('Financial Year Type is required')
+        !this.$v.form.company.required && errors.push('Company is required')
         return errors
       },
       statusErrors () {
