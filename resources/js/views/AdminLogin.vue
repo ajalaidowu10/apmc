@@ -156,6 +156,8 @@
       form:{
         email: { required, email },
         password: { required, minLength: minLength(8) },
+        company: {required},
+        finyear: {required},
       }
     },
     created(){
@@ -226,10 +228,20 @@
         this.$v.$reset()
         this.form.email = this.form.password = null;
       },
+      setCompany(data){
+        this.form.companyId = data.id;
+      },
+      setFinyear(data){
+        this.form.finyearId = data.id;
+      },
       login()
       {
         this.$v.form.$touch();
-        if (this.$v.form.$invalid) 
+        if (this.$v.form.email.$invalid) 
+        {
+          return;
+        }
+        if (this.$v.form.password.$invalid) 
         {
           return;
         }
@@ -239,7 +251,7 @@
           this.form.loading = false;
           axios.get(`company`)
           .then(resp=>{
-            this.company = transformKeys.camelCase(resp.data.data);
+            this.company = resp.data.data;
           })
 
           this.showFinyear = true;

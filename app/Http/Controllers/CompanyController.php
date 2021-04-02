@@ -15,7 +15,7 @@ class CompanyController extends Controller
 
     function __construct()
     {
-      $this->middleware('JWT');
+      $this->middleware('JWT', ['except'=> 'index']);
     } 
 
    /**
