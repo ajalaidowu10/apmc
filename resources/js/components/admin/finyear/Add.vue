@@ -243,8 +243,6 @@
      mixins: [validationMixin],
      validations: {
          form:{
-           name:  {required },
-           descp: {required},
            company: {required },
            status: {required},
          }
@@ -284,7 +282,7 @@
               this.form.company           = getAccountOrder.company;
               this.form.companyId         = getAccountOrder.companyId;
               this.form.fromDate          = getAccountOrder.fromDate;
-              this.form.toDate         = getAccountOrder.toDate;
+              this.form.toDate            = getAccountOrder.toDate;
               this.form.status            = getAccountOrder.status;
               this.form.statusId          = getAccountOrder.statusId;
              })

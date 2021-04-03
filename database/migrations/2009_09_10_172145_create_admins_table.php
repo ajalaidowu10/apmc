@@ -22,6 +22,8 @@ class CreateAdminsTable extends Migration
             $table->foreignId('role_id')->nullable();
             $table->foreignId('status_id');
             $table->foreignId('created_by');
+            $table->foreignId('company_id')->nullable();
+            $table->foreignId('finyear_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

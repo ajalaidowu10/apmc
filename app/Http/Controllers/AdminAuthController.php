@@ -103,6 +103,11 @@ class AdminAuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        Auth::guard('admin')->user()->company_id = request('company_id');
+        Auth::guard('admin')->user()->finyear_id = request('finyear_id');
+        Auth::guard('admin')->user()->save();
+
+
         return $this->respondWithToken($token);
     }
 
@@ -125,6 +130,7 @@ class AdminAuthController extends Controller
     public function logout()
     {
         Auth::guard('admin')->logout();
+
 
         return response()->json(['message' => 'Successfully logged out']);
     }

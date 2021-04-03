@@ -7,6 +7,7 @@ use App\Http\Requests\FinancialYearRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\FinancialYearResource;
 use App\FinancialYear;
+use Auth;
 
 class FinancialYearController extends Controller
 {  
@@ -34,6 +35,9 @@ class FinancialYearController extends Controller
     */
    public function store(FinancialYearRequest $request)
    {
+       $created_by = ['created_by' => Auth::guard('admin')->user()->id];
+        $request->merge($created_by);
+
        $finyear = new FinancialYear($request->all());
        $finyear->save();
 
@@ -60,6 +64,9 @@ class FinancialYearController extends Controller
     */
    public function update(FinancialYearRequest $request, FinancialYear $finyear)
    {
+       $created_by = ['created_by' => Auth::guard('admin')->user()->id];
+        $request->merge($created_by);
+        
        $finyear->update($request->all());
        return response(['name' => $finyear->from_date." ".$finyear->to_date], Response::HTTP_ACCEPTED);
    }

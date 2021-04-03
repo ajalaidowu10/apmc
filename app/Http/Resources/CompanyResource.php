@@ -26,6 +26,7 @@ class CompanyResource extends JsonResource
             'invfooter_path'   => $this->invfooter_path,
             'recheader_path'   => $this->recheader_path,
             'recfooter_path'   => $this->recfooter_path,
+            'finyear'          => FinyearResource::collection($this->finyears),
 
         ];
     }

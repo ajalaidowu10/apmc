@@ -9,7 +9,7 @@ class FinancialYear extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['company_id', 'from_date', 'to_date', 'status_id'];
+    protected $fillable = ['company_id', 'from_date', 'to_date', 'created_by', 'status_id'];
 
     public function status()
     {

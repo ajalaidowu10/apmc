@@ -19,6 +19,11 @@ class Company extends Model
      return $this->belongsTo('App\Status');
    }
 
+   public function finyears()
+   {
+     return $this->hasMany('App\FinancialYear');
+   }
+
    public function getInvheaderPathAttribute()
    {
        return asset(\Storage::url($this->invheader ? 'images/company/'.$this->invheader : 'images/company/default.png'));

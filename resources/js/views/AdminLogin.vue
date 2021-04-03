@@ -67,7 +67,7 @@
                     :loading="form.loading"
                     :disabled="form.loading"
                     color="blue darken-1"
-                    @click="login"
+                    @click="loginFinal"
                   >
                     Login
                     <template v-slot:loader>
@@ -148,6 +148,7 @@
 <script>
   import { validationMixin } from 'vuelidate';
   import { required, minLength, email } from 'vuelidate/lib/validators';
+  import transformKeys from '../utils/transformKeys';
 
   export default {
     mixins: [validationMixin],
@@ -226,10 +227,11 @@
     methods:{
       clear(){
         this.$v.$reset()
-        this.form.email = this.form.password = null;
+        this.form.email = this.form.password =  this.form.company = this.form.finyear = null;
       },
       setCompany(data){
         this.form.companyId = data.id;
+        this.finyear = data.finyear;
       },
       setFinyear(data){
         this.form.finyearId = data.id;
@@ -246,18 +248,32 @@
           return;
         }
         this.form.loading = true;
-        Admin.login(this.form)
+        axios.get(`company`)
+        .then(resp=>{
+          this.company = resp.data.data;
+          this.showFinyear = true;
+        })
+        this.$v.$reset();
+        this.form.loading = false;
+        
+      },
+      loginFinal()
+      {
+        this.$v.form.$touch();
+        if (this.$v.form.company.$invalid) 
+        {
+          return;
+        }
+        if (this.$v.form.finyear.$invalid) 
+        {
+          return;
+        }
+        this.form.loading = true;
+        Admin.login(transformKeys.snakeCase(this.form))
         .then(resp => {
           this.form.loading = false;
-          axios.get(`company`)
-          .then(resp=>{
-            this.company = resp.data.data;
-          })
-
-          this.showFinyear = true;
-
           this.clear();
-          // Admin.responseAfterLogin(resp);
+          Admin.responseAfterLogin(resp);
         })
         .catch(err => {
           this.form.loading = false;
@@ -265,6 +281,7 @@
         });
         
       }
+
     }
   }
 </script>
