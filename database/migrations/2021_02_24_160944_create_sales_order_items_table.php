@@ -29,8 +29,6 @@ class CreateSalesOrderItemsTable extends Migration
             $table->decimal('final_amount');
             $table->longText('item_exp_object');
             $table->boolean('del_record')->default(0);
-            $table->foreignId('company_id');
-            $table->foreignId('finyear_id');
             $table->timestamps();
             $table->softDeletes();
 

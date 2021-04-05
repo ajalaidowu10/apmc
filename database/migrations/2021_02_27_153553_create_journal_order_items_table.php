@@ -23,8 +23,6 @@ class CreateJournalOrderItemsTable extends Migration
             $table->boolean('del_record')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreignId('company_id');
-            $table->foreignId('finyear_id');
             $table->foreign('acct_one_id')->references('id')->on('accounts');
             $table->foreign('crdr_id')->references('id')->on('crdrs');
             $table->foreign('journal_order_id')->references('id')->on('journal_orders');

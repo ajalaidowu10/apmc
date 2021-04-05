@@ -49,6 +49,7 @@
             <v-data-table
               :headers="headers"
               :items="itemOrders"
+              :items-per-page="30"
               :search="search"
               >
               <template v-slot:item.action="{ item }">
