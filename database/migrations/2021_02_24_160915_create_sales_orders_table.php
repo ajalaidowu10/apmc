@@ -29,6 +29,8 @@ class CreateSalesOrdersTable extends Migration
             $table->decimal('tds');
             $table->foreignId('status_id')->default(1);
             $table->foreignId('created_by');
+            $table->foreignId('company_id');
+            $table->foreignId('finyear_id');
             $table->timestamps();
             $table->softDeletes();
 

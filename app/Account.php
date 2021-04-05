@@ -20,7 +20,7 @@ class Account extends Model
         'bank_name', 'ifsc_code',
         'address_two', 'area', 'state', 'zip', 
         'branch', 'acct_no', 'contact_person',
-        'credit_days', 'credit_limit',
+        'credit_days', 'credit_limit', 'company_id',
     ];
 
 
@@ -42,6 +42,11 @@ class Account extends Model
     public function groupcode()
     {
       return $this->belongsTo('App\Groupcode');
+    }
+
+    public function company()
+    {
+      return $this->belongsTo('App\Company');
     }
 
     public function status()

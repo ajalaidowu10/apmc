@@ -16,8 +16,7 @@ class FinyearResource extends JsonResource
     {
         return [
             'id'             => $this->id,
-            'name'           => $this->from_date." - ".$this->to_date,
-            'to_date'        => $this->to_date,
+            'name'           => substr($this->from_date, 0, 4)." - ".substr($this->to_date, 0, 4),
         ];
     }
 }

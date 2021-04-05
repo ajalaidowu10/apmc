@@ -87,7 +87,7 @@ class Admin extends Authenticatable implements JWTSubject
 
     public function finyear()
     {
-      return $this->belongsTo('App\FinancialYear');
+      return $this->belongsTo('App\FinancialYear', 'finyear_id');
     }
 
     public function role()

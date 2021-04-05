@@ -9,5 +9,5 @@ class Area extends Model
 {
 	use SoftDeletes;
 	
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'company_id'];
 }

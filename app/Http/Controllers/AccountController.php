@@ -12,7 +12,6 @@ use Auth;
 
 class AccountController extends Controller
 {  
-
     function __construct()
     {
       $this->middleware('JWT');
@@ -25,7 +24,7 @@ class AccountController extends Controller
     */
    public function index()
    {
-       return AccountResource::collection(Account::latest()->get());
+       return AccountResource::collection(Account::where('company_id', Auth::guard('admin')->user()->company_id)->latest()->get());
    }
 
    /**
@@ -35,7 +34,7 @@ class AccountController extends Controller
     */
    public function getAccount(int $payment_type_id = 0, int $account_type_id = 0, int $account_id = 0, int $groupcode_id = 0)
    {
-       $get_account = Account::latest();
+       $get_account = Account::where('company_id', Auth::guard('admin')->user()->company_id)->latest();
 
        if ($payment_type_id == 1) 
        {
@@ -86,6 +85,8 @@ class AccountController extends Controller
    {
        $created_by = ['created_by' => Auth::guard('admin')->user()->id];
        $request->merge($created_by);
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
        $account = new Account($request->all());
        $account->save();
 
@@ -98,6 +99,8 @@ class AccountController extends Controller
                                      'enter_date'     => $account->created_at,
                                      'crdr_id'        => $account->crdr_id,
                                      'created_by'     => $account->created_by,
+                                     'company_id'     => $account->company_id,
+                                     'finyear_id'     => Auth::guard('admin')->user()->finyear_id,
                                      'descp'          => $account->name.' '.' Opening Balance of '
                                                                    .$account->opening_bal.' '.$account->crdr->name,
                                      
@@ -130,6 +133,8 @@ class AccountController extends Controller
    {
        $created_by = ['created_by' => Auth::guard('admin')->user()->id];
        $request->merge($created_by);
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
        $account->update($request->all());
        $opening_bal = Ledger::where('tran_id', $account->id)
                               ->where('transactype_id', 1)
@@ -140,6 +145,8 @@ class AccountController extends Controller
                                     'enter_date'     => $account->created_at,
                                     'crdr_id'        => $account->crdr_id,
                                     'created_by'     => $account->created_by,
+                                    'company_id'     => $account->company_id,
+                                    'finyear_id'     => Auth::guard('admin')->user()->finyear_id,
                                     'descp'          => $account->name.' '.' Opening Balance of '
                                                                   .$account->opening_bal.' '.$account->crdr->name,
                                     

@@ -12,6 +12,7 @@ use App\Ledger;
 use Auth;
 use DB;
 use DateTime;
+use App\Account;
 
 class SalesOrderController extends Controller
 {   
@@ -27,7 +28,9 @@ class SalesOrderController extends Controller
      */
     public function index()
     {
-        return SalesOrderResource::collection(SalesOrder::latest()->get());
+        return SalesOrderResource::collection(SalesOrder::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->where('finyear_id', Auth::guard('admin')->user()->finyear_id)
+                                                 ->latest()->get());
     }
 
     /**
@@ -43,6 +46,16 @@ class SalesOrderController extends Controller
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
 
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+        $request->merge($company_id);
+
+        $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+        $request->merge($finyear_id);
+
+        $purchase_acct = Account::where('name', 'Purchase Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
         DB::beginTransaction();
           try 
           {
@@ -53,7 +66,7 @@ class SalesOrderController extends Controller
                 Ledger::create([
                                 'tran_id'           => $salesorder->id, 
                                 'transactype_id'    => 3, 
-                                'acct_one_id'       => 1,
+                                'acct_one_id'       => $purchase_acct->id,
                                 'acct_two_id'       => $salesorder->acct_id,
                                 'amount'            => $salesorder->total_amount,
                                 'enter_date'        => $salesorder->enter_date,
@@ -66,7 +79,7 @@ class SalesOrderController extends Controller
                                 'tran_id'           => $salesorder->id, 
                                 'transactype_id'    => 3, 
                                 'acct_one_id'       => $salesorder->acct_id,
-                                'acct_two_id'       => 1,
+                                'acct_two_id'       => $purchase_acct->id,
                                 'amount'            => $salesorder->total_amount,
                                 'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 2,
@@ -111,6 +124,16 @@ class SalesOrderController extends Controller
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
 
+          $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+          $request->merge($company_id);
+
+          $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+          $request->merge($finyear_id);
+
+          $purchase_acct = Account::where('name', 'Purchase Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
           DB::beginTransaction();
             try 
             {
@@ -126,7 +149,7 @@ class SalesOrderController extends Controller
                   Ledger::create([
                                   'tran_id'           => $salesorder->id, 
                                   'transactype_id'    => 3, 
-                                  'acct_one_id'       => 1,
+                                  'acct_one_id'       => $purchase_acct->id,
                                   'acct_two_id'       => $salesorder->acct_id,
                                   'amount'            => $salesorder->total_amount,
                                   'enter_date'        => $salesorder->enter_date,
@@ -139,7 +162,7 @@ class SalesOrderController extends Controller
                                   'tran_id'           => $salesorder->id, 
                                   'transactype_id'    => 3, 
                                   'acct_one_id'       => $salesorder->acct_id,
-                                  'acct_two_id'       => 1,
+                                  'acct_two_id'       => $purchase_acct->id,
                                   'amount'            => $salesorder->total_amount,
                                   'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 2,
@@ -189,7 +212,9 @@ class SalesOrderController extends Controller
                         )
                         ->where('o.deleted_at', '=', null)
                         ->where('oi.deleted_at', '=', null)
-                        ->where('o.del_record', '=', 0);
+                        ->where('o.del_record', '=', 0)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
 
                           if ($date_from != '') 
                           {

@@ -27,6 +27,8 @@ class CreateItemExpsTable extends Migration
             $table->decimal('discount');
             $table->decimal('tolai');
             $table->decimal('tds');
+            $table->foreignId('company_id');
+            $table->foreignId('finyear_id');
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('status_id')->default(1);

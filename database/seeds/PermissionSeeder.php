@@ -146,7 +146,7 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'purchase';
+      $new_permission->slug = 'journal';
       $new_permission->name = 'Journal';
       $new_permission->link = '/web-admin/journal';
       $new_permission->icon = 'mdi-notebook-multiple';

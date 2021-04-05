@@ -229,11 +229,15 @@ class AdminAuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $company = Auth::guard('admin')->user()->company->name;
+        $finyear_from = substr(Auth::guard('admin')->user()->finyear->from_date, 0, 4);
+        $finyear_to = substr(Auth::guard('admin')->user()->finyear->to_date, 2, 2);
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::guard('admin')->factory()->getTTL() * 60,
             'user' => Auth::guard('admin')->user()->name,
+            'company' => $company.'-'.$finyear_from.'-'.$finyear_to,
         ]);
     }
 }

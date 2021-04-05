@@ -288,13 +288,13 @@
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
-                      .catch(err => Exception.handle(err, 'admin'));
+                      // .catch(err => Exception.handle(err, 'admin'));
                 axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
                      .then(resp => {
                       this.open_bal = resp.data;
                     })
                      .catch(err => {
-                      Exception.handle(err, 'admin');
+                      // Exception.handle(err, 'admin');
                     });
                 axios.get(`ledger/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                      .then(resp => {
@@ -302,7 +302,7 @@
                       this.itemOrders = resp.data;
                     })
                      .catch(err => {
-                      Exception.handle(err, 'admin');
+                      // Exception.handle(err, 'admin');
                     });
                 this.overlay = false;
               },
@@ -316,14 +316,14 @@
                       this.open_bal = resp.data;
                     })
                      .catch(err => {
-                      Exception.handle(err, 'admin');
+                      // Exception.handle(err, 'admin');
                     });
                   axios.get(`ledger/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                        .then(resp => {
                         this.itemOrders = resp.data;
                       })
                        .catch(err => {
-                        Exception.handle(err, 'admin');
+                        // Exception.handle(err, 'admin');
                       });
 
                 this.overlay = false;

@@ -7,6 +7,7 @@ use App\Http\Requests\NarrationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\NarrationResource;
 use App\Narration;
+use Auth;
 
 class NarrationController extends Controller
 {  
@@ -23,7 +24,7 @@ class NarrationController extends Controller
     */
    public function index()
    {
-       return NarrationResource::collection(Narration::latest()->get());
+       return NarrationResource::collection(Narration::where('company_id', Auth::guard('admin')->user()->company_id)->latest()->get());
    }
 
    /**
@@ -34,6 +35,9 @@ class NarrationController extends Controller
     */
    public function store(NarrationRequest $request)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+
        $area = new Narration($request->all());
        $area->save();
 
@@ -60,6 +64,9 @@ class NarrationController extends Controller
     */
    public function update(NarrationRequest $request, Narration $area)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+       
        $area->update($request->all());
        return response(['name' => $area->name], Response::HTTP_ACCEPTED);
    }

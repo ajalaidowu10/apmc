@@ -16,6 +16,7 @@ class CreateNarrationsTable extends Migration
         Schema::create('narrations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('company_id');
             $table->softDeletes();
             $table->timestamps();
         });

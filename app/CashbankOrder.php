@@ -12,6 +12,7 @@ class CashbankOrder extends Model
     protected $fillable = [
                             'cashbank_type_id', 'payment_type_id', 'acct_one_id', 
                             'total_amount', 'enter_date', 'created_by', 'deleted_at',
+                            'company_id', 'finyear_id',
                           ];
     protected static function boot()
     {

@@ -14,7 +14,8 @@ class ItemExp extends Model
                            'b_hamali', 'p_levy',
                            'b_levy', 'apmc', 'map_levy', 
                            'discount', 'tolai', 'tds',
-                           'status_id','deleted_at'
+                           'status_id','deleted_at',
+                           'finyear_id', 'company_id',
                          ];
 
    public function item()
@@ -24,5 +25,13 @@ class ItemExp extends Model
    public function status()
    {
      return $this->belongsTo('App\Status');
+   }
+   public function finyear()
+   {
+     return $this->belongsTo('App\FinancialYear', 'finyear_id');
+   }
+   public function company()
+   {
+     return $this->belongsTo('App\Company');
    }
 }

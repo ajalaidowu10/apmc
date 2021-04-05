@@ -9,6 +9,8 @@ use App\Http\Resources\CompanyResource;
 use App\Company;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use App\Account;
+use App\Ledger;
 
 class CompanyController extends Controller
 {  
@@ -42,6 +44,53 @@ class CompanyController extends Controller
        $company = new Company($request->all());
 
        $company->save();
+
+        $account = new Account([
+                           'account_type_id' => 1, 
+                           'name' => 'Sales Account',
+                           'opening_bal'=> 0,
+                           'crdr_id' => 1,
+                           'groupcode_id' => 13,
+                           'is_visible' => 0,
+                           'company_id' => $company->id,
+                       ]);
+         $account->save();
+         $opening_bal = new Ledger([
+                                       'tran_id' => $account->id, 
+                                       'transactype_id' => 1, 
+                                       'acct_one_id' => $account->id,
+                                       'acct_two_id' => $account->id,
+                                       'amount' => 0,
+                                       'enter_date' => $account->created_at,
+                                       'crdr_id' => $account->crdr_id,
+                                       'descp' => $account->name.' '.' Opening Balance of '
+                                                 .$account->opening_bal.' '.$account->crdr->name,
+                                       'company_id' => $company->id,
+                                   ]);
+         $opening_bal->save();
+         $account = new Account([
+                           'account_type_id' => 1, 
+                           'name' => 'Purchase Account',
+                           'opening_bal'=> 0,
+                           'crdr_id' => 2,
+                           'groupcode_id' => 11,
+                           'is_visible' => 0,
+                           'company_id' => $company->id,
+                       ]);
+         $account->save();
+         $opening_bal = new Ledger([
+                                     'tran_id' => $account->id, 
+                                     'transactype_id' => 1, 
+                                     'acct_one_id' => $account->id,
+                                     'acct_two_id' => $account->id,
+                                     'amount' => 0,
+                                     'enter_date' => $account->created_at,
+                                     'crdr_id' => $account->crdr_id,
+                                     'descp' => $account->name.' '.' Opening Balance of '
+                                               .$account->opening_bal.' '.$account->crdr->name,
+                                     'company_id' => $company->id,
+                                 ]);
+       $opening_bal->save();
 
        return response(['name' => $company->name], Response::HTTP_CREATED);
    }
@@ -102,6 +151,7 @@ class CompanyController extends Controller
    public function destroy(Company $company)
    {
       $company->delete();
+      Account::where('company_id', $company->id)->delete();
       return response(null, Response::HTTP_NO_CONTENT);
    }
 

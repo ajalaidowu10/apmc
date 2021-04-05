@@ -7,6 +7,7 @@ use App\Http\Requests\ItemRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\ItemResource;
 use App\Item;
+use Auth;
 
 class ItemController extends Controller
 {  
@@ -23,7 +24,7 @@ class ItemController extends Controller
     */
    public function index()
    {
-       return ItemResource::collection(Item::latest()->get());
+       return ItemResource::collection(Item::where('company_id', Auth::guard('admin')->user()->company_id)->latest()->get());
    }
 
    /**
@@ -34,6 +35,8 @@ class ItemController extends Controller
     */
    public function store(ItemRequest $request)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
        $item = new Item($request->all());
        $item->save();
 
@@ -60,6 +63,8 @@ class ItemController extends Controller
     */
    public function update(ItemRequest $request, Item $item)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
        $item->update($request->all());
        return response(['name' => $item->name], Response::HTTP_ACCEPTED);
    }

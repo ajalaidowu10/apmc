@@ -9,7 +9,8 @@ class Ledger extends Model
    protected $fillable = [
                               'tran_id', 'transactype_id', 'acct_one_id', 
                               'enter_date', 'acct_two_id', 'amount', 'crdr_id', 
-                              'descp', 'is_visible', 'created_by'
+                              'descp', 'is_visible', 'created_by', 'company_id',
+                              'finyear_id',
                          ];
 
   public function transaction()
@@ -20,7 +21,17 @@ class Ledger extends Model
   public function crdr()
   {
    return $this->belongsTo('App\Crdr');
-  }       
+  } 
+
+  public function company()
+  {
+   return $this->belongsTo('App\Company');
+  }
+
+  public function finyear()
+  {
+   return $this->belongsTo('App\FinancialYear', 'finyear_id');
+  }        
 
   public function acct_one()
   {

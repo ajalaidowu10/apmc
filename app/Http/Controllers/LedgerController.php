@@ -7,6 +7,7 @@ use App\Ledger;
 use App\Account;
 use DB;
 use DateTime;
+use Auth;
 
 
 class LedgerController extends Controller
@@ -47,7 +48,8 @@ class LedgerController extends Controller
                           DB::raw(
                                   'IF(o.crdr_id = 1, o.amount, 0) credit, IF(o.crdr_id = 2, o.amount, 0) debit, o.enter_date enter_date, o.descp descp, a.name acct_name, a.name acct_name, t.name tran_name'
                                 )
-                        );
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id);
 
                           if ($date_from != '') 
                           {
@@ -103,7 +105,8 @@ class LedgerController extends Controller
                           DB::raw(
                                   'SUM(IF(o.crdr_id = 1, o.amount, 0)) credit, SUM(IF(o.crdr_id = 2, o.amount, 0)) debit, SUM(IF(o.crdr_id = 2, o.amount, 0)) - SUM(IF(o.crdr_id = 1, o.amount, 0)) balance, a.name acct_name, a.name acct_name, u.phone, u.email'
                                 )
-                        );
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id);
 
                           if ($acct_id != 0) 
                           {

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\ItemExpResource;
 use App\ItemExp;
 use DB;
+use Auth;
 
 class ItemExpController extends Controller
 {  
@@ -24,7 +25,9 @@ class ItemExpController extends Controller
     */
    public function index()
    {
-       return ItemExpResource::collection(ItemExp::latest()->get());
+       return ItemExpResource::collection(ItemExp::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->where('finyear_id', Auth::guard('admin')->user()->finyear_id)
+                                                 ->latest()->get());
    }
 
    /**
@@ -35,6 +38,12 @@ class ItemExpController extends Controller
     */
    public function store(ItemExpRequest $request)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+
+       $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+       $request->merge($finyear_id);
+
        $itemexp = new ItemExp($request->all());
        $itemexp->save();
 
@@ -61,6 +70,12 @@ class ItemExpController extends Controller
     */
    public function update(ItemExpRequest $request, ItemExp $itemexp)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+
+       $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+       $request->merge($finyear_id);
+
        $itemexp->update($request->all());
        return response(null, Response::HTTP_ACCEPTED);
    }
@@ -84,7 +99,8 @@ class ItemExpController extends Controller
     */
    public function getItemExp(string $enter_date)
    {
-       $get_item = ItemExp::where('enter_date', '<=', $enter_date)
+       $get_item = ItemExp::where('company_id', Auth::guard('admin')->user()->company_id)
+                      ->where('enter_date', '<=', $enter_date)
                       ->where('status_id', 1)
                       ->orderBy('created_at', 'DESC')
                       ->get()

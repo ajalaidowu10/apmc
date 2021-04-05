@@ -11,6 +11,7 @@ use App\PurchaseOrderItem;
 use App\Ledger;
 use Auth;
 use DB;
+use App\Account;
 use DateTime;
 
 class PurchaseOrderController extends Controller
@@ -27,7 +28,9 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        return PurchaseOrderResource::collection(PurchaseOrder::latest()->get());
+        return PurchaseOrderResource::collection(PurchaseOrder::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->where('finyear_id', Auth::guard('admin')->user()->finyear_id)
+                                                 ->latest()->get());
     }
 
     /**
@@ -43,6 +46,16 @@ class PurchaseOrderController extends Controller
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
 
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+        $request->merge($company_id);
+
+        $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+        $request->merge($finyear_id);
+
+        $sale_acct = Account::where('name', 'Sales Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
         DB::beginTransaction();
           try 
           {
@@ -53,25 +66,29 @@ class PurchaseOrderController extends Controller
                 Ledger::create([
                                 'tran_id'           => $purchaseorder->id, 
                                 'transactype_id'    => 2, 
-                                'acct_one_id'       => 2,
+                                'acct_one_id'       => $sale_acct->id,
                                 'acct_two_id'       => $purchaseorder->acct_id,
                                 'amount'            => $purchaseorder->total_amount,
                                 'enter_date'        => $purchaseorder->enter_date,
                                 'crdr_id'           => 2,
                                 'descp'             => 'Item Purchase From '.$purchaseorder->acct->name,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $purchaseorder->created_by,
+                                'company_id'        => $purchaseorder->company_id,
+                                'finyear_id'        => $purchaseorder->finyear_id,
                             ]);
 
                 Ledger::create([
                                 'tran_id'           => $purchaseorder->id, 
                                 'transactype_id'    => 2, 
                                 'acct_one_id'       => $purchaseorder->acct_id,
-                                'acct_two_id'       => 2,
+                                'acct_two_id'       => $sale_acct->id,
                                 'amount'            => $purchaseorder->total_amount,
                                 'enter_date'        => $purchaseorder->enter_date,
                                 'crdr_id'           => 1,
                                 'descp'             => 'Item Purchase From '.$purchaseorder->acct->name,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $purchaseorder->created_by,
+                                'company_id'        => $purchaseorder->company_id,
+                                'finyear_id'        => $purchaseorder->finyear_id,
                             ]);
 
            } 
@@ -111,6 +128,10 @@ class PurchaseOrderController extends Controller
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
 
+          $sale_acct = Account::where('name', 'Sales Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
           DB::beginTransaction();
             try 
             {
@@ -126,25 +147,30 @@ class PurchaseOrderController extends Controller
                   Ledger::create([
                                   'tran_id'           => $purchaseorder->id, 
                                   'transactype_id'    => 2, 
-                                  'acct_one_id'       => 2,
+                                  'acct_one_id'       => $sale_acct->id,
                                   'acct_two_id'       => $purchaseorder->acct_id,
                                   'amount'            => $purchaseorder->total_amount,
                                   'enter_date'        => $purchaseorder->enter_date,
                                   'crdr_id'           => 2,
                                   'descp'             => 'Item Purchase From '.$purchaseorder->acct->name,
-                                  'created_by'        => Auth::guard('admin')->user()->id,
+                                  'created_by'        => $purchaseorder->created_by,
+                                  'company_id'        => $purchaseorder->company_id,
+                                  'finyear_id'        => $purchaseorder->finyear_id,
                               ]);
 
                   Ledger::create([
                                   'tran_id'           => $purchaseorder->id, 
                                   'transactype_id'    => 2, 
                                   'acct_one_id'       => $purchaseorder->acct_id,
-                                  'acct_two_id'       => 2,
+                                  'acct_two_id'       => $sale_acct->id,
                                   'amount'            => $purchaseorder->total_amount,
                                   'enter_date'        => $purchaseorder->enter_date,
                                   'crdr_id'           => 1,
                                   'descp'             => 'Item Purchase From '.$purchaseorder->acct->name,
-                                  'created_by'        => Auth::guard('admin')->user()->id,
+                                  'created_by'        => $purchaseorder->created_by,
+                                  'company_id'        => $purchaseorder->company_id,
+                                  'finyear_id'        => $purchaseorder->finyear_id,
+                                  
                               ]);
 
                 
@@ -189,7 +215,9 @@ class PurchaseOrderController extends Controller
                         )
                         ->where('o.deleted_at', '=', null)
                         ->where('oi.deleted_at', '=', null)
-                        ->where('o.del_record', '=', 0);
+                        ->where('o.del_record', '=', 0)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
 
                           if ($date_from != '') 
                           {

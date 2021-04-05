@@ -37,6 +37,7 @@ class CreateAccountsTable extends Migration
             $table->string('contact_person')->nullable();
             $table->integer('credit_days')->nullable();
             $table->integer('credit_limit')->nullable();
+            $table->foreignId('company_id');
             $table->softDeletes();
             $table->timestamps();
 

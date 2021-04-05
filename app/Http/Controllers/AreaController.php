@@ -7,6 +7,7 @@ use App\Http\Requests\AreaRequest;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\AreaResource;
 use App\Area;
+use Auth;
 
 class AreaController extends Controller
 {  
@@ -23,7 +24,7 @@ class AreaController extends Controller
     */
    public function index()
    {
-       return AreaResource::collection(Area::latest()->get());
+       return AreaResource::collection(Area::where('company_id', Auth::guard('admin')->user()->company_id)->latest()->get());
    }
 
    /**
@@ -34,6 +35,9 @@ class AreaController extends Controller
     */
    public function store(AreaRequest $request)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+
        $area = new Area($request->all());
        $area->save();
 
@@ -60,6 +64,9 @@ class AreaController extends Controller
     */
    public function update(AreaRequest $request, Area $area)
    {
+       $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+
        $area->update($request->all());
        return response(['name' => $area->name], Response::HTTP_ACCEPTED);
    }

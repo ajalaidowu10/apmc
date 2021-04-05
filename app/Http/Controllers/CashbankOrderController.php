@@ -29,7 +29,9 @@ class CashbankOrderController extends Controller
      */
     public function index()
     {
-        return CashbankOrderResource::collection(CashbankOrder::latest()->get());
+        return CashbankOrderResource::collection(CashbankOrder::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->where('finyear_id', Auth::guard('admin')->user()->finyear_id)
+                                                 ->latest()->get());
     }
 
     /**
@@ -44,6 +46,12 @@ class CashbankOrderController extends Controller
         $cashbank_order_items = $request->input('cashbank_order_items');
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
+
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+        $request->merge($company_id);
+
+        $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+        $request->merge($finyear_id);
 
         DB::beginTransaction();
           try 
@@ -64,7 +72,9 @@ class CashbankOrderController extends Controller
                                 'enter_date'        => $cashbank_order->enter_date,
                                 'crdr_id'           => $cashbank_order->cashbank_type_id == 1 ? 2 : 1,
                                 'descp'             => $cashbank_item->descp,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $cashbank_order->created_by,
+                                'company_id'        => $cashbank_order->company_id,
+                                'finyear_id'        => $cashbank_order->finyear_id,
                             ]);
 
                 Ledger::create([
@@ -76,7 +86,9 @@ class CashbankOrderController extends Controller
                                 'enter_date'        => $cashbank_order->enter_date,
                                 'crdr_id'           => $cashbank_order->cashbank_type_id == 1 ? 1 : 2,
                                 'descp'             => $cashbank_item->descp,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $cashbank_order->created_by,
+                                'company_id'        => $cashbank_order->company_id,
+                                'finyear_id'        => $cashbank_order->finyear_id,
                             ]);
               }
 
@@ -117,6 +129,12 @@ class CashbankOrderController extends Controller
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
 
+          $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+          $request->merge($company_id);
+
+          $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+          $request->merge($finyear_id);
+
           DB::beginTransaction();
             try 
             {
@@ -141,7 +159,9 @@ class CashbankOrderController extends Controller
                                     'enter_date'        => $cashbank->enter_date,
                                     'crdr_id'           => $cashbank->cashbank_type_id == 1 ? 2 : 1,
                                     'descp'             => $cashbank_item->descp,
-                                    'created_by'        => Auth::guard('admin')->user()->id,
+                                    'created_by'        => $cashbank_order->created_by,
+                                    'company_id'        => $cashbank_order->company_id,
+                                    'finyear_id'        => $cashbank_order->finyear_id,
                                 ]);
 
                     Ledger::create([
@@ -153,7 +173,9 @@ class CashbankOrderController extends Controller
                                     'enter_date'        => $cashbank->enter_date,
                                     'crdr_id'           => $cashbank->cashbank_type_id == 1 ? 1 : 2,
                                     'descp'             => $cashbank_item->descp,
-                                    'created_by'        => Auth::guard('admin')->user()->id,
+                                    'created_by'        => $cashbank_order->created_by,
+                                    'company_id'        => $cashbank_order->company_id,
+                                    'finyear_id'        => $cashbank_order->finyear_id,
                                 ]);
                   } 
                   
@@ -205,7 +227,9 @@ class CashbankOrderController extends Controller
                         )
                         ->where('o.deleted_at', '=', null)
                         ->where('oi.deleted_at', '=', null)
-                        ->where('oi.del_record', '=', 0);
+                        ->where('oi.del_record', '=', 0)
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
 
                           if ($date_from != '') 
                           {
