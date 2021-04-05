@@ -106,51 +106,34 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                      DATE
+                      ITEM
                     </th>
                     <th class="text-left">
-                      ACCOUNT
+                      INWARD QTY
                     </th>
                     <th class="text-left">
-                      NARRATION
+                      OUTWARD QTY
                     </th>
                     <th class="text-left">
-                      DEBIT &#8377
-                    </th>
-                    <th class="text-left"> 
-                      CREDIT &#8377
+                      BALANCE QTY
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="red lighten-5">
-                    <td colspan="3"><strong>Opening Balance</strong></td>
-                    <td v-if="open_bal < 0"><strong>{{ open_bal * -1 }}</strong></td>
-                    <td v-else>&nbsp;</td>
-                    <td v-if="open_bal > 0"><strong>{{ open_bal }}</strong></td>
-                    <td v-else>&nbsp;</td>
-                  </tr>
                   <tr
                     v-for="(item, index) in itemOrders"
                     :key="index"
                    >
-                    <td>{{ item.enter_date }}</td>
                     <td>{{ item.item_name }}</td>
-                    <td>{{ item.descp }}</td>
-                    <td>{{ item.debit == 0 ? '' : item.debit}}</td>
-                    <td>{{ item.credit == 0 ? '' : item.credit }}</td>
+                    <td>{{ item.inward_qty }}</td>
+                    <td>{{ item.outward_qty }}</td>
+                    <td>{{ item.inward_qty - item.outward_qty }}</td>
                   </tr>
                   <tr class="blue-grey lighten-5">
-                    <td colspan="3"><strong>TOTAL</strong></td>
-                    <td><strong>{{ totalDebit }}</strong></td>
-                    <td><strong>{{ totalCredit }}</strong></td>
-                  </tr>
-                  <tr class="success lighten-5">
-                    <td colspan="3"><strong>Closing Balance</strong></td>
-                    <td v-if="closingBal < 0"><strong>{{ closingBal * -1 }}</strong></td>
-                    <td v-else>&nbsp;</td>
-                    <td v-if="closingBal > 0"><strong>{{ closingBal }}</strong></td>
-                    <td v-else>&nbsp;</td>
+                    <td colspan="1"><strong>TOTAL</strong></td>
+                    <td><strong>{{ totalInward }}</strong></td>
+                    <td><strong>{{ totalOutward }}</strong></td>
+                    <td><strong>{{ totalInward - totalOutward }}</strong></td>
                   </tr>
                 </tbody>
               </template>
@@ -188,105 +171,74 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'ledger-report',
+      permission: 'stock-report',
       open_bal: 0,
       search: '',
-      itemId: 4,
+      itemId: 0,
       item: [],
-      dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
       itemOrders: [],
-      menuFrom: false,
       menuTo: false,
       overlay: false,
     }),
     computed:{
-      closingBal(){
-        let result = Number(this.open_bal) - Number(this.total);
-
-        return Number(result).toFixed(2);
-      },
-      total(){
-        let result = Number(this.totalDebit) - Number(this.totalCredit);
-
-        return Number(result).toFixed(2);
-      },
-      totalDebit(){
+      totalInward(){
         if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+          let result = this.itemOrders.reduce((prev, cur) => ({inward_qty: Number(prev.inward_qty) + Number(cur.inward_qty)})).inward_qty
 
           return Number(result).toFixed(2);
         }
+        
         return 0;
       },
-
-      totalCredit(){
+      totalOutward(){
         if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+          let result = this.itemOrders.reduce((prev, cur) => ({outward_qty: Number(prev.outward_qty) + Number(cur.outward_qty)})).outward_qty
 
           return Number(result).toFixed(2);
         }
+        
         return 0;
       },
     },
     created(){
-       this.index();
+      this.overlay = true;
+        axios.get(`item`)
+              .then(resp=>{
+                this.item = transformKeys.camelCase(resp.data.data);
+                this.item.push({id:0, name:'All Item'});
+              })
+              .catch(err => Exception.handle(err, 'admin'));
+        axios.get(`report/get/stock/${this.dateTo}/${this.itemId}`)
+           .then(resp => {
+            this.itemOrders = resp.data
+          })
+           .catch(err => {
+            Exception.handle(err, 'admin');
+          }); 
+      this.overlay = false;
     },
     methods: {
-              index()
-              {
-
-                this.overlay = true;
-                axios.get(`account`)
-                      .then(resp=>{
-                        this.item = transformKeys.camelCase(resp.data.data);
-                      })
-                      // .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`itembal/${this.itemId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      // Exception.handle(err, 'admin');
-                    });
-                axios.get(`ledger/report/${this.dateFrom}/${this.dateTo}/${this.itemId}`)
-                     .then(resp => {
-                      this.overlay = false;
-                      this.itemOrders = resp.data;
-                    })
-                     .catch(err => {
-                      // Exception.handle(err, 'admin');
-                    });
-                this.overlay = false;
-              },
+              
               setItem(data){
                 this.itemId = data.id;
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`itembal/${this.itemId}/${this.dateFrom}`)
+                  axios.get(`report/get/stock/${this.dateTo}/${this.itemId}`)
                      .then(resp => {
-                      this.open_bal = resp.data;
+                      this.itemOrders = resp.data
                     })
                      .catch(err => {
-                      // Exception.handle(err, 'admin');
+                      Exception.handle(err, 'admin');
                     });
-                  axios.get(`ledger/report/${this.dateFrom}/${this.dateTo}/${this.itemId}`)
-                       .then(resp => {
-                        this.itemOrders = resp.data;
-                      })
-                       .catch(err => {
-                        // Exception.handle(err, 'admin');
-                      });
-
                 this.overlay = false;
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-ledger-report',  params:{
-                                                                                        dateFrom:this.dateFrom, 
+                  let routeData = this.$router.resolve({name: 'print-stock-report',  params:{
                                                                                         dateTo:this.dateTo,
-                                                                                        itemId:this.acctId,
+                                                                                        itemId:this.itemId, 
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },

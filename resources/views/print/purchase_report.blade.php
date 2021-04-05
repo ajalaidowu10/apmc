@@ -24,7 +24,7 @@
 				</table>
 				<div style="text-align: center;">
 					@if ($acct_id != 0)
-						<span><strong>Account:</strong> {{ $acct_name }} | </span>
+						<span><strong>Account:</strong> {{ $acct_name }} </span>
 					@endif
 				</div>
 			</div>

@@ -163,7 +163,7 @@
       permission: 'account-bal',
       open_bal: 0,
       search: '',
-      acctId: 4,
+      acctId: null,
       acctName: null,
       acct: [],
       dateTo: new Date().toISOString().substr(0, 10),
@@ -177,26 +177,12 @@
     methods: {
               index()
               {
-
                 this.overlay = true;
-                axios.get(`account/${this.acctId}`)
-                      .then(resp=>{
-                        this.acctId = resp.data.data.id;
-                        this.acctName = resp.data.data.name;
-                      })
-                      .catch(err => Exception.handle(err, 'admin'));
                 axios.get(`account`)
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`acctbal/${this.acctId}/0/${this.dateTo}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                 this.overlay = false;
               },
               setAccountOne(data){

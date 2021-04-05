@@ -18,7 +18,7 @@
   export default {
     created(){
       this.overlay = true;
-      axios.get(`ledger/print/report/${this.$route.params.dateFrom}/${this.$route.params.dateTo}/${this.$route.params.acctId}`)
+      axios.get(`report/print/stock/${this.$route.params.dateTo}/${this.$route.params.itemId}`)
            .then(resp => {
             this.page = resp.data;
           })
@@ -28,7 +28,7 @@
       this.overlay = false;
     },
     data: () => ({
-      permission: 'ledger-report',
+      permission: 'stock-report',
       overlay: false,
       page: null,
     }),

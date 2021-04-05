@@ -38,6 +38,8 @@ import EditUser from './components/admin/user/Edit';
 import Logout from './views/Logout';
 import AcctBal from './components/admin/enquiry/AcctBal';
 import PrintAcctBalReport from './components/admin/enquiry/print/AcctBal';
+import Stock from './components/admin/enquiry/Stock';
+import PrintStockReport from './components/admin/enquiry/print/Stock';
 import AddAcctGroup from './components/admin/acctgroup/Add';
 import ViewAcctGroup from './components/admin/acctgroup/View';
 import AddArea from './components/admin/area/Add';
@@ -105,6 +107,12 @@ const router = new Router({
 				      path: '/acctbal/print/report/:acctId/:dateTo',
 				      name: 'print-acctbal-report',
 				      component: PrintAcctBalReport,
+				      props: true,
+				    },
+				    {
+				      path: '/report/print/stock/:dateTo/:itemId',
+				      name: 'print-stock-report',
+				      component: PrintStockReport,
 				      props: true,
 				    },
 				    {
@@ -288,6 +296,11 @@ const router = new Router({
 				      		path:'enquiry/acctbal',
 				      		name: 'enquiry-acctbal',
 				      		component: AcctBal,
+				      	},
+				      	{
+				      		path:'enquiry/stock',
+				      		name: 'enquiry-stock',
+				      		component: Stock,
 				      	},
 				      	{
 				      		path:'acctgroup',
