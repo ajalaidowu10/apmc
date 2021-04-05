@@ -20,7 +20,7 @@
                   class="headline"
                 >{{ countUnconfirmedBooking }}</v-card-title>
 
-                <v-card-subtitle>Unconfirmed Booking</v-card-subtitle>
+                <v-card-subtitle>Cash &amp; Bank Balance</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
@@ -45,7 +45,7 @@
                   class="headline"
                 >{{countCheckin}}</v-card-title>
 
-                <v-card-subtitle>Check In</v-card-subtitle>
+                <v-card-subtitle>Payables</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
@@ -70,7 +70,7 @@
                   class="headline"
                 >{{ countDebitCustomer }}</v-card-title>
 
-                <v-card-subtitle>Debit Customer</v-card-subtitle>
+                <v-card-subtitle>Receivable</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
@@ -95,7 +95,7 @@
                   class="headline"
                 >{{ countFreeRoom }}</v-card-title>
 
-                <v-card-subtitle>Room are Free</v-card-subtitle>
+                <v-card-subtitle>Stock</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
@@ -112,7 +112,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row v-if="unconfirmedBooking">
+    <v-row v-if="cashbankBalance">
       <v-col cols="12">
         <v-card>
           <v-card-title>
@@ -126,7 +126,7 @@
             </v-text-field>
           </v-card-title>
           <v-data-table
-            :headers="unconfirmedBookingHeaders"
+            :headers="cashbankBalanceHeaders"
             :items="getUnconfirmedBooking"
             :search="search"
             >
@@ -273,7 +273,7 @@
     data: () => ({
       alert: false,
       permission: 'dashboard',
-      unconfirmedBooking: true,
+      cashbankBalance: true,
       checkin: false,
       debitCustomer: false,
       rooms: false,
@@ -286,7 +286,7 @@
                 { text: 'Room Intercom', value: 'intercom' },
                 { text: 'Status', value: 'status' },
               ],
-      unconfirmedBookingHeaders: [
+      cashbankBalanceHeaders: [
                 {
                   text: 'Booking ID',
                   align: 'start',
@@ -419,7 +419,7 @@
                this.overlay = false;
               },
               disableAll(){
-                this.unconfirmedBooking = false;
+                this.cashbankBalance = false;
                 this.checkin = false;
                 this.rooms = false;
                 this.debitCustomer = false;
@@ -427,7 +427,7 @@
               },
               viewUnconfirmedBooking(){
                 this.disableAll();
-                this.unconfirmedBooking = true;
+                this.cashbankBalance = true;
                 this.getBooking();
               },
               viewDebitCustomer(){

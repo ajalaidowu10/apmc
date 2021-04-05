@@ -237,7 +237,7 @@ class AdminAuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => Auth::guard('admin')->factory()->getTTL() * 60,
             'user' => Auth::guard('admin')->user()->name,
-            'company' => $company.'-'.$finyear_from.'-'.$finyear_to,
+            'company' => $company.' | '.$finyear_from.' - '.$finyear_to,
         ]);
     }
 }
