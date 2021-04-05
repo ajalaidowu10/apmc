@@ -23,6 +23,7 @@ class CreateGroupcodesTable extends Migration
             $table->foreignId('created_by');
             $table->timestamps();
             $table->foreignId('status_id');
+            $table->foreignId('company_id')->nullable();
             
             $table->foreign('parent_groupcode_id')->references('id')->on('parent_groupcodes');
             $table->foreign('status_id')->references('id')->on('statuses');

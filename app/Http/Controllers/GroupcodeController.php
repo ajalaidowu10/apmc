@@ -19,7 +19,9 @@ class GroupcodeController extends Controller
      */
     public function index()
     {
-        return GroupcodeResource::collection(Groupcode::latest()->get());
+        return GroupcodeResource::collection(Groupcode::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                        ->orWhereNull('company_id')
+                                                        ->latest()->get());
     }
 
     /**
@@ -32,6 +34,10 @@ class GroupcodeController extends Controller
     {
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
+
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+       $request->merge($company_id);
+
         $groupcode = new Groupcode($request->all());
         $groupcode->save();
 
@@ -60,6 +66,10 @@ class GroupcodeController extends Controller
     {
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
+
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+        $request->merge($company_id);
+
         $groupcode->update($request->all());
         return response(['name' => $groupcode->name], Response::HTTP_ACCEPTED);
     }
