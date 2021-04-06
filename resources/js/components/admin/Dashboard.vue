@@ -282,7 +282,7 @@
       totalCashBankBalance(){
         if (this.cashBankBalance.length > 0) {
           let result = this.cashBankBalance.reduce((prev, cur) => ({balance: Number(prev.balance) + Number(cur.balance)})).balance
-
+          result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
         }
         
@@ -295,7 +295,7 @@
       totalReceivable(){
           if (this.getNewReceivable.length > 0) {
             let result = this.getNewReceivable.reduce((prev, cur) => ({balance: Number(prev.balance) + Number(cur.balance)})).balance
-
+            result = Number(result).toFixed(2);
             return this.numberWithCommas(result);
           }
           
@@ -304,7 +304,7 @@
       totalPayable(){
           if (this.getNewPayable.length > 0) {
             let result = this.getNewPayable.reduce((prev, cur) => ({balance: Number(prev.balance) + Number(cur.balance)})).balance
-
+            result = Number(result).toFixed(2);
             return this.numberWithCommas(result);
           }
           
