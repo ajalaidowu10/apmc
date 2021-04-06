@@ -96,33 +96,6 @@ class LedgerController extends Controller
                                            ]);
     }
 
-    public function getAcct(int $acct_type_id = 0, int $group= 0, int $acct_id = 0)
-    {
-      $get_report = DB::table('ledgers as o')
-                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
-                        ->leftJoin('users as u', 'u.account_id', '=', 'o.acct_one_id')
-                        ->select(
-                          DB::raw(
-                                  'SUM(IF(o.crdr_id = 1, o.amount, 0)) credit, SUM(IF(o.crdr_id = 2, o.amount, 0)) debit, SUM(IF(o.crdr_id = 2, o.amount, 0)) - SUM(IF(o.crdr_id = 1, o.amount, 0)) balance, a.name acct_name, a.name acct_name, u.phone, u.email'
-                                )
-                        )
-                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id);
-
-                          if ($acct_id != 0) 
-                          {
-                              $get_report = $get_report->where('o.acct_one_id', $acct_id);
-                          }
-                          if ($acct_type_id != 0) 
-                          {
-                              $get_report = $get_report->where('a.account_type_id', $acct_type_id);
-                          }
-                          if ($group != 0) 
-                          {
-                              $get_report = $get_report->groupBy('o.acct_one_id');
-                          }
-      $get_report = $get_report->get();                          
-      return $get_report;
-    }
 
     public function printAcctBal(Account $acct, string $date_to)
     {

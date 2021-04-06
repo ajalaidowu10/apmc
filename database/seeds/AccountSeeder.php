@@ -34,6 +34,7 @@ class AccountSeeder extends Seeder
                                       'descp' => $account->name.' '.' Opening Balance of '
                                                 .$account->opening_bal.' '.$account->crdr->name,
                                       'company_id' => 1,
+                                      'finyear_id' => 1,
                                   ]);
         $opening_bal->save();
         $account = new Account([
@@ -57,6 +58,7 @@ class AccountSeeder extends Seeder
                                     'descp' => $account->name.' '.' Opening Balance of '
                                               .$account->opening_bal.' '.$account->crdr->name,
                                     'company_id' => 1,
+                                    'finyear_id' => 1,
 
 
                                 ]);

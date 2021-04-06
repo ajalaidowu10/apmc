@@ -9,10 +9,10 @@ use DateTime;
 
 class ReportController extends Controller
 {
-    // function __construct()
-    // {
-    //   $this->middleware('JWT');
-    // } 
+    function __construct()
+    {
+      $this->middleware('JWT');
+    } 
 
     public function getStock(string $date_to, int $item_id = 0)
     {
@@ -49,6 +49,64 @@ class ReportController extends Controller
                                               'item_name'     => $item_name,
                                            ]);
     }
+
+    public function getCashBankBalance()
+    {
+      $get_report = DB::table('ledgers as o')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->select(
+                          DB::raw(
+                                  'IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) balance, a.name acct_name, a.name acct_name'
+                                )
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->whereIn('a.account_type_id', [4,5])
+                        ->groupBy('o.acct_one_id');
+
+                          
+                          
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function getPayable()
+    {
+      $get_report = DB::table('ledgers as o')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->select(
+                          DB::raw(
+                                  'IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) balance, a.name acct_name, a.name acct_name'
+                                )
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('a.groupcode_id', 19)
+                        ->groupBy('o.acct_one_id');
+
+                          
+                          
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function getReceivable()
+    {
+      $get_report = DB::table('ledgers as o')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->select(
+                          DB::raw(
+                                  'IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) balance, a.name acct_name, a.name acct_name'
+                                )
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('a.groupcode_id', 10)
+                        ->groupBy('o.acct_one_id');
+
+                          
+                          
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
 
 }
      

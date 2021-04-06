@@ -314,7 +314,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             else
@@ -326,7 +326,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
 

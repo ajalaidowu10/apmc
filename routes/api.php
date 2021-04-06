@@ -74,11 +74,12 @@ Route::get('sales/print/report/{date_from?}/{date_to?}/{acct_id?}', 'SalesOrderC
 Route::get('ledger/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@getReport');
 Route::get('ledger/print/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@printReport');
 Route::get('acctbal/print/report/{acct}/{date_to?}', 'LedgerController@printAcctBal');
-Route::get('ledger/get/acct/{acct_type_id?}/{group?}/{acct_id?}', 'LedgerController@getAcct');
 
 Route::get('report/get/stock/{date_to?}/{item_id?}', 'ReportController@getStock');
 Route::get('report/print/stock/{date_to?}/{item_id?}', 'ReportController@printStock');
-
+Route::get('report/get/cashbankbalance', 'ReportController@getCashBankBalance');
+Route::get('report/get/payable', 'ReportController@getPayable');
+Route::get('report/get/receivable', 'ReportController@getReceivable');
 
 
 Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'LedgerController@getBalance');
