@@ -52,7 +52,7 @@ class SalesOrderController extends Controller
         $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
         $request->merge($finyear_id);
 
-        $purchase_acct = Account::where('name', 'Purchase Account')
+        $sale_acct = Account::where('name', 'Sales Account')
                              ->where('company_id', Auth::guard('admin')->user()->company_id)
                              ->first();
 
@@ -66,7 +66,7 @@ class SalesOrderController extends Controller
                 Ledger::create([
                                 'tran_id'           => $salesorder->id, 
                                 'transactype_id'    => 3, 
-                                'acct_one_id'       => $purchase_acct->id,
+                                'acct_one_id'       => $sale_acct->id,
                                 'acct_two_id'       => $salesorder->acct_id,
                                 'amount'            => $salesorder->total_amount,
                                 'enter_date'        => $salesorder->enter_date,
@@ -81,7 +81,7 @@ class SalesOrderController extends Controller
                                 'tran_id'           => $salesorder->id, 
                                 'transactype_id'    => 3, 
                                 'acct_one_id'       => $salesorder->acct_id,
-                                'acct_two_id'       => $purchase_acct->id,
+                                'acct_two_id'       => $sale_acct->id,
                                 'amount'            => $salesorder->total_amount,
                                 'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 2,
@@ -134,7 +134,7 @@ class SalesOrderController extends Controller
           $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
           $request->merge($finyear_id);
 
-          $purchase_acct = Account::where('name', 'Purchase Account')
+          $sale_acct = Account::where('name', 'Sales Account')
                                ->where('company_id', Auth::guard('admin')->user()->company_id)
                                ->first();
 
@@ -153,7 +153,7 @@ class SalesOrderController extends Controller
                   Ledger::create([
                                   'tran_id'           => $salesorder->id, 
                                   'transactype_id'    => 3, 
-                                  'acct_one_id'       => $purchase_acct->id,
+                                  'acct_one_id'       => $sale_acct->id,
                                   'acct_two_id'       => $salesorder->acct_id,
                                   'amount'            => $salesorder->total_amount,
                                   'enter_date'        => $salesorder->enter_date,
@@ -168,7 +168,7 @@ class SalesOrderController extends Controller
                                   'tran_id'           => $salesorder->id, 
                                   'transactype_id'    => 3, 
                                   'acct_one_id'       => $salesorder->acct_id,
-                                  'acct_two_id'       => $purchase_acct->id,
+                                  'acct_two_id'       => $sale_acct->id,
                                   'amount'            => $salesorder->total_amount,
                                   'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 2,

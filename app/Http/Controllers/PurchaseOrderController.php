@@ -52,9 +52,9 @@ class PurchaseOrderController extends Controller
         $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
         $request->merge($finyear_id);
 
-        $sale_acct = Account::where('name', 'Sales Account')
-                             ->where('company_id', Auth::guard('admin')->user()->company_id)
-                             ->first();
+        $purchase_acct = Account::where('name', 'Purchase Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
 
         DB::beginTransaction();
           try 
@@ -66,7 +66,7 @@ class PurchaseOrderController extends Controller
                 Ledger::create([
                                 'tran_id'           => $purchaseorder->id, 
                                 'transactype_id'    => 2, 
-                                'acct_one_id'       => $sale_acct->id,
+                                'acct_one_id'       => $purchase_acct->id,
                                 'acct_two_id'       => $purchaseorder->acct_id,
                                 'amount'            => $purchaseorder->total_amount,
                                 'enter_date'        => $purchaseorder->enter_date,
@@ -81,7 +81,7 @@ class PurchaseOrderController extends Controller
                                 'tran_id'           => $purchaseorder->id, 
                                 'transactype_id'    => 2, 
                                 'acct_one_id'       => $purchaseorder->acct_id,
-                                'acct_two_id'       => $sale_acct->id,
+                                'acct_two_id'       => $purchase_acct->id,
                                 'amount'            => $purchaseorder->total_amount,
                                 'enter_date'        => $purchaseorder->enter_date,
                                 'crdr_id'           => 1,
@@ -128,7 +128,7 @@ class PurchaseOrderController extends Controller
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
 
-          $sale_acct = Account::where('name', 'Sales Account')
+          $purchase_acct = Account::where('name', 'Purchase Account')
                                ->where('company_id', Auth::guard('admin')->user()->company_id)
                                ->first();
 
@@ -147,7 +147,7 @@ class PurchaseOrderController extends Controller
                   Ledger::create([
                                   'tran_id'           => $purchaseorder->id, 
                                   'transactype_id'    => 2, 
-                                  'acct_one_id'       => $sale_acct->id,
+                                  'acct_one_id'       => $purchase_acct->id,
                                   'acct_two_id'       => $purchaseorder->acct_id,
                                   'amount'            => $purchaseorder->total_amount,
                                   'enter_date'        => $purchaseorder->enter_date,
@@ -162,7 +162,7 @@ class PurchaseOrderController extends Controller
                                   'tran_id'           => $purchaseorder->id, 
                                   'transactype_id'    => 2, 
                                   'acct_one_id'       => $purchaseorder->acct_id,
-                                  'acct_two_id'       => $sale_acct->id,
+                                  'acct_two_id'       => $purchase_acct->id,
                                   'amount'            => $purchaseorder->total_amount,
                                   'enter_date'        => $purchaseorder->enter_date,
                                   'crdr_id'           => 1,

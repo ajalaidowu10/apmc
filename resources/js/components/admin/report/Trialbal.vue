@@ -18,7 +18,7 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              Report Journal
+              Report Trial Balance
             </v-banner>
           </v-col>
         </v-row>
@@ -26,19 +26,6 @@
           <v-card>
             <v-card-title>
               <v-row>
-                <v-col
-                  cols="3"
-                  >
-                  <v-combobox
-                    label="Account"
-                    :items="acct"
-                    item-text="name"
-                    item-value="id"
-                    dense
-                    @change="setAccountOne($event)"
-                    outlined
-                  ></v-combobox>
-                </v-col>
                 <v-col
                   cols="2"
                   >
@@ -153,39 +140,36 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                      DATE
-                    </th>
-                    <th class="text-left">
                       ACCOUNT
                     </th>
-                    <th class="text-left">
-                      NARRATION
-                    </th>
-                    <th class="text-left">
+                    <th class="text-right">
                       DEBIT &#8377
                     </th>
-                    <th class="text-left"> 
+                    <th class="text-right"> 
                       CREDIT &#8377
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <template v-for="(group, index) in journal">
-                    <tr
-                      v-for="(item, innerIndex) in journalItem(group)"
-                     >
-                      <td>{{ item.enter_date }}</td>
-                      <td>{{ item.acct_name }}</td>
-                      <td>{{ item.descp }}</td>
-                      <td>{{ item.debit == 0 ? '' : item.debit}}</td>
-                      <td>{{ item.credit == 0 ? '' : item.credit }}</td>
-                    </tr>
+                  <template v-for="(group, index) in trialbal">
                     <tr class="blue-grey lighten-5">
-                      <td colspan="3"><strong>TOTAL</strong></td>
-                      <td><strong>{{ totalDebit(journalItem(group)) }}</strong></td>
-                      <td><strong>{{ totalCredit(journalItem(group)) }}</strong></td>
+                      <td><strong>{{ sliceData(group, 1) }}</strong></td>
+                      <td width="100"><strong>{{ totalDebit(trialbalItem(sliceData(group))) }}</strong></td>
+                      <td width="100"><strong>{{ totalCredit(trialbalItem(sliceData(group))) }}</strong></td>
+                    </tr>
+                    <tr
+                      v-for="(item, innerIndex) in trialbalItem(sliceData(group))"
+                     >
+                      <td>{{ item.acct_name }}</td>
+                      <td width="100">{{ item.debit == 0 ? '' : item.debit}}</td>
+                      <td width="100">{{ item.credit == 0 ? '' : item.credit }}</td>
                     </tr>
                   </template>
+                  <tr class="blue-grey lighten-3">
+                    <td><strong>TOTAL</strong></td>
+                    <td width="100"><strong>{{ allDebit }}</strong></td>
+                    <td width="100"><strong>{{ allCredit }}</strong></td>
+                  </tr>
                 </tbody>
               </template>
             </v-simple-table>
@@ -222,11 +206,8 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'journal-report',
+      permission: 'trailbal-report',
       search: '',
-      journalTypeId: 0,
-      acctId: 0,
-      acct: [],
       dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
       itemOrders: [],
@@ -235,20 +216,47 @@
       overlay: false,
     }),
     computed:{
-      journal() {
-              const journal = new Set();
-              this.itemOrders.forEach(item => journal.add(item.order_id));
+      trialbal() {
+              const trialbal = new Set();
+              this.itemOrders.forEach(item => trialbal.add(item.groupcode_id+','+item.groupcode_name));
 
-              return Array.from(journal); 
+              return Array.from(trialbal); 
           },
+      allDebit(){
+        if (this.itemOrders.length > 0) {
+          let result = this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+
+          return Number(result).toFixed(2);
+        }
+        return 0;
+      },
+
+      allCredit(){
+        if (this.itemOrders.length > 0) {
+          let result = this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+
+          return Number(result).toFixed(2);
+        }
+        return 0;
+      },
     },
     created(){
        this.index();
     },
     methods: {
-              journalItem(order_id) 
+              sliceData(value, end = 0){
+                let result = value.split(',');
+                
+                return end == 0 ? Number(result[0]) : result[1];
+              },
+              trialbalItem(groupcode_id) 
               {
-                return this.itemOrders.filter(item => item.order_id === order_id)
+                return this.itemOrders.filter(function(item){
+                  if (item.groupcode_id !== groupcode_id) return false;
+                  if (item.credit == 0 && item.debit == 0) return false;
+
+                  return true;
+                }) 
               },
               totalDebit(itemArray){
                 if (itemArray.length > 0) {
@@ -271,12 +279,7 @@
               {
 
                 this.overlay = true;
-                axios.get(`account`)
-                      .then(resp=>{
-                        this.acct = transformKeys.camelCase(resp.data.data);
-                      })
-                      .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`journal/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
+                axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}`)
                      .then(resp => {
                       this.itemOrders = resp.data;
                     })
@@ -285,12 +288,9 @@
                     });
                 this.overlay = false;
               },
-              setAccountOne(data){
-                this.acctId = data.id;
-              },
               searchData(){
                 this.overlay = true;
-                  axios.get(`journal/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
+                  axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}`)
                        .then(resp => {
                         this.itemOrders = resp.data;
                       })
@@ -301,10 +301,9 @@
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-journal-report',  params:{
+                  let routeData = this.$router.resolve({name: 'print-trial-balance',  params:{
                                                                                         dateFrom:this.dateFrom, 
-                                                                                        dateTo:this.dateTo,
-                                                                                        acctId:this.acctId,
+                                                                                        dateTo:this.dateTo
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },

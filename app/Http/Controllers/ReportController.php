@@ -111,14 +111,26 @@ class ReportController extends Controller
     {
       $get_report = DB::table('ledgers as o')
                         ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->leftJoin('groupcodes as g', 'g.id', '=', 'a.groupcode_id')
                         ->select(
                           DB::raw(
-                                  'IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) balance, a.name acct_name, a.name acct_name'
+                                  'IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) credit, IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) debit,  a.name acct_name, a.groupcode_id groupcode_id, g.name groupcode_name'
                                 )
                         )
                         ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
-                        ->where('a.groupcode_id', 10)
-                        ->groupBy('o.acct_one_id');
+                        ->groupBy('o.acct_one_id')
+                        ->orderBy('g.name')
+                        ->orderBy('a.name');
+
+                        if ($date_from != '') 
+                        {
+                            $get_report = $get_report->where('o.enter_date', '>=', $date_from);
+                        } 
+
+                        if ($date_to != '') 
+                        {
+                            $get_report = $get_report->where('o.enter_date', '<=', $date_to);
+                        }
 
                           
                           

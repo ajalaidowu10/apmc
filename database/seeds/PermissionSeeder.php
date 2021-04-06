@@ -198,7 +198,7 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_report);
-      $new_permission->slug = 'trail-balance';
+      $new_permission->slug = 'trailbal-report';
       $new_permission->name = 'Trial Balance';
       $new_permission->link = '/web-admin/report/trailbal';
       $new_permission->icon = 'mdi-table-large';
@@ -214,7 +214,7 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_report);
-      $new_permission->slug = 'balance-sheet';
+      $new_permission->slug = 'balsheet-report';
       $new_permission->name = 'Balance Sheet';
       $new_permission->link = '/web-admin/report/balsheet';
       $new_permission->icon = 'mdi-scale-balance';
