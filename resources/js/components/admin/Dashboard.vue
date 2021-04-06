@@ -335,14 +335,15 @@
        this.getCashBankBalance();
        this.getItem();
        this.getPayable();
-       this.overlay = true;
-       axios.get(`report/get/stock/${this.dateTo}/0`)
-            .then(resp => {
+        this.overlay = true;
+        axios.get(`report/get/receivable`)
+             .then(resp => {
               console.log(resp.data);
             })
-            .catch(err => Exception.handle(err, 'admin'));
+             .catch(err => {
+              Exception.handle(err, 'admin');
+            });
        this.overlay = false;
-
     },
     methods: {
               numberWithCommas(x) {
@@ -392,9 +393,6 @@
                 axios.get(`report/get/receivable`)
                      .then(resp => {
                       this.receivableOrders = resp.data;
-                      if (this.$route.params.message) {
-                        this.alert = true;
-                      }
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');

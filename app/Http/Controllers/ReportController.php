@@ -107,6 +107,25 @@ class ReportController extends Controller
       return $get_report;
     }
 
+    public function getTrialbal(string $date_from, string $date_to)
+    {
+      $get_report = DB::table('ledgers as o')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->select(
+                          DB::raw(
+                                  'IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) balance, a.name acct_name, a.name acct_name'
+                                )
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('a.groupcode_id', 10)
+                        ->groupBy('o.acct_one_id');
+
+                          
+                          
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
 
 }
      

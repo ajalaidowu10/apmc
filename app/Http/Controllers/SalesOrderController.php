@@ -72,7 +72,9 @@ class SalesOrderController extends Controller
                                 'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 1,
                                 'descp'             => 'Item Sales From '.$salesorder->acct->name,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $salesorder->created_by,
+                                'company_id'        => $salesorder->company_id,
+                                'finyear_id'        => $salesorder->finyear_id,
                             ]);
 
                 Ledger::create([
@@ -84,7 +86,9 @@ class SalesOrderController extends Controller
                                 'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 2,
                                 'descp'             => 'Item Sales From '.$salesorder->acct->name,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $salesorder->created_by,
+                                'company_id'        => $salesorder->company_id,
+                                'finyear_id'        => $salesorder->finyear_id,
                             ]);
 
            } 
@@ -155,7 +159,9 @@ class SalesOrderController extends Controller
                                   'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 1,
                                   'descp'             => 'Item Sales From '.$salesorder->acct->name,
-                                  'created_by'        => Auth::guard('admin')->user()->id,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
                               ]);
 
                   Ledger::create([
@@ -167,7 +173,9 @@ class SalesOrderController extends Controller
                                   'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 2,
                                   'descp'             => 'Item Sales From '.$salesorder->acct->name,
-                                  'created_by'        => Auth::guard('admin')->user()->id,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
                               ]);
 
                 

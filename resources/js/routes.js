@@ -29,6 +29,8 @@ import ReportCashbank from './components/admin/report/Cashbank';
 import PrintCashbankReport from './components/admin/report/print/Cashbank';
 import ReportJournal from './components/admin/report/Journal';
 import PrintJournalReport from './components/admin/report/print/Journal';
+import ReportTrialbal from './components/admin/report/Trialbal';
+import PrintTrialbalReport from './components/admin/report/print/Trialbal';
 import ReportLedger from './components/admin/report/Ledger';
 import PrintLedgerReport from './components/admin/report/print/Ledger';
 import AdminDashboard from './components/admin/Dashboard';
@@ -83,6 +85,12 @@ const router = new Router({
 				      path: '/journal/print/report/:dateFrom/:dateTo/:acctId',
 				      name: 'print-journal-report',
 				      component: PrintJournalReport,
+				      props: true,
+				    },
+				    {
+				      path: '/trialbal/print/report/:dateFrom/:dateTo',
+				      name: 'print-trialbal-report',
+				      component: PrintTrialbalReport,
 				      props: true,
 				    },
 				    {
@@ -256,6 +264,11 @@ const router = new Router({
 				      		path:'report/journal',
 				      		name: 'report-journal',
 				      		component: ReportJournal,
+				      	},
+				      	{
+				      		path:'report/trailbal',
+				      		name: 'report-trailbal',
+				      		component: ReportTrialbal,
 				      	},
 				      	{
 				      		path:'report/purchase',
