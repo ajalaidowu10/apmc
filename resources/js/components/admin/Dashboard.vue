@@ -335,15 +335,6 @@
        this.getCashBankBalance();
        this.getItem();
        this.getPayable();
-        this.overlay = true;
-        axios.get(`report/get/receivable`)
-             .then(resp => {
-              console.log(resp.data);
-            })
-             .catch(err => {
-              Exception.handle(err, 'admin');
-            });
-       this.overlay = false;
     },
     methods: {
               numberWithCommas(x) {
