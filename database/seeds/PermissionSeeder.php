@@ -206,19 +206,21 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'balsheet-report';
+      $new_permission->name = 'Balance Sheet';
+      $new_permission->link = '/web-admin/report/balsheet';
+      $new_permission->icon = 'mdi-scale-balance';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
       $new_permission->slug = 'schedule-report';
       $new_permission->name = 'Schedule';
       $new_permission->link = '/web-admin/report/schedule';
       $new_permission->icon = 'mdi-book-open-outline';
       $new_permission->save();
 
-      $new_permission = new Permission();
-      $new_permission->module()->associate($module_report);
-      $new_permission->slug = 'balsheet-report';
-      $new_permission->name = 'Balance Sheet';
-      $new_permission->link = '/web-admin/report/balsheet';
-      $new_permission->icon = 'mdi-scale-balance';
-      $new_permission->save();
+      
 
 
       $new_permission = new Permission();

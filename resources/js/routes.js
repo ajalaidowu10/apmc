@@ -88,7 +88,7 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/trialbal/print/report/:dateFrom/:dateTo',
+				      path: '/report/print/trialbal/:dateFrom/:dateTo',
 				      name: 'print-trialbal-report',
 				      component: PrintTrialbalReport,
 				      props: true,

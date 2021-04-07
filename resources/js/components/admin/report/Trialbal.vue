@@ -301,7 +301,7 @@
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-trial-balance',  params:{
+                  let routeData = this.$router.resolve({name: 'print-trialbal-report',  params:{
                                                                                         dateFrom:this.dateFrom, 
                                                                                         dateTo:this.dateTo
                                                                                       }});
