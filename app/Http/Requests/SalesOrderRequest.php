@@ -35,6 +35,7 @@ class SalesOrderRequest extends FormRequest
             'comm'                  => 'required|numeric',
             'tds'                   => 'required|numeric',
             'total_qty'             => 'required|numeric',
+            'sales_amount'          => 'required|numeric',
             'total_amount'          => 'required|numeric',
             'motor_no'              => 'required|string',
             'sales_order_items'   => 'required|array',

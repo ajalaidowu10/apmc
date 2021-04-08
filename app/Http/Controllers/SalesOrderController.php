@@ -56,6 +56,28 @@ class SalesOrderController extends Controller
                              ->where('company_id', Auth::guard('admin')->user()->company_id)
                              ->first();
 
+        $comm_acct = Account::where('name', 'Commission Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
+        $levy_acct = Account::where('name', 'Levy Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
+
+        $apmc_acct = Account::where('name', 'Apmc Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
+        $map_levy_acct = Account::where('name', 'Map Levy Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
+        $other_charges_acct = Account::where('name', 'Other Charges Account')
+                             ->where('company_id', Auth::guard('admin')->user()->company_id)
+                             ->first();
+
+
         DB::beginTransaction();
           try 
           {
@@ -68,7 +90,7 @@ class SalesOrderController extends Controller
                                 'transactype_id'    => 3, 
                                 'acct_one_id'       => $sale_acct->id,
                                 'acct_two_id'       => $salesorder->acct_id,
-                                'amount'            => $salesorder->total_amount,
+                                'amount'            => $salesorder->sales_amount,
                                 'enter_date'        => $salesorder->enter_date,
                                 'crdr_id'           => 1,
                                 'descp'             => 'Item Sales From '.$salesorder->acct->name,
@@ -76,6 +98,77 @@ class SalesOrderController extends Controller
                                 'company_id'        => $salesorder->company_id,
                                 'finyear_id'        => $salesorder->finyear_id,
                             ]);
+
+                Ledger::create([
+                                'tran_id'           => $salesorder->id, 
+                                'transactype_id'    => 3, 
+                                'acct_one_id'       => $comm_acct->id,
+                                'acct_two_id'       => $salesorder->acct_id,
+                                'amount'            => $salesorder->comm,
+                                'enter_date'        => $salesorder->enter_date,
+                                'crdr_id'           => 1,
+                                'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                'created_by'        => $salesorder->created_by,
+                                'company_id'        => $salesorder->company_id,
+                                'finyear_id'        => $salesorder->finyear_id,
+                            ]);
+
+                 Ledger::create([
+                                'tran_id'           => $salesorder->id, 
+                                'transactype_id'    => 3, 
+                                'acct_one_id'       => $levy_acct->id,
+                                'acct_two_id'       => $salesorder->acct_id,
+                                'amount'            => $salesorder->levy,
+                                'enter_date'        => $salesorder->enter_date,
+                                'crdr_id'           => 1,
+                                'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                'created_by'        => $salesorder->created_by,
+                                'company_id'        => $salesorder->company_id,
+                                'finyear_id'        => $salesorder->finyear_id,
+                            ]);
+
+                  Ledger::create([
+                                'tran_id'           => $salesorder->id, 
+                                'transactype_id'    => 3, 
+                                'acct_one_id'       => $apmc_acct->id,
+                                'acct_two_id'       => $salesorder->acct_id,
+                                'amount'            => $salesorder->apmc,
+                                'enter_date'        => $salesorder->enter_date,
+                                'crdr_id'           => 1,
+                                'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                'created_by'        => $salesorder->created_by,
+                                'company_id'        => $salesorder->company_id,
+                                'finyear_id'        => $salesorder->finyear_id,
+                            ]);
+
+                  Ledger::create([
+                                'tran_id'           => $salesorder->id, 
+                                'transactype_id'    => 3, 
+                                'acct_one_id'       => $map_levy_acct->id,
+                                'acct_two_id'       => $salesorder->acct_id,
+                                'amount'            => $salesorder->map_levy,
+                                'enter_date'        => $salesorder->enter_date,
+                                'crdr_id'           => 1,
+                                'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                'created_by'        => $salesorder->created_by,
+                                'company_id'        => $salesorder->company_id,
+                                'finyear_id'        => $salesorder->finyear_id,
+                            ]);
+
+                  Ledger::create([
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => $other_charges_acct->id,
+                                  'acct_two_id'       => $salesorder->acct_id,
+                                  'amount'            => $salesorder->other_charges,
+                                  'enter_date'        => $salesorder->enter_date,
+                                  'crdr_id'           => 1,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
+                              ]);
+
 
                 Ledger::create([
                                 'tran_id'           => $salesorder->id, 
@@ -134,7 +227,29 @@ class SalesOrderController extends Controller
           $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
           $request->merge($finyear_id);
 
+
           $sale_acct = Account::where('name', 'Sales Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
+          $comm_acct = Account::where('name', 'Commission Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
+          $levy_acct = Account::where('name', 'Levy Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
+
+          $apmc_acct = Account::where('name', 'Apmc Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
+          $map_levy_acct = Account::where('name', 'Map Levy Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
+          $other_charges_acct = Account::where('name', 'Other Charges Account')
                                ->where('company_id', Auth::guard('admin')->user()->company_id)
                                ->first();
 
@@ -155,7 +270,7 @@ class SalesOrderController extends Controller
                                   'transactype_id'    => 3, 
                                   'acct_one_id'       => $sale_acct->id,
                                   'acct_two_id'       => $salesorder->acct_id,
-                                  'amount'            => $salesorder->total_amount,
+                                  'amount'            => $salesorder->sales_amount,
                                   'enter_date'        => $salesorder->enter_date,
                                   'crdr_id'           => 1,
                                   'descp'             => 'Item Sales From '.$salesorder->acct->name,
@@ -163,6 +278,77 @@ class SalesOrderController extends Controller
                                   'company_id'        => $salesorder->company_id,
                                   'finyear_id'        => $salesorder->finyear_id,
                               ]);
+
+                  Ledger::create([
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => $comm_acct->id,
+                                  'acct_two_id'       => $salesorder->acct_id,
+                                  'amount'            => $salesorder->comm,
+                                  'enter_date'        => $salesorder->enter_date,
+                                  'crdr_id'           => 1,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
+                              ]);
+
+                   Ledger::create([
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => $levy_acct->id,
+                                  'acct_two_id'       => $salesorder->acct_id,
+                                  'amount'            => $salesorder->levy,
+                                  'enter_date'        => $salesorder->enter_date,
+                                  'crdr_id'           => 1,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
+                              ]);
+
+                    Ledger::create([
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => $apmc_acct->id,
+                                  'acct_two_id'       => $salesorder->acct_id,
+                                  'amount'            => $salesorder->apmc,
+                                  'enter_date'        => $salesorder->enter_date,
+                                  'crdr_id'           => 1,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
+                              ]);
+
+                    Ledger::create([
+                                  'tran_id'           => $salesorder->id, 
+                                  'transactype_id'    => 3, 
+                                  'acct_one_id'       => $map_levy_acct->id,
+                                  'acct_two_id'       => $salesorder->acct_id,
+                                  'amount'            => $salesorder->map_levy,
+                                  'enter_date'        => $salesorder->enter_date,
+                                  'crdr_id'           => 1,
+                                  'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                  'created_by'        => $salesorder->created_by,
+                                  'company_id'        => $salesorder->company_id,
+                                  'finyear_id'        => $salesorder->finyear_id,
+                              ]);
+
+                    Ledger::create([
+                                    'tran_id'           => $salesorder->id, 
+                                    'transactype_id'    => 3, 
+                                    'acct_one_id'       => $other_charges_acct->id,
+                                    'acct_two_id'       => $salesorder->acct_id,
+                                    'amount'            => $salesorder->other_charges,
+                                    'enter_date'        => $salesorder->enter_date,
+                                    'crdr_id'           => 1,
+                                    'descp'             => 'Item Sales From '.$salesorder->acct->name,
+                                    'created_by'        => $salesorder->created_by,
+                                    'company_id'        => $salesorder->company_id,
+                                    'finyear_id'        => $salesorder->finyear_id,
+                                ]);
+
 
                   Ledger::create([
                                   'tran_id'           => $salesorder->id, 
@@ -200,6 +386,7 @@ class SalesOrderController extends Controller
      */
     public function destroy(SalesOrder $salesorder)
     {
+       $salesorder->sales_order_items()->delete();
        $salesorder->delete();
        Ledger::where('tran_id', $salesorder->id)
                      ->where('transactype_id', 3)

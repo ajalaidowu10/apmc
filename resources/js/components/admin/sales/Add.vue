@@ -845,6 +845,7 @@
             data['tds']                 = this.tds;
             data['otherCharges']        = this.form.otherCharges;
             data['totalAmount']         = this.getTotalSalesAmount;
+            data['salesAmount']         = this.getTotalSalesCartAmount;
             data['totalQty']            = this.getTotalSalesCartQty();
             data['salesOrderItems']  = this.salesOrderItems;
             data['enterDate']           = this.enterDate;

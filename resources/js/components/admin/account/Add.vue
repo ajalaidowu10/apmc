@@ -428,12 +428,12 @@
             .then(resp=>{
               this.groupcode = transformKeys.camelCase(resp.data.data);
             })
-            // .catch(err => Exception.handle(err, 'admin'));
+            .catch(err => Exception.handle(err, 'admin'));
       axios.get(`area`)
             .then(resp=>{
               this.area = transformKeys.camelCase(resp.data.data);
             })
-            // .catch(err => Exception.handle(err, 'admin'));
+            .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
         axios.get(`account/${this.orderid}`)
@@ -462,7 +462,7 @@
               this.form.creditLimit       = getAccountOrder.creditLimit;
 
              })
-             // .catch(err => Exception.handle(err, 'admin'));
+             .catch(err => Exception.handle(err, 'admin'));
       }
       this.overlay = false;
       
@@ -582,7 +582,7 @@
                      .then(resp => {
                       this.$router.push({name:'view-account', params: { message: `Account Deleted Successfully` }});
                      })
-                     // .catch(err => Exception.handle(err, 'admin'));
+                     .catch(err => Exception.handle(err, 'admin'));
                 this.overlay = false;
               }
             })
@@ -602,7 +602,7 @@
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      // if (!this.form.allError) Exception.handle(err, 'admin');
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             else
@@ -613,7 +613,7 @@
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      // if (!this.form.allError) Exception.handle(err, 'admin');
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             this.overlay = false;
