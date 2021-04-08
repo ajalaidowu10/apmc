@@ -18,7 +18,7 @@ class AccountSeeder extends Seeder
                           'name' => 'Sales Account',
                           'opening_bal'=> 0,
                           'crdr_id' => 1,
-                          'groupcode_id' => 13,
+                          'groupcode_id' => 12,
                           'is_visible' => 0,
                           'company_id' => 1,
                       ]);

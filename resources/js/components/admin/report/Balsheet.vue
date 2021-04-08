@@ -166,7 +166,7 @@
                           v-for="(item, innerIndex) in liabilityItem(sliceData(group))"
                          >
                           <td>{{ item.acct_name }}</td>
-                          <td width="100" class="text-right">{{ item.result1 }}</td>
+                          <td width="100" class="text-right">{{ numberWithCommas(item.result1) }}</td>
                         </tr>
                       </template>
                       <tr class="blue-grey lighten-3">
@@ -209,7 +209,7 @@
                           v-for="(item, innerIndex) in assetItem(sliceData(group))"
                          >
                           <td>{{ item.acct_name }}</td>
-                          <td width="100" class="text-right">{{ item.result }}</td>
+                          <td width="100" class="text-right">{{ numberWithCommas(item.result) }}</td>
                         </tr>
                       </template>
                       <tr class="blue-grey lighten-3">
