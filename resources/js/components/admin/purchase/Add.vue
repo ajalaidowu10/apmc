@@ -859,6 +859,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             else
@@ -869,6 +870,7 @@
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             this.overlay = false;

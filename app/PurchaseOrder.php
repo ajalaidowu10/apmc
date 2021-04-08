@@ -16,6 +16,16 @@ class PurchaseOrder extends Model
                             'finyear_id', 'company_id',
                           ];
 
+    public static function boot() {
+      parent::boot();
+      self::deleting(function($purchaseorder) { 
+           $purchaseorder->purchase_order_items()->each(function($purchase_order_items) {
+              $purchase_order_items->delete(); 
+           });
+           
+      });
+    }
+
     public function purchase_order_items()
     {
       return $this->hasMany('App\PurchaseOrderItem');

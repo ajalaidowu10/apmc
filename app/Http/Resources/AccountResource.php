@@ -37,6 +37,7 @@ class AccountResource extends JsonResource
             'zip'                  => $this->zip,
             'credit_days'          => $this->credit_days,
             'credit_limit'         => $this->credit_limit,
+            'is_visible'           => $this->is_visible,
         ];
     }
 }

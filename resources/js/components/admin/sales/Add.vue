@@ -119,16 +119,6 @@
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <!-- <v-col
-                cols="4"
-               >
-                <v-text-field
-                  outlined
-                  dense
-                  label="Invoice No."
-                  v-model="form.invoiceNo"
-                ></v-text-field>
-              </v-col> -->
               <v-col
                 cols="4"
                >
@@ -845,7 +835,7 @@
             data['tds']                 = this.tds;
             data['otherCharges']        = this.form.otherCharges;
             data['totalAmount']         = this.getTotalSalesAmount;
-            data['salesAmount']         = this.getTotalSalesCartAmount;
+            data['salesAmount']         = this.getTotalSalesCartAmount();
             data['totalQty']            = this.getTotalSalesCartQty();
             data['salesOrderItems']  = this.salesOrderItems;
             data['enterDate']           = this.enterDate;
@@ -860,6 +850,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             else
@@ -870,6 +861,7 @@
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             this.overlay = false;

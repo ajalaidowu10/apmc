@@ -63,6 +63,7 @@
               >
               <template v-slot:item.edit="{ item }">
                 <v-btn
+                  v-if="item.is_visible"
                   color="primary"
                   text
                   small
@@ -70,6 +71,16 @@
                 >
                   <v-icon>
                     mdi-square-edit-outline
+                  </v-icon>
+                </v-btn>
+                <v-btn
+                  v-else
+                  color="primary"
+                  text
+                  small
+                >
+                  <v-icon>
+                    mdi-square
                   </v-icon>
                 </v-btn>
               </template>

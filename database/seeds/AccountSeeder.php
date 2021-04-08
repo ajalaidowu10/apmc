@@ -65,7 +65,7 @@ class AccountSeeder extends Seeder
         
        $account = new Account([
                          'account_type_id' => 1, 
-                         'name' => 'Commission Acount',
+                         'name' => 'Commission Account',
                          'opening_bal'=> 0,
                          'crdr_id' => 1,
                          'groupcode_id' => 16,

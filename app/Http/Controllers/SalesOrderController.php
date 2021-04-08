@@ -386,7 +386,6 @@ class SalesOrderController extends Controller
      */
     public function destroy(SalesOrder $salesorder)
     {
-       $salesorder->sales_order_items()->delete();
        $salesorder->delete();
        Ledger::where('tran_id', $salesorder->id)
                      ->where('transactype_id', 3)
@@ -451,8 +450,4 @@ class SalesOrderController extends Controller
                                               'acct_name'     => $acct_name,
                                            ]);
     }
-
-    
-
-
 }
