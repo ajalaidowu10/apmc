@@ -26,7 +26,8 @@ class GroupcodeRequest extends FormRequest
     {
         return [
             'parent_groupcode_id' => 'required|integer',
-            'name'          => 'required|string|max:255',
+            'name'          => 'required|string|max:255|unique:groupcodes,name,'
+                                      .$this->segment(3).',id,company_id,'.Auth::guard('admin')->user()->company_id,
             'descp'         => 'nullable|string',
             'status_id'     => 'required|integer',
 

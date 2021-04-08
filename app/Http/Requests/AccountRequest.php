@@ -28,7 +28,8 @@ class AccountRequest extends FormRequest
             'account_type_id'     => 'required|integer',
             'crdr_id'             => 'required|integer',
             'groupcode_id'        => 'required|integer',
-            'name'                => 'required|string|max:255|unique:accounts,name,'. $this->segment(3),
+            'name'                => 'required|string|max:255|unique:accounts,name,'
+                                      .$this->segment(3).',id,company_id,'.Auth::guard('admin')->user()->company_id,
             'opening_bal'         => 'required|numeric',
             'status_id'           => 'required|integer',
             'phone'               => 'string|nullable',
