@@ -154,21 +154,21 @@
                   <template v-for="(group, index) in trialbal">
                     <tr class="blue-grey lighten-5">
                       <td><strong>{{ sliceData(group, 1) }}</strong></td>
-                      <td width="100"><strong>{{ totalDebit(trialbalItem(sliceData(group))) }}</strong></td>
-                      <td width="100"><strong>{{ totalCredit(trialbalItem(sliceData(group))) }}</strong></td>
+                      <td width="100" class="text-right"><strong>{{ totalDebit(trialbalItem(sliceData(group))) }}</strong></td>
+                      <td width="100" class="text-right"><strong>{{ totalCredit(trialbalItem(sliceData(group))) }}</strong></td>
                     </tr>
                     <tr
                       v-for="(item, innerIndex) in trialbalItem(sliceData(group))"
                      >
                       <td>{{ item.acct_name }}</td>
-                      <td width="100">{{ item.debit == 0 ? '' : item.debit}}</td>
-                      <td width="100">{{ item.credit == 0 ? '' : item.credit }}</td>
+                      <td width="100" class="text-right">{{ item.debit == 0 ? '' : item.debit}}</td>
+                      <td width="100" class="text-right">{{ item.credit == 0 ? '' : item.credit }}</td>
                     </tr>
                   </template>
                   <tr class="blue-grey lighten-3">
                     <td><strong>TOTAL</strong></td>
-                    <td width="100"><strong>{{ allDebit }}</strong></td>
-                    <td width="100"><strong>{{ allCredit }}</strong></td>
+                    <td width="100" class="text-right"><strong>{{ allDebit }}</strong></td>
+                    <td width="100" class="text-right"><strong>{{ allCredit }}</strong></td>
                   </tr>
                 </tbody>
               </template>

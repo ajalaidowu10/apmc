@@ -18,7 +18,7 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              Report Purchase
+              Report Balance Sheet
             </v-banner>
           </v-col>
         </v-row>
@@ -26,19 +26,6 @@
           <v-card>
             <v-card-title>
               <v-row>
-                <v-col
-                  cols="3"
-                  >
-                  <v-combobox
-                    label="Account"
-                    :items="acct"
-                    item-text="name"
-                    item-value="id"
-                    dense
-                    @change="setAccountOne($event)"
-                    outlined
-                  ></v-combobox>
-                </v-col>
                 <v-col
                   cols="2"
                   >
@@ -146,97 +133,95 @@
                 </v-col>
               </v-row>
             </v-card-title>
-            <v-simple-table
-              fixed-header
-              >
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">
-                      S/No.
-                    </th>
-                    <th class="text-left">
-                      Date
-                    </th>
-                    <th class="text-left">
-                      Account
-                    </th>
-                    <th class="text-left">
-                      Invoice No.
-                    </th>
-                    <th class="text-left">
-                      Item
-                    </th>
-                    <th class="text-left">
-                      Qty
-                    </th>
-                    <th class="text-left">
-                      Grwt
-                    </th>
-                    <th class="text-left">
-                      Rate
-                    </th>
-                    <th class="text-left">
-                      Amount
-                    </th>
-                    <th class="text-left">
-                      Levy
-                    </th>
-                    <th class="text-left">
-                      Map Levy
-                    </th>
-                    <th class="text-left">
-                      Apmc
-                    </th>
-                    <th class="text-left"> 
-                      Comm
-                    </th>
-                    <th class="text-left"> 
-                      Tds
-                    </th>
-                    <th class="text-left"> 
-                      Final Amount
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(item, index) in itemOrders"
-                    :key="index"
-                   >
-                    <td>{{ item.sno }}</td>
-                    <td>{{ item.enter_date }}</td>
-                    <td>{{ item.acct_name }}</td>
-                    <td>{{ item.invoice_no }}</td>
-                    <td>{{ item.item_name }}</td>
-                    <td>{{ item.qty }}</td>
-                    <td>{{ item.grwt }}</td>
-                    <td>{{ item.rate }}</td>
-                    <td>{{ item.amount }}</td>
-                    <td>{{ item.levy }}</td>
-                    <td>{{ item.map_levy }}</td>
-                    <td>{{ item.apmc }}</td>
-                    <td>{{ item.comm }}</td>
-                    <td>{{ item.tds }}</td>
-                    <td>{{ item.final_amount }}</td>
-                  </tr>
-                  <tr class="blue-grey lighten-5">
-                    <td colspan="5"><strong>TOTAL</strong></td>
-                    <td><strong>{{ totalQty }}</strong></td>
-                    <td><strong>{{ totalGrwt }}</strong></td>
-                    <td><strong>{{ totalRate }}</strong></td>
-                    <td><strong>{{ totalAmount }}</strong></td>
-                    <td><strong>{{ totalLevy }}</strong></td>
-                    <td><strong>{{ totalMapLevy }}</strong></td>
-                    <td><strong>{{ totalApmc }}</strong></td>
-                    <td><strong>{{ totalComm }}</strong></td>
-                    <td><strong>{{ totalTds}}</strong></td>
-                    <td><strong>{{ totalFinalAmount }}</strong></td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-           </v-card>
+            <v-row class="pa-2">
+              <v-col cols="6">
+                <v-alert
+                  dense
+                  outlined
+                  type="error"
+                  >
+                  <strong>LIABILITY</strong>
+                </v-alert>
+                <v-simple-table
+                  fixed-header
+                  >
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">
+                          ACCOUNT
+                        </th>
+                        <th class="text-right">
+                          AMOUNT &#8377
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template v-for="(group, index) in liability">
+                        <tr class="blue-grey lighten-5">
+                          <td><strong>{{ sliceData(group, 1) }}</strong></td>
+                          <td width="100" class="text-right"><strong>{{ totalLiabilityAmount(liabilityItem(sliceData(group))) }}</strong></td>
+                        </tr>
+                        <tr
+                          v-for="(item, innerIndex) in liabilityItem(sliceData(group))"
+                         >
+                          <td>{{ item.acct_name }}</td>
+                          <td width="100" class="text-right">{{ item.result1 }}</td>
+                        </tr>
+                      </template>
+                      <tr class="blue-grey lighten-3">
+                        <td><strong>TOTAL</strong></td>
+                        <td width="100" class="text-right"><strong>{{ allLiabilityAmount }}</strong></td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-col>
+              <v-col cols="6">
+                <v-alert
+                  dense
+                  outlined
+                  type="success"
+                  >
+                  <strong>ASSET</strong>
+                </v-alert>
+                <v-simple-table
+                  fixed-header
+                  >
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">
+                          ACCOUNT
+                        </th>
+                        <th class="text-right">
+                          AMOUNT &#8377
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template v-for="(group, index) in asset">
+                        <tr class="blue-grey lighten-5">
+                          <td><strong>{{ sliceData(group, 1) }}</strong></td>
+                          <td width="100" class="text-right"><strong>{{ totalAssetAmount(assetItem(sliceData(group))) }}</strong></td>
+                        </tr>
+                        <tr
+                          v-for="(item, innerIndex) in assetItem(sliceData(group))"
+                         >
+                          <td>{{ item.acct_name }}</td>
+                          <td width="100" class="text-right">{{ item.result }}</td>
+                        </tr>
+                      </template>
+                      <tr class="blue-grey lighten-3">
+                        <td><strong>TOTAL</strong></td>
+                        <td width="100" class="text-right"><strong>{{ allAssetAmount }}</strong></td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-col>
+            </v-row>
+          </v-card>
           <br>
           <div class="text-center">
             <v-btn
@@ -269,154 +254,116 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'purchase-report',
-      acctId: 0,
-      acct: [],
+      permission: 'trailbal-report',
+      search: '',
       dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
       itemOrders: [],
+      profitLoss: 0,
+      prevProfitLoss: 0,
       menuFrom: false,
       menuTo: false,
       overlay: false,
     }),
     computed:{
-      totalQty(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+      getAsset(){
+        return this.itemOrders.filter(item => Number(item.result) > 0);
+      },
+      asset() {
+              const asset = new Set();
+              this.getAsset.forEach(item => asset.add(item.groupcode_id+','+item.groupcode_name));
+              return Array.from(asset); 
+          },
+      allAssetAmount(){
+        if (this.getAsset.length > 0) {
+          let result = this.getAsset.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
 
           return Number(result).toFixed(2);
         }
-        
         return 0;
       },
 
-      totalGrwt(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({grwt: Number(prev.grwt) + Number(cur.grwt)})).grwt
+      getLiability(){
+        return this.itemOrders.filter(item => Number(item.result) < 0);
+      },
+      liability() {
+              const liability = new Set();
+              this.getLiability.forEach(item => liability.add(item.groupcode_id+','+item.groupcode_name));
+
+              return Array.from(liability); 
+          },
+      allLiabilityAmount(){
+        if (this.getLiability.length > 0) {
+          let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
 
           return Number(result).toFixed(2);
         }
-        
         return 0;
       },
-
-      totalRate(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({rate: Number(prev.rate) + Number(cur.rate)})).rate
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalAmount(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalLevy(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalMapLevy(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({map_levy: Number(prev.map_levy) + Number(cur.map_levy)})).map_levy
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalApmc(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalComm(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalTds(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalFinalAmount(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({final_amount: Number(prev.final_amount) + Number(cur.final_amount)})).final_amount
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-
-
-
-
-
-
-
       
     },
     created(){
        this.index();
+
+       axios.get(`report/get/balsheet/${this.dateTo}`)
+            .then(resp => {
+             console.log(resp.data);
+             console.log(this.getAsset);
+           })
     },
     methods: {
+              sliceData(value, end = 0){
+                let result = value.split(',');
+                
+                return end == 0 ? Number(result[0]) : result[1];
+              },
+              assetItem(groupcode_id) 
+              {
+                return this.getAsset.filter(item => item.groupcode_id == groupcode_id);
+              },
+              liabilityItem(groupcode_id) 
+              {
+                return this.getLiability.filter(item => item.groupcode_id == groupcode_id);
+              },
+              totalAssetAmount(itemArray){
+                if (itemArray.length > 0) {
+                  let result = itemArray.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
+
+                  return Number(result).toFixed(2);
+                }
+                return 0;
+              },
+
+              totalLiabilityAmount(itemArray){
+                if (itemArray.length > 0) {
+                  let result = itemArray.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
+
+                  return Number(result).toFixed(2);
+                }
+                return 0;
+              },
+
               index()
               {
 
                 this.overlay = true;
-                axios.get(`account/get/0/12`)
-                      .then(resp=>{
-                        this.acct = transformKeys.camelCase(resp.data.data);
-                      })
-                      .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`purchase/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
-                     .then(resp => {
-                      this.itemOrders = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
+                  axios.get(`report/get/balsheet/${this.dateTo}`)
+                    .then(resp => {
+                     this.itemOrders = resp.data.asset_liability;
+                     this.profitLoss = resp.data.profit_loss;
+                     this.prevProfitLoss = resp.data.prev_profit_loss;
+                     console.log(this.liability);
+                     console.log(this.asset);
+
+                   })
+                   .catch(err => {
+                    Exception.handle(err, 'admin');
+                  });
                 this.overlay = false;
-              },
-              setAccountOne(data){
-                this.acctId = data.id;
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`purchase/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
+                  axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}`)
                        .then(resp => {
                         this.itemOrders = resp.data;
                       })
@@ -427,10 +374,9 @@
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-purchase-report',  params:{
+                  let routeData = this.$router.resolve({name: 'print-trialbal-report',  params:{
                                                                                         dateFrom:this.dateFrom, 
-                                                                                        dateTo:this.dateTo,
-                                                                                        acctId:this.acctId,
+                                                                                        dateTo:this.dateTo
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use DateTime;
+use App\FinancialYear;
 
 class ReportController extends Controller
 {
@@ -150,6 +151,76 @@ class ReportController extends Controller
                                               'date_from'     => $date_from,
                                               'date_to'       => $date_to,
                                            ]);
+    }
+
+    public function getBalsheetBy(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0)
+    {
+      $get_report = DB::table('ledgers as o')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->leftJoin('groupcodes as g', 'g.id', '=', 'a.groupcode_id')
+                        ->leftJoin('parent_groupcodes as p', 'p.id', '=', 'g.parent_groupcode_id')
+                        ->select(
+                          DB::raw(
+                                  'IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) result1, IFNULL(SUM(IF(o.crdr_id = 2, o.amount, 0)), 0) - IFNULL(SUM(IF(o.crdr_id = 1, o.amount, 0)), 0) result,  a.name acct_name, a.groupcode_id groupcode_id, g.name groupcode_name, g.parent_groupcode_id parent_groupcode_id3'
+                                )
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->groupBy('o.acct_one_id')
+                        ->orderBy('g.name')
+                        ->orderBy('a.name');
+
+                        if ($parent_group_id != 0) 
+                        {
+                            $get_report = $get_report->where('g.parent_groupcode_id', $parent_group_id);
+                        }
+
+                        if ($not_parent_group_id != 0) 
+                        {
+                            $get_report = $get_report->where('g.parent_groupcode_id', '!=', $not_parent_group_id);
+                        }
+
+                        if ($date_to != '') 
+                        {
+                            $get_report = $get_report->where('o.enter_date', '<=', $date_to);
+                        }
+
+
+                          
+                          
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function profit_loss(string $date_to):float
+    {
+      $result = 0;
+      $first_finyear = FinancialYear::where('company_id', Auth::guard('admin')->user()->company_id)->first();
+      $year =  date('Y-m-d', strtotime('-1 day', strtotime($first_finyear->from_date)));
+      if ($year == $date_to) 
+      {
+          return $result;
+      } 
+
+      $profit_loss = $this->getBalsheetBy($date_to, 2, 0);
+
+      foreach ($profit_loss as $key) 
+      {
+        $result = $result + $key->result;
+      }
+
+      return number_format((float)$result, 2, '.', '');
+
+    }
+
+    public function getBalsheet(string $date_to)
+    {
+      $finyear_from = Auth::guard('admin')->user()->finyear->from_date;
+      $asset_liability     = $this->getBalsheetBy($date_to, 0, 2);
+      $prev_profit_loss    = $this->profit_loss($finyear_from);
+      $profit_loss         = $this->profit_loss($date_to) - $prev_profit_loss;
+
+      return ['asset_liability' => $asset_liability, 'prev_profit_loss' => $prev_profit_loss, 'profit_loss' => $profit_loss];
+
     }
 
 
