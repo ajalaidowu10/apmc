@@ -281,7 +281,8 @@
         if (this.getAsset.length > 0) {
           let result = this.getAsset.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
 
-          return Number(result).toFixed(2);
+          result = Number(result).toFixed(2);
+          return this.numberWithCommas(result);
         }
         return 0;
       },
@@ -301,7 +302,8 @@
         if (this.getLiability.length > 0) {
           let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
            result = result + this.prevProfitLoss + this.profitLoss;
-          return Number(result).toFixed(2);
+          result = Number(result).toFixed(2);
+          return this.numberWithCommas(result);
         }
         return 0;
       },
@@ -317,6 +319,9 @@
            })
     },
     methods: {
+              numberWithCommas(x) {
+                  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              },
               sliceData(value, end = 0){
                 let result = value.split(',');
                 
@@ -346,7 +351,8 @@
                 if (itemArray.length > 0) {
                   let result = itemArray.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
 
-                  return Number(result).toFixed(2);
+                  result = Number(result).toFixed(2);
+          return this.numberWithCommas(result);
                 }
                 return 0;
               },
@@ -355,7 +361,8 @@
                 if (itemArray.length > 0) {
                   let result = itemArray.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
 
-                  return Number(result).toFixed(2);
+                  result = Number(result).toFixed(2);
+          return this.numberWithCommas(result);
                 }
                 return 0;
               },
