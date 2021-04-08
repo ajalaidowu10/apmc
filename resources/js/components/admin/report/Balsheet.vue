@@ -269,6 +269,9 @@
       getAsset(){
         return this.itemOrders.filter(item => Number(item.result) > 0);
       },
+      getAsset(){
+        return this.itemOrders.filter(item => Number(item.result) > 0);
+      },
       asset() {
               const asset = new Set();
               this.getAsset.forEach(item => asset.add(item.groupcode_id+','+item.groupcode_name));
@@ -288,14 +291,16 @@
       },
       liability() {
               const liability = new Set();
+              liability.add("-1, Prev Profit & Loss");
               this.getLiability.forEach(item => liability.add(item.groupcode_id+','+item.groupcode_name));
+              liability.add("0, Profit & Loss");
 
               return Array.from(liability); 
           },
       allLiabilityAmount(){
         if (this.getLiability.length > 0) {
           let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
-
+           result = result + this.prevProfitLoss + this.profitLoss;
           return Number(result).toFixed(2);
         }
         return 0;
@@ -323,7 +328,19 @@
               },
               liabilityItem(groupcode_id) 
               {
-                return this.getLiability.filter(item => item.groupcode_id == groupcode_id);
+                if (groupcode_id == -1) 
+                {
+                  return [{acct_name:'Prev Profit & Loss', result1: this.prevProfitLoss}];
+
+                }else if (groupcode_id == 0) 
+                {
+                  return [{acct_name:'Profit & Loss', result1: this.profitLoss}];
+
+                }else
+                {
+                  return this.getLiability.filter(item => item.groupcode_id == groupcode_id);
+                }
+                
               },
               totalAssetAmount(itemArray){
                 if (itemArray.length > 0) {
