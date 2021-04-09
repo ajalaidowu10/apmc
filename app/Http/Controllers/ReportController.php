@@ -294,11 +294,7 @@ class ReportController extends Controller
         $result = $result + $key->result;
       }
 
-      if ($result < 0) 
-      {
-        return 0;
-      }
-      
+            
       return number_format((float)$result, 2, '.', '');
     }
 
