@@ -166,7 +166,7 @@ class ReportController extends Controller
                                            ]);
     }
 
-    public function getBalsheetBy(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0, $sale_purchase_id = 0)
+    public function getLedgerWhere(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0, int $sale_purchase_id = 0, int $transactype_id = 0)
     {
       $get_report = DB::table('ledgers as o')
                         ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
@@ -190,6 +190,11 @@ class ReportController extends Controller
                         if ($not_parent_group_id != 0) 
                         {
                             $get_report = $get_report->where('g.parent_groupcode_id', '!=', $not_parent_group_id);
+                        }
+
+                        if ($transactype_id != 0) 
+                        {
+                            $get_report = $get_report->where('o.transactype_id', $transactype_id);
                         }
 
                         if ($sale_purchase_id != 0) 
@@ -248,7 +253,7 @@ class ReportController extends Controller
     {
       $result = 0;
 
-      $profit_loss = $this->getBalsheetBy($date_to, 2, 0, 0);
+      $profit_loss = $this->getLedgerWhere($date_to, 2, 0, 0,0);
 
       foreach ($profit_loss as $key) 
       {
@@ -263,7 +268,7 @@ class ReportController extends Controller
     {
       $result = 0;
 
-      $stock_value = $this->getBalsheetBy($date_to, 0, 0, 1);
+      $stock_value = $this->getLedgerWhere($date_to, 0, 0, 1,0);
 
       foreach ($stock_value as $key) 
       {
@@ -286,7 +291,7 @@ class ReportController extends Controller
     public function getBalsheet(string $date_to)
     {
       $finyear_from = Auth::guard('admin')->user()->finyear->from_date;
-      $asset_liability     = $this->getBalsheetBy($date_to, 0, 2, 0);
+      $asset_liability     = $this->getLedgerWhere($date_to, 0, 2, 0,0);
       $stock_value        = $this->stock_value($date_to);
       $prev_profit_loss    = $this->getProfitLoss($finyear_from);
       $profit_loss         = $this->getProfitLoss($date_to) - $prev_profit_loss;
