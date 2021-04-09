@@ -300,7 +300,6 @@
                   return [
                             {acct_name:'Opening Balance', result1: this.prevProfitLoss},
                             {acct_name:'Current Period', result1: this.profitLoss},
-                            {acct_name:'Diff. in Opening Balances', result1: this.openbalDiff}
                         ];
 
                 }
