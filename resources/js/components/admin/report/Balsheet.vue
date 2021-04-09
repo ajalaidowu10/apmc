@@ -249,10 +249,11 @@
               const liability = new Set();
               this.getLiability.forEach(item => liability.add(item.groupcode_id+','+item.groupcode_name));
               liability.add("0, Profit & Loss");
+              liability.add("-1, Diff. in Opening Balances");
 
               return Array.from(liability); 
           },
-      allLiabilityAmount(){
+      allLiabilityAmount(){ 
         if (this.getLiability.length > 0) {
           let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
          
@@ -299,6 +300,14 @@
                   return [
                             {acct_name:'Opening Balance', result1: this.prevProfitLoss},
                             {acct_name:'Current Period', result1: this.profitLoss},
+                            {acct_name:'Diff. in Opening Balances', result1: this.openbalDiff}
+                        ];
+
+                }
+
+                if (groupcode_id == -1) 
+                {
+                  return [
                             {acct_name:'Diff. in Opening Balances', result1: this.openbalDiff}
                         ];
 
