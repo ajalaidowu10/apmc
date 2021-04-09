@@ -213,6 +213,7 @@
       itemOrders: [],
       profitLoss: 0,
       prevProfitLoss: 0,
+      openbalDiff: 0,
       stockValue: 0,
       menuTo: false,
       overlay: false,
@@ -254,7 +255,9 @@
       allLiabilityAmount(){
         if (this.getLiability.length > 0) {
           let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
-           result = result + this.prevProfitLoss + this.profitLoss;
+         
+          result = Number(result) + Number(this.prevProfitLoss) + Number(this.profitLoss) + Number(this.openbalDiff);
+
           result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
         }
@@ -295,7 +298,8 @@
                 {
                   return [
                             {acct_name:'Opening Balance', result1: this.prevProfitLoss},
-                            {acct_name:'Current Period', result1: this.profitLoss}
+                            {acct_name:'Current Period', result1: this.profitLoss},
+                            {acct_name:'Diff. in Opening Balances', result1: this.openbalDiff}
                         ];
 
                 }
@@ -332,9 +336,7 @@
                      this.profitLoss = resp.data.profit_loss;
                      this.prevProfitLoss = resp.data.prev_profit_loss;
                      this.stockValue = resp.data.stock_value;
-                     console.log(this.liability);
-                     console.log(this.asset);
-
+                     this.openbalDiff = resp.data.openbal_diff;
                    })
                    .catch(err => {
                     // Exception.handle(err, 'admin');
