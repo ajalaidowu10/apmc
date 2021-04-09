@@ -30,53 +30,6 @@
                   cols="2"
                   >
                   <v-menu
-                    ref="menuFrom"
-                    v-model="menuFrom"
-                    :close-on-content-click="false"
-                    :return-value.sync="dateFrom"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        outlined
-                        dense
-                        v-model="dateFrom"
-                        label="Date From"
-                        append-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="dateFrom"
-                      no-title
-                      scrollable
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="menuFrom = false"
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="$refs.menuFrom.save(dateFrom)"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col
-                  cols="2"
-                  >
-                  <v-menu
                     ref="menuTo"
                     v-model="menuTo"
                     :close-on-content-click="false"
@@ -256,12 +209,11 @@
     data: () => ({
       permission: 'trailbal-report',
       search: '',
-      dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
       itemOrders: [],
       profitLoss: 0,
       prevProfitLoss: 0,
-      menuFrom: false,
+      stockValue: 0,
       menuTo: false,
       overlay: false,
     }),
@@ -275,12 +227,14 @@
       asset() {
               const asset = new Set();
               this.getAsset.forEach(item => asset.add(item.groupcode_id+','+item.groupcode_name));
+              asset.add("0, Stock Value");
               return Array.from(asset); 
           },
       allAssetAmount(){
         if (this.getAsset.length > 0) {
           let result = this.getAsset.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
 
+          result = Number(result) + Number(this.stockValue);
           result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
         }
@@ -292,7 +246,6 @@
       },
       liability() {
               const liability = new Set();
-              liability.add("-1, Prev Profit & Loss");
               this.getLiability.forEach(item => liability.add(item.groupcode_id+','+item.groupcode_name));
               liability.add("0, Profit & Loss");
 
@@ -329,23 +282,25 @@
               },
               assetItem(groupcode_id) 
               {
+                if (groupcode_id == 0) 
+                {
+                  return [{acct_name:'Stock Value', result: this.stockValue}];
+
+                }
                 return this.getAsset.filter(item => item.groupcode_id == groupcode_id);
               },
               liabilityItem(groupcode_id) 
               {
-                if (groupcode_id == -1) 
+                if (groupcode_id == 0) 
                 {
-                  return [{acct_name:'Prev Profit & Loss', result1: this.prevProfitLoss}];
+                  return [
+                            {acct_name:'Opening Balance', result1: this.prevProfitLoss},
+                            {acct_name:'Current Period', result1: this.profitLoss}
+                        ];
 
-                }else if (groupcode_id == 0) 
-                {
-                  return [{acct_name:'Profit & Loss', result1: this.profitLoss}];
-
-                }else
-                {
-                  return this.getLiability.filter(item => item.groupcode_id == groupcode_id);
                 }
-                
+                  
+                return this.getLiability.filter(item => item.groupcode_id == groupcode_id);
               },
               totalAssetAmount(itemArray){
                 if (itemArray.length > 0) {
@@ -376,12 +331,13 @@
                      this.itemOrders = resp.data.asset_liability;
                      this.profitLoss = resp.data.profit_loss;
                      this.prevProfitLoss = resp.data.prev_profit_loss;
+                     this.stockValue = resp.data.stock_value;
                      console.log(this.liability);
                      console.log(this.asset);
 
                    })
                    .catch(err => {
-                    Exception.handle(err, 'admin');
+                    // Exception.handle(err, 'admin');
                   });
                 this.overlay = false;
               },
@@ -392,7 +348,7 @@
                         this.itemOrders = resp.data;
                       })
                        .catch(err => {
-                        Exception.handle(err, 'admin');
+                        // Exception.handle(err, 'admin');
                       });
                 this.overlay = false;
               },

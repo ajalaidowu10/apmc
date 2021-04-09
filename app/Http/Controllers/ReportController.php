@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use DateTime;
 use App\FinancialYear;
+use App\Account;
 
 class ReportController extends Controller
 {
@@ -15,7 +16,7 @@ class ReportController extends Controller
       $this->middleware('JWT');
     } 
 
-    public function getStock(string $date_to, int $item_id = 0)
+    public function getStockReport(string $date_to, int $item_id = 0)
     {
       $company_id = Auth::guard('admin')->user()->company_id;
       $query = "SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.qty), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND sa.company_id = ${company_id} AND sa.enter_date <= '${date_to}' ) outward_qty, (SELECT IFNULL(sum(p.qty), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND pa.company_id = ${company_id} AND pa.enter_date <= '${date_to}')  inward_qty FROM items t WHERE t.company_id = ${company_id} ";
@@ -30,9 +31,21 @@ class ReportController extends Controller
       return $get_report;
     }
 
-    public function printStock(string $date_to, int $item_id = 0)
+
+    public function getStockValue(string $date_to)
     {
-      $get_report = $this->getStock($date_to, $item_id);
+      $company_id = Auth::guard('admin')->user()->company_id;
+      
+      $query = "SELECT SUM(purchase_amount) - SUM(sales_amount) amount FROM ( SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.amount), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND sa.company_id = ${company_id} AND sa.enter_date <= '${date_to}' ) sales_amount, (SELECT IFNULL(sum(p.final_amount), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND pa.company_id = ${company_id} AND pa.enter_date <= '${date_to}')  purchase_amount FROM items t WHERE t.company_id = ${company_id}) stocks";
+
+      $get_report = DB::select($query);
+      
+      return $get_report;
+    }
+
+    public function printStockReport(string $date_to, int $item_id = 0)
+    {
+      $get_report = $this->getStockReport($date_to, $item_id);
 
       $item_name = "";
       $date_to = new DateTime($date_to);
@@ -153,7 +166,7 @@ class ReportController extends Controller
                                            ]);
     }
 
-    public function getBalsheetBy(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0)
+    public function getBalsheetBy(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0, $sale_purchase_id = 0)
     {
       $get_report = DB::table('ledgers as o')
                         ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
@@ -179,6 +192,19 @@ class ReportController extends Controller
                             $get_report = $get_report->where('g.parent_groupcode_id', '!=', $not_parent_group_id);
                         }
 
+                        if ($sale_purchase_id != 0) 
+                        {
+                            $sale_acct = Account::where('name', 'Sales Account')
+                                                 ->where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->first();
+
+                            $purchase_acct = Account::where('name', 'Purchase Account')
+                               ->where('company_id', Auth::guard('admin')->user()->company_id)
+                               ->first();
+
+                            $get_report = $get_report->whereIn('o.acct_one_id', [$sale_acct->id, $purchase_acct->id]);
+                        }
+
                         if ($date_to != '') 
                         {
                             $get_report = $get_report->where('o.enter_date', '<=', $date_to);
@@ -191,9 +217,12 @@ class ReportController extends Controller
       return $get_report;
     }
 
-    public function profit_loss(string $date_to):float
+    
+
+    public function getProfitLoss(string $date_to):float
     {
       $result = 0;
+
       $first_finyear = FinancialYear::where('company_id', Auth::guard('admin')->user()->company_id)->first();
       $year =  date('Y-m-d', strtotime('-1 day', strtotime($first_finyear->from_date)));
       if ($year == $date_to) 
@@ -201,7 +230,25 @@ class ReportController extends Controller
           return $result;
       } 
 
-      $profit_loss = $this->getBalsheetBy($date_to, 2, 0);
+      $profit_loss = $this->profit_loss($date_to);
+
+      
+      $stock_value = $this->stock_value($date_to);
+
+      
+      $result = $profit_loss * -1 + $stock_value;
+
+
+
+      return number_format((float)$result, 2, '.', '');
+
+    }
+
+    public function profit_loss(string $date_to):float
+    {
+      $result = 0;
+
+      $profit_loss = $this->getBalsheetBy($date_to, 2, 0, 0);
 
       foreach ($profit_loss as $key) 
       {
@@ -212,14 +259,46 @@ class ReportController extends Controller
 
     }
 
+    public function stock_value(string $date_to):float
+    {
+      $result = 0;
+
+      $stock_value = $this->getBalsheetBy($date_to, 0, 0, 1);
+
+      foreach ($stock_value as $key) 
+      {
+        $result = $result + $key->result;
+      }
+
+      if ($result < 0) 
+      {
+        return 0;
+      }
+      
+
+
+      return number_format((float)$result, 2, '.', '');
+
+    }
+
+
+
     public function getBalsheet(string $date_to)
     {
       $finyear_from = Auth::guard('admin')->user()->finyear->from_date;
-      $asset_liability     = $this->getBalsheetBy($date_to, 0, 2);
-      $prev_profit_loss    = $this->profit_loss($finyear_from);
-      $profit_loss         = $this->profit_loss($date_to) - $prev_profit_loss;
+      $asset_liability     = $this->getBalsheetBy($date_to, 0, 2, 0);
+      $stock_value        = $this->stock_value($date_to);
+      $prev_profit_loss    = $this->getProfitLoss($finyear_from);
+      $profit_loss         = $this->getProfitLoss($date_to) - $prev_profit_loss;
+      
 
-      return ['asset_liability' => $asset_liability, 'prev_profit_loss' => $prev_profit_loss, 'profit_loss' => $profit_loss];
+      return [
+                'asset_liability' => $asset_liability, 
+                'prev_profit_loss' => $prev_profit_loss, 
+                'profit_loss' => $profit_loss,
+                'stock_value' => $stock_value, 
+
+              ];
 
     }
 
