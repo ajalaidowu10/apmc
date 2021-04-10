@@ -342,23 +342,14 @@ class ReportController extends Controller
 
     public function printBalsheet(string $date_to)
     {
-      $finyear_from = Auth::guard('admin')->user()->finyear->from_date;
-      $asset_liability    = $this->getLedgerWhere($date_to, 0, 2, 0,0);
-      $stock_value        = $this->stock_value($date_to);
-      $prev_profit_loss   = $this->getProfitLoss($finyear_from);
-      $profit_loss        = $this->getProfitLoss($date_to) - $prev_profit_loss;
-      $openbal_diff       = $this->open_bal($date_to);
-      
+        $get_report = $this->getBalsheet($date_to);
 
-      return [
-                'asset_liability'   => $asset_liability, 
-                'prev_profit_loss'  => $prev_profit_loss, 
-                'profit_loss'       => $profit_loss,
-                'stock_value'       => $stock_value, 
-                'openbal_diff'      => $openbal_diff, 
+        $date_to = new DateTime($date_to);
 
-              ];
-
+        return view('print.balsheet_report', [
+                                                'get_report'    => $get_report,
+                                                'date_to'       => $date_to,
+                                             ]);
     }
 
 
