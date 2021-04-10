@@ -214,6 +214,14 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'ploss-report';
+      $new_permission->name = 'Proft & Loss';
+      $new_permission->link = '/web-admin/report/ploss';
+      $new_permission->icon = 'mdi-cash-plus';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
       $new_permission->slug = 'schedule-report';
       $new_permission->name = 'Schedule';
       $new_permission->link = '/web-admin/report/schedule';

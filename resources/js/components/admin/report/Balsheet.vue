@@ -229,6 +229,10 @@
               const asset = new Set();
               this.getAsset.forEach(item => asset.add(item.groupcode_id+','+item.groupcode_name));
               asset.add("0, Stock Value");
+              if (this.openbalDiff < 0) 
+              {
+                asset.add("-1, Diff. in Opening Balances");
+              }
               return Array.from(asset); 
           },
       allAssetAmount(){
@@ -236,6 +240,12 @@
           let result = this.getAsset.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
 
           result = Number(result) + Number(this.stockValue);
+
+          if (this.openbalDiff < 0) 
+          {
+            result = result + (Number(this.openbalDiff) * -1) ;
+          }
+
           result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
         }
@@ -249,7 +259,11 @@
               const liability = new Set();
               this.getLiability.forEach(item => liability.add(item.groupcode_id+','+item.groupcode_name));
               liability.add("0, Profit & Loss");
-              liability.add("-1, Diff. in Opening Balances");
+              if (this.openbalDiff > 0) 
+              {
+                liability.add("-1, Diff. in Opening Balances");
+              }
+              
 
               return Array.from(liability); 
           },
@@ -257,7 +271,12 @@
         if (this.getLiability.length > 0) {
           let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
          
-          result = Number(result) + Number(this.prevProfitLoss) + Number(this.profitLoss) + Number(this.openbalDiff);
+          result = Number(result) + Number(this.prevProfitLoss) + Number(this.profitLoss);
+
+          if (this.openbalDiff > 0) 
+          {
+            result = result + Number(this.openbalDiff);
+          }
 
           result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
@@ -291,6 +310,15 @@
                   return [{acct_name:'Stock Value', result: this.stockValue}];
 
                 }
+
+                if (groupcode_id == -1) 
+                {
+                  return [
+                            {acct_name:'Diff. in Opening Balances', result: this.openbalDiff * -1}
+                        ];
+
+                }
+
                 return this.getAsset.filter(item => item.groupcode_id == groupcode_id);
               },
               liabilityItem(groupcode_id) 
@@ -349,17 +377,22 @@
                    .catch(err => {
                     // Exception.handle(err, 'admin');
                   });
+
                 this.overlay = false;
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}`)
-                       .then(resp => {
-                        this.itemOrders = resp.data;
-                      })
-                       .catch(err => {
-                        // Exception.handle(err, 'admin');
-                      });
+                  axios.get(`report/get/balsheet/${this.dateTo}`)
+                    .then(resp => {
+                     this.itemOrders = resp.data.asset_liability;
+                     this.profitLoss = resp.data.profit_loss;
+                     this.prevProfitLoss = resp.data.prev_profit_loss;
+                     this.stockValue = resp.data.stock_value;
+                     this.openbalDiff = resp.data.openbal_diff;
+                   })
+                   .catch(err => {
+                    // Exception.handle(err, 'admin');
+                  });
                 this.overlay = false;
               },
               printReport()
