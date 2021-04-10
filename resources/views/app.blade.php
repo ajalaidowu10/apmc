@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon" />
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?v=53693885" defer></script>
+    <script src="{{ asset('js/app.js') }}?v=76693885" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
