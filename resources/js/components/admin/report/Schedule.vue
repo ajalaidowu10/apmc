@@ -173,7 +173,7 @@
                     <tr
                       v-for="(item, innerIndex) in trialbalItem(sliceData(group))"
                      >
-                      <td>{{ item.groupcode_name }}</td>
+                      <td>{{ item.acct_name }}</td>
                       <td width="100" class="text-right">{{ item.debit == 0 ? '' : item.debit}}</td>
                       <td width="100" class="text-right">{{ item.credit == 0 ? '' : item.credit }}</td>
                     </tr>
