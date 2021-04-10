@@ -287,6 +287,10 @@
     },
     created(){
        this.index();
+       axios.get(`report/get/balsheet/${this.dateTo}`)
+         .then(resp => {
+          console.log(resp.data);
+        })
     },
     methods: {
               numberWithCommas(x) {
@@ -369,7 +373,7 @@
                      this.openbalDiff = resp.data.openbal_diff;
                    })
                    .catch(err => {
-                    // Exception.handle(err, 'admin');
+                    Exception.handle(err, 'admin');
                   });
 
                 this.overlay = false;
@@ -385,14 +389,13 @@
                      this.openbalDiff = resp.data.openbal_diff;
                    })
                    .catch(err => {
-                    // Exception.handle(err, 'admin');
+                    Exception.handle(err, 'admin');
                   });
                 this.overlay = false;
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-trialbal-report',  params:{
-                                                                                        dateFrom:this.dateFrom, 
+                  let routeData = this.$router.resolve({name: 'print-balsheet-report',  params:{
                                                                                         dateTo:this.dateTo
                                                                                       }});
                   window.open(routeData.href, '_blank');

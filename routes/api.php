@@ -83,6 +83,7 @@ Route::get('report/get/receivable', 'ReportController@getReceivable');
 Route::get('report/get/trialbal/{date_from}/{date_to}/{groupcode_id?}', 'ReportController@getTrialbal');
 Route::get('report/print/trialbal/{date_from}/{date_to}/{groupcode_id?}', 'ReportController@printTrialbal');
 Route::get('report/get/balsheet/{date_to}', 'ReportController@getBalsheet');
+Route::get('report/print/balsheet/{date_to}', 'ReportController@printBalsheet');
 
 
 Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'LedgerController@getBalance');

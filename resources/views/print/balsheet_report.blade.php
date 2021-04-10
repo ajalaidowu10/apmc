@@ -6,11 +6,7 @@
 		<!-- Scripts -->
 		<script src="{{ asset('js/app.js') }}" defer></script>
 		<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-		@if($groupcode_id == 0)
-			<title>Print Trial Balance Report</title>
-		@else
-			<title>Print Schedule Report</title>
-		@endif
+		<title>Print Balance Sheet Report</title>
 	</head>
 	<body style="padding-top: 15px; padding-left: 50px;">
 		<div>
@@ -23,12 +19,7 @@
 						</td>
 					</tr>
 					<tr>
-						@if($groupcode_id == 0)
-							<td colspan="2" style="text-align: center;"><strong>TRIAL BALANCE AS AT {{ date_format($date_from, 'jS F Y') }} TO {{ date_format($date_to, 'jS F Y') }}</strong></td>
-						@else
-							<td colspan="2" style="text-align: center;"><strong>{{ strtoupper($groupcode_name)}} AS AT {{ date_format($date_from, 'jS F Y') }} TO {{ date_format($date_to, 'jS F Y') }}</strong></td>
-						@endif
-						
+						<td colspan="2" style="text-align: center;"><strong>BALANCE SHEET AS AT {{ date_format($date_from, 'jS F Y') }} </strong></td>
 					</tr>
 				</table>
 			</div>
@@ -58,10 +49,7 @@
 						    ACCOUNT
 						  </th>
 						  <th style="text-align: right;">
-						    DEBIT &#8377
-						  </th>
-						  <th style="text-align: right;"> 
-						    CREDIT &#8377
+						    AMOUNT &#8377
 						  </th>
 						</tr>
 					</thead>
@@ -117,4 +105,4 @@
 			</div>
 		</div>
 	</body>
-	</html>
+</html>

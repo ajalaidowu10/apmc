@@ -163,7 +163,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="showGroup">
                   <template v-for="(group, index) in trialbal">
                     <tr class="blue-grey lighten-5">
                       <td><strong>{{ sliceData(group, 1) }}</strong></td>
@@ -226,6 +226,7 @@
       itemOrders: [],
       groupcode: [],
       groupcodeId: 0,
+      showGroup: 0,
       menuFrom: false,
       menuTo: false,
       overlay: false,
@@ -316,6 +317,7 @@
                   axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}/${this.groupcodeId}`)
                        .then(resp => {
                         this.itemOrders = resp.data;
+                        this.showGroup = this.groupcodeId;
                       })
                        .catch(err => {
                         Exception.handle(err, 'admin');
@@ -324,10 +326,10 @@
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-trialbal-report',  params:{
+                  let routeData = this.$router.resolve({name: 'print-schedule-report',  params:{
                                                                                         dateFrom:this.dateFrom, 
                                                                                         dateTo:this.dateTo,
-                                                                                        groupcodeId:this.groupcodeId
+                                                                                        groupcodeId:this.showGroup
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },
