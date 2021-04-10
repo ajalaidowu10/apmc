@@ -121,7 +121,7 @@ class ReportController extends Controller
       return $get_report;
     }
 
-    public function getTrialbal(string $date_from, string $date_to)
+    public function getTrialbal(string $date_from, string $date_to, int $groupcode_id = 0)
     {
       $get_report = DB::table('ledgers as o')
                         ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
@@ -136,6 +136,11 @@ class ReportController extends Controller
                         ->orderBy('g.name')
                         ->orderBy('a.name');
 
+                        if ($groupcode_id != 0) 
+                        {
+                            $get_report = $get_report->where('g.id', $groupcode_id);
+                        }
+
                         if ($date_from != '') 
                         {
                             $get_report = $get_report->where('o.enter_date', '>=', $date_from);
@@ -146,23 +151,35 @@ class ReportController extends Controller
                             $get_report = $get_report->where('o.enter_date', '<=', $date_to);
                         }
 
+
+
                           
                           
       $get_report = $get_report->get();                          
       return $get_report;
     }
 
-    public function printTrialbal(string $date_from, string $date_to)
+    public function printTrialbal(string $date_from, string $date_to, int $groupcode_id = 0)
     {
       $get_report = $this->getTrialbal($date_from, $date_to);
 
       $date_from = new DateTime($date_from);
       $date_to = new DateTime($date_to);
 
+      $groupcode_name = "";
+
+      if ($groupcode_id != 0) 
+      {
+       $get_groupcode = \App\Groupcode::find($groupcode_id);
+       $groupcode_name = $get_groupcode->name;
+      }
+
       return view('print.trialbal_report', [
                                               'get_report'    => $get_report,
                                               'date_from'     => $date_from,
                                               'date_to'       => $date_to,
+                                              'groupcode_id'       => $groupcode_id,
+                                              'groupcode_name'     => $groupcode_name,
                                            ]);
     }
 

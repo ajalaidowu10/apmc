@@ -18,7 +18,7 @@
               >
                 mdi-book-search-outline
               </v-icon>
-              Report Purchase
+              Report Schedule
             </v-banner>
           </v-col>
         </v-row>
@@ -30,12 +30,12 @@
                   cols="3"
                   >
                   <v-combobox
-                    label="Account"
-                    :items="acct"
+                    label="Group"
+                    :items="groupcode"
                     item-text="name"
                     item-value="id"
                     dense
-                    @change="setAccountOne($event)"
+                    @change="setGroupcode($event)"
                     outlined
                   ></v-combobox>
                 </v-col>
@@ -153,90 +153,40 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                      S/No.
+                      ACCOUNT
                     </th>
-                    <th class="text-left">
-                      Date
+                    <th class="text-right">
+                      DEBIT &#8377
                     </th>
-                    <th class="text-left">
-                      Account
-                    </th>
-                    <th class="text-left">
-                      Invoice No.
-                    </th>
-                    <th class="text-left">
-                      Item
-                    </th>
-                    <th class="text-left">
-                      Qty
-                    </th>
-                    <th class="text-left">
-                      Grwt
-                    </th>
-                    <th class="text-left">
-                      Rate
-                    </th>
-                    <th class="text-left">
-                      Amount
-                    </th>
-                    <th class="text-left">
-                      Levy
-                    </th>
-                    <th class="text-left">
-                      Map Levy
-                    </th>
-                    <th class="text-left">
-                      Apmc
-                    </th>
-                    <th class="text-left"> 
-                      Comm
-                    </th>
-                    <th class="text-left"> 
-                      Tds
-                    </th>
-                    <th class="text-left"> 
-                      Final Amount
+                    <th class="text-right"> 
+                      CREDIT &#8377
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="(item, index) in itemOrders"
-                    :key="index"
-                   >
-                    <td>{{ item.sno }}</td>
-                    <td>{{ item.enter_date }}</td>
-                    <td>{{ item.acct_name }}</td>
-                    <td>{{ item.invoice_no }}</td>
-                    <td>{{ item.item_name }}</td>
-                    <td>{{ item.qty }}</td>
-                    <td>{{ item.grwt }}</td>
-                    <td>{{ item.rate }}</td>
-                    <td>{{ item.amount }}</td>
-                    <td>{{ item.levy }}</td>
-                    <td>{{ item.map_levy }}</td>
-                    <td>{{ item.apmc }}</td>
-                    <td>{{ item.comm }}</td>
-                    <td>{{ item.tds }}</td>
-                    <td>{{ item.final_amount }}</td>
-                  </tr>
-                  <tr class="blue-grey lighten-5">
-                    <td colspan="5"><strong>TOTAL</strong></td>
-                    <td><strong>{{ totalQty }}</strong></td>
-                    <td><strong>{{ totalGrwt }}</strong></td>
-                    <td><strong>{{ totalRate }}</strong></td>
-                    <td><strong>{{ totalAmount }}</strong></td>
-                    <td><strong>{{ totalLevy }}</strong></td>
-                    <td><strong>{{ totalMapLevy }}</strong></td>
-                    <td><strong>{{ totalApmc }}</strong></td>
-                    <td><strong>{{ totalComm }}</strong></td>
-                    <td><strong>{{ totalTds}}</strong></td>
-                    <td><strong>{{ totalFinalAmount }}</strong></td>
+                  <template v-for="(group, index) in trialbal">
+                    <tr class="blue-grey lighten-5">
+                      <td><strong>{{ sliceData(group, 1) }}</strong></td>
+                      <td width="100" class="text-right"><strong>{{ totalDebit(trialbalItem(sliceData(group))) }}</strong></td>
+                      <td width="100" class="text-right"><strong>{{ totalCredit(trialbalItem(sliceData(group))) }}</strong></td>
+                    </tr>
+                    <tr
+                      v-for="(item, innerIndex) in trialbalItem(sliceData(group))"
+                     >
+                      <td>{{ item.groupcode_name }}</td>
+                      <td width="100" class="text-right">{{ item.debit == 0 ? '' : item.debit}}</td>
+                      <td width="100" class="text-right">{{ item.credit == 0 ? '' : item.credit }}</td>
+                    </tr>
+                  </template>
+                  <tr class="blue-grey lighten-3">
+                    <td><strong>TOTAL</strong></td>
+                    <td width="100" class="text-right"><strong>{{ allDebit }}</strong></td>
+                    <td width="100" class="text-right"><strong>{{ allCredit }}</strong></td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
-           </v-card>
+          </v-card>
           <br>
           <div class="text-center">
             <v-btn
@@ -269,140 +219,90 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'purchase-report',
-      acctId: 0,
-      acct: [],
+      permission: 'schedule-report',
+      search: '',
       dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
       itemOrders: [],
+      groupcode: [],
+      groupcodeId: 0,
       menuFrom: false,
       menuTo: false,
       overlay: false,
     }),
     computed:{
-      totalQty(){
+      trialbal() {
+              const trialbal = new Set();
+              this.itemOrders.forEach(item => trialbal.add(item.groupcode_id+','+item.groupcode_name));
+
+              return Array.from(trialbal); 
+          },
+      allDebit(){
         if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+          let result = this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
 
           return Number(result).toFixed(2);
         }
-        
         return 0;
       },
 
-      totalGrwt(){
+      allCredit(){
         if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({grwt: Number(prev.grwt) + Number(cur.grwt)})).grwt
+          let result = this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
 
           return Number(result).toFixed(2);
         }
-        
         return 0;
       },
-
-      totalRate(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({rate: Number(prev.rate) + Number(cur.rate)})).rate
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalAmount(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalLevy(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalMapLevy(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({map_levy: Number(prev.map_levy) + Number(cur.map_levy)})).map_levy
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalApmc(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalComm(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalTds(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalFinalAmount(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({final_amount: Number(prev.final_amount) + Number(cur.final_amount)})).final_amount
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-
-
-
-
-
-
-
-      
     },
     created(){
        this.index();
     },
     methods: {
+              setGroupcode(data){
+                this.groupcodeId = data.id;
+              },
+              sliceData(value, end = 0){
+                let result = value.split(',');
+                
+                return end == 0 ? Number(result[0]) : result[1];
+              },
+              trialbalItem(groupcode_id) 
+              {
+                return this.itemOrders.filter(function(item){
+                  if (item.groupcode_id !== groupcode_id) return false;
+                  if (item.credit == 0 && item.debit == 0) return false;
+
+                  return true;
+                }) 
+              },
+              totalDebit(itemArray){
+                if (itemArray.length > 0) {
+                  let result = itemArray.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+
+                  return Number(result).toFixed(2);
+                }
+                return 0;
+              },
+
+              totalCredit(itemArray){
+                if (itemArray.length > 0) {
+                  let result = itemArray.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+
+                  return Number(result).toFixed(2);
+                }
+                return 0;
+              },
               index()
               {
 
                 this.overlay = true;
-                axios.get(`account/get/0/12`)
+                axios.get(`groupcode`)
                       .then(resp=>{
-                        this.acct = transformKeys.camelCase(resp.data.data);
+                        this.groupcode = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`purchase/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
+                axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}/${this.groupcodeId}`)
                      .then(resp => {
                       this.itemOrders = resp.data;
                     })
@@ -411,12 +311,9 @@
                     });
                 this.overlay = false;
               },
-              setAccountOne(data){
-                this.acctId = data.id;
-              },
               searchData(){
                 this.overlay = true;
-                  axios.get(`purchase/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
+                  axios.get(`report/get/trialbal/${this.dateFrom}/${this.dateTo}/${this.groupcodeId}`)
                        .then(resp => {
                         this.itemOrders = resp.data;
                       })
@@ -427,10 +324,10 @@
               },
               printReport()
               {
-                  let routeData = this.$router.resolve({name: 'print-purchase-report',  params:{
+                  let routeData = this.$router.resolve({name: 'print-trialbal-report',  params:{
                                                                                         dateFrom:this.dateFrom, 
                                                                                         dateTo:this.dateTo,
-                                                                                        acctId:this.acctId,
+                                                                                        groupcodeId:this.groupcodeId
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },

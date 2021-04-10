@@ -80,8 +80,8 @@ Route::get('report/print/stock/{date_to?}/{item_id?}', 'ReportController@printSt
 Route::get('report/get/cashbankbalance', 'ReportController@getCashBankBalance');
 Route::get('report/get/payable', 'ReportController@getPayable');
 Route::get('report/get/receivable', 'ReportController@getReceivable');
-Route::get('report/get/trialbal/{date_from}/{date_to}', 'ReportController@getTrialbal');
-Route::get('report/print/trialbal/{date_from}/{date_to}', 'ReportController@printTrialbal');
+Route::get('report/get/trialbal/{date_from}/{date_to}/{groupcode_id?}', 'ReportController@getTrialbal');
+Route::get('report/print/trialbal/{date_from}/{date_to}/{groupcode_id?}', 'ReportController@printTrialbal');
 Route::get('report/get/balsheet/{date_to}', 'ReportController@getBalsheet');
 
 

@@ -287,12 +287,6 @@
     },
     created(){
        this.index();
-
-       axios.get(`report/get/balsheet/${this.dateTo}`)
-            .then(resp => {
-             console.log(resp.data);
-             console.log(this.getAsset);
-           })
     },
     methods: {
               numberWithCommas(x) {

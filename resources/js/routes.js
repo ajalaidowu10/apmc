@@ -35,6 +35,8 @@ import ReportBalsheet from './components/admin/report/Balsheet';
 import PrintBalsheetReport from './components/admin/report/print/Balsheet'
 import ReportLedger from './components/admin/report/Ledger';
 import PrintLedgerReport from './components/admin/report/print/Ledger';
+import ReportSchedule from './components/admin/report/Schedule';
+import PrintScheduleReport from './components/admin/report/print/Schedule';
 import AdminDashboard from './components/admin/Dashboard';
 import AddUser from './components/admin/user/Add';
 import ViewUser from './components/admin/user/View';
@@ -117,6 +119,12 @@ const router = new Router({
 				      path: '/ledger/print/report/:dateFrom/:dateTo/:acctId',
 				      name: 'print-ledger-report',
 				      component: PrintLedgerReport,
+				      props: true,
+				    },
+				    {
+				      path: '/schedule/print/report/:dateFrom/:dateTo/:groupcodeId',
+				      name: 'print-schedule-report',
+				      component: PrintScheduleReport,
 				      props: true,
 				    },
 				    {
@@ -297,6 +305,11 @@ const router = new Router({
 				      		path:'report/ledger',
 				      		name: 'report-ledger',
 				      		component: ReportLedger,
+				      	},
+				      	{
+				      		path:'report/schedule',
+				      		name: 'report-schedule',
+				      		component: ReportSchedule,
 				      	},
 				      	{
 				      		path:'dashboard',
