@@ -28,7 +28,7 @@
       this.overlay = false;
     },
     data: () => ({
-      permission: 'trailbal-report',
+      permission: 'trialbal-report',
       overlay: false,
       page: null,
     }),

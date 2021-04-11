@@ -198,9 +198,9 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_report);
-      $new_permission->slug = 'trailbal-report';
+      $new_permission->slug = 'trialbal-report';
       $new_permission->name = 'Trial Balance';
-      $new_permission->link = '/web-admin/report/trailbal';
+      $new_permission->link = '/web-admin/report/trialbal';
       $new_permission->icon = 'mdi-table-large';
       $new_permission->save();
 

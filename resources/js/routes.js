@@ -282,8 +282,8 @@ const router = new Router({
 				      		component: ReportJournal,
 				      	},
 				      	{
-				      		path:'report/trailbal',
-				      		name: 'report-trailbal',
+				      		path:'report/trialbal',
+				      		name: 'report-trialbal',
 				      		component: ReportTrialbal,
 				      	},
 				      	{

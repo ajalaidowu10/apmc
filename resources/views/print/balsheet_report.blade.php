@@ -19,7 +19,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2" style="text-align: center;"><strong>BALANCE SHEET AS AT {{ date_format($date_from, 'jS F Y') }} </strong></td>
+						<td colspan="2" style="text-align: center;"><strong>BALANCE SHEET AS AT {{ date_format($date_to, 'jS F Y') }} </strong></td>
 					</tr>
 				</table>
 			</div>
@@ -27,21 +27,21 @@
 			 function getHead($reportArray, $groupcode_id)
 				 {
 				 	 $name = '';
-				 	 $debit = 0;
-				 	 $credit = 0;
+				 	 $amount = 0;
 				 	 foreach ($reportArray as $data) {
-				 	 	 if ($data->groupcode_id == $groupcode_id) 
+				 	 	 if ($data['groupcode_id'] == $groupcode_id) 
 				 	 	 {
-				 	 	 	$name = $data->groupcode_name;
-				 	 	 	$debit = $debit + $data->debit;
-				 	 	 	$credit = $credit + $data->credit;
+				 	 	 	$name = $data['groupcode_name'];
+				 	 	 	$amount = $amount + $data['amount'];
 				 	 	 } 
 				 	 }
 
-				 	 return ['name'=>$name, 'debit'=>$debit, 'credit'=>$credit];
+				 	 return ['name'=>$name, 'amount'=>$amount];
 				 } 
+
 			@endphp
-			<div style="border:2px solid black;">
+			<div style="border:2px solid black; width: 50%; float: left;">
+				<h2>LIABILITY</h2>
 				<table style="table-layout:fixed;" class="table">
 					<thead>
 						<tr>
@@ -55,49 +55,92 @@
 					</thead>
 					<tbody>
 						@php
-							$total_debit = 0;
-							$total_credit = 0;
+							$total_amount = 0;
 						@endphp
-						@if ($get_report)
+						@if ($liability)
 							@php
-								$id = $get_report{0}->groupcode_id;
-								$get_head = getHead($get_report, $id);
+								$id = $liability{0}['groupcode_id'];
+								$get_head = getHead($liability, $id);
 							@endphp
 								<tr>
 								  <td style="background-color: #ECEFF1;"><strong>{{ $get_head['name'] }}</strong></td>
-								  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['debit'] }}</strong></td>
-								  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['credit'] }}</strong></td>
+								  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['amount'] }}</strong></td>
 								</tr>
-							@foreach ($get_report as $report)
-							@if ($report->groupcode_id != $id)
+							@foreach ($liability as $report)
+							@if ($report['groupcode_id'] != $id)
 									@php
-										$id = $report->groupcode_id;
-										$get_head = getHead($get_report, $id);
+										$id = $report['groupcode_id'];
+										$get_head = getHead($liability, $id);
 									@endphp
 									<tr>
 									  <td style="background-color: #ECEFF1;"><strong>{{ $get_head['name'] }}</strong></td>
-									  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['debit'] }}</strong></td>
-									  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['credit'] }}</strong></td>
+									  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['amount'] }}</strong></td>
 									</tr>
 								@endif
 								@php
-									$total_debit = $total_debit + $report->debit;
-									$total_credit = $total_credit + $report->credit;
+									$total_amount = $total_amount + $report['amount'];
 								@endphp
-								@if ($report->debit == 0 && $report->credit == 0)
-								
-								@else
 									<tr>
-										<td>{{ $report->acct_name }}</td>
-										<td style="text-align: right;">{{ $report->debit == 0 ? '' : $report->debit}}</td>
-										<td style="text-align: right;">{{ $report->credit == 0 ? '' : $report->credit }}</td>
+										<td>{{ $report['acct_name'] }}</td>
+										<td style="text-align: right;">{{ $report['amount'] }}</td>
 									</tr>
-								@endif
 							@endforeach
 							<tr>
 							  <td style="background-color: #B0BEC5;"><strong>TOTAL</strong></td>
-							  <td style="text-align: right; background-color: #B0BEC5;"><strong>{{ $total_debit }}</strong></td>
-							  <td style="text-align: right; background-color: #B0BEC5;"><strong>{{ $total_credit }}</strong></td>
+							  <td style="text-align: right; background-color: #B0BEC5;"><strong>{{ $total_amount }}</strong></td>
+							</tr>
+						@endif
+					</tbody>
+				</table>
+			</div>
+			<div style="border:2px solid black; width: 50%; float: left;">
+				<h2>ASSET</h2>
+				<table style="table-layout:fixed;" class="table">
+					<thead>
+						<tr>
+						  <th style="text-align: left;">
+						    ACCOUNT
+						  </th>
+						  <th style="text-align: right;">
+						    AMOUNT &#8377
+						  </th>
+						</tr>
+					</thead>
+					<tbody>
+						@php
+							$total_amount = 0;
+						@endphp
+						@if ($asset)
+							@php
+								$id = $asset{0}['groupcode_id'];
+								$get_head = getHead($asset, $id);
+							@endphp
+								<tr>
+								  <td style="background-color: #ECEFF1;"><strong>{{ $get_head['name'] }}</strong></td>
+								  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['amount'] }}</strong></td>
+								</tr>
+							@foreach ($asset as $report)
+							@if ($report['groupcode_id'] != $id)
+									@php
+										$id = $report['groupcode_id'];
+										$get_head = getHead($asset, $id);
+									@endphp
+									<tr>
+									  <td style="background-color: #ECEFF1;"><strong>{{ $get_head['name'] }}</strong></td>
+									  <td style="text-align: right; background-color: #ECEFF1;"><strong>{{ $get_head['amount'] }}</strong></td>
+									</tr>
+								@endif
+								@php
+									$total_amount = $total_amount + $report['amount'];
+								@endphp
+									<tr>
+										<td>{{ $report['acct_name'] }}</td>
+										<td style="text-align: right;">{{ $report['amount'] }}</td>
+									</tr>
+							@endforeach
+							<tr>
+							  <td style="background-color: #B0BEC5;"><strong>TOTAL</strong></td>
+							  <td style="text-align: right; background-color: #B0BEC5;"><strong>{{ $total_amount }}</strong></td>
 							</tr>
 						@endif
 					</tbody>

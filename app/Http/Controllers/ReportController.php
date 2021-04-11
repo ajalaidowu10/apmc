@@ -327,15 +327,77 @@ class ReportController extends Controller
       $prev_profit_loss   = $this->getProfitLoss($finyear_from);
       $profit_loss        = $this->getProfitLoss($date_to) - $prev_profit_loss;
       $openbal_diff       = $this->open_bal($date_to);
+
+      $asset = [];
+      $liability = [];
+
+      foreach ($asset_liability as $value) 
+      {
+        if($value->result > 0)
+        {
+          array_push($asset, [
+                              'groupcode_id' => $value->groupcode_id, 
+                              'groupcode_name' => $value->groupcode_name,
+                              'acct_name' => $value->acct_name,
+                              'amount' => number_format((float)$value->result, 2, '.', '') 
+                            ]);
+        }
+        else
+        {
+          array_push($liability, [
+                                  'groupcode_id' => $value->groupcode_id, 
+                                  'groupcode_name' => $value->groupcode_name,
+                                  'acct_name' => $value->acct_name,
+                                  'amount' => number_format((float)$value->result1, 2, '.', '') 
+                                ]);
+        }
+      }
+
+      array_push($liability, [
+                            'groupcode_id' => 0, 
+                            'groupcode_name' => 'Profit & Loss',
+                            'acct_name' => 'Opening Balance',
+                            'amount' => number_format((float)$prev_profit_loss, 2, '.', ''),
+                        ]);
+      array_push($liability, [
+                            'groupcode_id' => 0, 
+                            'groupcode_name' => 'Profit & Loss',
+                            'acct_name' => 'Current Period',
+                            'amount' => number_format((float)$profit_loss, 2, '.', ''),
+                        ]);
+
+      array_push($asset, [
+                            'groupcode_id' => 0, 
+                            'groupcode_name' => 'Stock Value',
+                            'acct_name' => 'Stock Value',
+                            'amount' => number_format((float)$stock_value, 2, '.', ''),
+                        ]);
+
+
+      if ($openbal_diff > 0) 
+      {
+        
+        array_push($liability, [
+                              'groupcode_id' => -1, 
+                              'groupcode_name' => 'Diff. in Opening Balances',
+                              'acct_name' => 'Diff. in Opening Balances',
+                              'amount' => number_format((float)$openbal_diff, 2, '.', ''),
+                          ]);
+      } 
+      else 
+      {
+        array_push($asset, [
+                              'groupcode_id' => -1, 
+                              'groupcode_name' => 'Diff. in Opening Balances',
+                              'acct_name' => 'Diff. in Opening Balances',
+                              'amount' => number_format((float)$openbal_diff * -1, 2, '.', ''),
+                          ]);
+      }
       
 
       return [
-                'asset_liability'   => $asset_liability, 
-                'prev_profit_loss'  => $prev_profit_loss, 
-                'profit_loss'       => $profit_loss,
-                'stock_value'       => $stock_value, 
-                'openbal_diff'      => $openbal_diff, 
-
+                'asset'       => $asset,
+                'liability'   => $liability, 
               ];
 
     }
@@ -346,9 +408,13 @@ class ReportController extends Controller
 
         $date_to = new DateTime($date_to);
 
+
+
+
         return view('print.balsheet_report', [
-                                                'get_report'    => $get_report,
-                                                'date_to'       => $date_to,
+                                                'date_to'      => $date_to,
+                                                'asset'        => $get_report['asset'],
+                                                'liability'    => $get_report['liability'],
                                              ]);
     }
 

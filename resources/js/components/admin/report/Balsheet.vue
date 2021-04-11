@@ -110,21 +110,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <template v-for="(group, index) in liability">
+                      <template v-for="(group, index) in liabilityHead">
                         <tr class="blue-grey lighten-5">
                           <td><strong>{{ sliceData(group, 1) }}</strong></td>
-                          <td width="100" class="text-right"><strong>{{ totalLiabilityAmount(liabilityItem(sliceData(group))) }}</strong></td>
+                          <td width="100" class="text-right"><strong>{{ totalAmount(liabilityItem(sliceData(group))) }}</strong></td>
                         </tr>
                         <tr
                           v-for="(item, innerIndex) in liabilityItem(sliceData(group))"
                          >
                           <td>{{ item.acct_name }}</td>
-                          <td width="100" class="text-right">{{ numberWithCommas(item.result1) }}</td>
+                          <td width="100" class="text-right">{{ item.amount }}</td>
                         </tr>
                       </template>
                       <tr class="blue-grey lighten-3">
                         <td><strong>TOTAL</strong></td>
-                        <td width="100" class="text-right"><strong>{{ allLiabilityAmount }}</strong></td>
+                        <td width="100" class="text-right"><strong>{{ totalLiabilityAmount }}</strong></td>
                       </tr>
                     </tbody>
                   </template>
@@ -153,21 +153,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <template v-for="(group, index) in asset">
+                      <template v-for="(group, index) in assetHead">
                         <tr class="blue-grey lighten-5">
                           <td><strong>{{ sliceData(group, 1) }}</strong></td>
-                          <td width="100" class="text-right"><strong>{{ totalAssetAmount(assetItem(sliceData(group))) }}</strong></td>
+                          <td width="100" class="text-right"><strong>{{ totalAmount(assetItem(sliceData(group))) }}</strong></td>
                         </tr>
                         <tr
                           v-for="(item, innerIndex) in assetItem(sliceData(group))"
                          >
                           <td>{{ item.acct_name }}</td>
-                          <td width="100" class="text-right">{{ numberWithCommas(item.result) }}</td>
+                          <td width="100" class="text-right">{{ item.amount }}</td>
                         </tr>
                       </template>
                       <tr class="blue-grey lighten-3">
                         <td><strong>TOTAL</strong></td>
-                        <td width="100" class="text-right"><strong>{{ allAssetAmount }}</strong></td>
+                        <td width="100" class="text-right"><strong>{{ totalAssetAmount }}</strong></td>
                       </tr>
                     </tbody>
                   </template>
@@ -210,74 +210,47 @@
       permission: 'trailbal-report',
       search: '',
       dateTo: new Date().toISOString().substr(0, 10),
-      itemOrders: [],
-      profitLoss: 0,
-      prevProfitLoss: 0,
-      openbalDiff: 0,
-      stockValue: 0,
+      asset: [],
+      liability: [],
       menuTo: false,
       overlay: false,
     }),
     computed:{
-      getAsset(){
-        return this.itemOrders.filter(item => Number(item.result) > 0);
-      },
-      getAsset(){
-        return this.itemOrders.filter(item => Number(item.result) > 0);
-      },
-      asset() {
-              const asset = new Set();
-              this.getAsset.forEach(item => asset.add(item.groupcode_id+','+item.groupcode_name));
-              asset.add("0, Stock Value");
-              if (this.openbalDiff < 0) 
-              {
-                asset.add("-1, Diff. in Opening Balances");
-              }
-              return Array.from(asset); 
+      assetHead() {
+              const data = new Set();
+              this.asset.forEach(item => data.add(item.groupcode_id+','+item.groupcode_name));
+              
+              return Array.from(data); 
           },
-      allAssetAmount(){
-        if (this.getAsset.length > 0) {
-          let result = this.getAsset.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
+      liabilityHead() {
+              const data = new Set();
+              this.liability.forEach(item => data.add(item.groupcode_id+','+item.groupcode_name));
+              
+              return Array.from(data); 
+          },
 
-          result = Number(result) + Number(this.stockValue);
-
-          if (this.openbalDiff < 0) 
-          {
-            result = result + (Number(this.openbalDiff) * -1) ;
-          }
+      totalAssetAmount(){
+        if (this.asset.length > 0) {
+          let result = this.asset.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
 
           result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
         }
+        
         return 0;
       },
 
-      getLiability(){
-        return this.itemOrders.filter(item => Number(item.result) < 0);
-      },
-      liability() {
-              const liability = new Set();
-              this.getLiability.forEach(item => liability.add(item.groupcode_id+','+item.groupcode_name));
-              liability.add("0, Profit & Loss");
-              if (this.openbalDiff > 0) 
-              {
-                liability.add("-1, Diff. in Opening Balances");
-              }
-              
+      liabilityHead() {
+              const data = new Set();
+              this.liability.forEach(item => data.add(item.groupcode_id+','+item.groupcode_name));
 
-              return Array.from(liability); 
+              return Array.from(data); 
           },
-      allLiabilityAmount(){ 
-        if (this.getLiability.length > 0) {
-          let result = this.getLiability.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
+      
+      totalLiabilityAmount(){ 
+        if (this.liability.length > 0) {
+          let result = this.liability.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
          
-          result = Number(result) + Number(this.prevProfitLoss) + Number(this.profitLoss);
-
-          if (this.openbalDiff > 0) 
-          {
-            result = result + Number(this.openbalDiff);
-          }
-
           result = Number(result).toFixed(2);
           return this.numberWithCommas(result);
         }
@@ -303,60 +276,22 @@
               },
               assetItem(groupcode_id) 
               {
-                if (groupcode_id == 0) 
-                {
-                  return [{acct_name:'Stock Value', result: this.stockValue}];
-
-                }
-
-                if (groupcode_id == -1) 
-                {
-                  return [
-                            {acct_name:'Diff. in Opening Balances', result: this.openbalDiff * -1}
-                        ];
-
-                }
-
-                return this.getAsset.filter(item => item.groupcode_id == groupcode_id);
+                return this.asset.filter(item => item.groupcode_id == groupcode_id);
               },
               liabilityItem(groupcode_id) 
               {
-                if (groupcode_id == 0) 
-                {
-                  return [
-                            {acct_name:'Opening Balance', result1: this.prevProfitLoss},
-                            {acct_name:'Current Period', result1: this.profitLoss},
-                        ];
-
-                }
-
-                if (groupcode_id == -1) 
-                {
-                  return [
-                            {acct_name:'Diff. in Opening Balances', result1: this.openbalDiff}
-                        ];
-
-                }
-                  
-                return this.getLiability.filter(item => item.groupcode_id == groupcode_id);
+                return this.liability.filter(item => item.groupcode_id == groupcode_id);
               },
-              totalAssetAmount(itemArray){
-                if (itemArray.length > 0) {
-                  let result = itemArray.reduce((prev, cur) => ({result: Number(prev.result) + Number(cur.result)})).result
+              
+              totalAmount(itemArray){
+                if (itemArray.length > 0) 
+                {
+                  let result = itemArray.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
 
                   result = Number(result).toFixed(2);
-          return this.numberWithCommas(result);
+                  return this.numberWithCommas(result);
                 }
-                return 0;
-              },
 
-              totalLiabilityAmount(itemArray){
-                if (itemArray.length > 0) {
-                  let result = itemArray.reduce((prev, cur) => ({result1: Number(prev.result1) + Number(cur.result1)})).result1
-
-                  result = Number(result).toFixed(2);
-          return this.numberWithCommas(result);
-                }
                 return 0;
               },
 
@@ -366,14 +301,11 @@
                 this.overlay = true;
                   axios.get(`report/get/balsheet/${this.dateTo}`)
                     .then(resp => {
-                     this.itemOrders = resp.data.asset_liability;
-                     this.profitLoss = resp.data.profit_loss;
-                     this.prevProfitLoss = resp.data.prev_profit_loss;
-                     this.stockValue = resp.data.stock_value;
-                     this.openbalDiff = resp.data.openbal_diff;
+                     this.asset = resp.data.asset;
+                     this.liability = resp.data.liability;
                    })
                    .catch(err => {
-                    Exception.handle(err, 'admin');
+                    // Exception.handle(err, 'admin');
                   });
 
                 this.overlay = false;
@@ -382,14 +314,11 @@
                 this.overlay = true;
                   axios.get(`report/get/balsheet/${this.dateTo}`)
                     .then(resp => {
-                     this.itemOrders = resp.data.asset_liability;
-                     this.profitLoss = resp.data.profit_loss;
-                     this.prevProfitLoss = resp.data.prev_profit_loss;
-                     this.stockValue = resp.data.stock_value;
-                     this.openbalDiff = resp.data.openbal_diff;
+                     this.asset = resp.data.asset;
+                     this.liability = resp.data.liability;
                    })
                    .catch(err => {
-                    Exception.handle(err, 'admin');
+                    // Exception.handle(err, 'admin');
                   });
                 this.overlay = false;
               },
