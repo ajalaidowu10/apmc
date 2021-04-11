@@ -19,11 +19,12 @@ class ReportController extends Controller
     public function getStockReport(string $date_to, int $item_id = 0)
     {
       $company_id = Auth::guard('admin')->user()->company_id;
-      $query = "SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.qty), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND sa.company_id = ${company_id} AND sa.enter_date <= '${date_to}' ) outward_qty, (SELECT IFNULL(sum(p.qty), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND pa.company_id = ${company_id} AND pa.enter_date <= '${date_to}')  inward_qty FROM items t WHERE t.company_id = ${company_id} ";
+      $finyear_id = Auth::guard('admin')->user()->finyear_id;
+      $query = "SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.qty), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND s.deleted_at is null AND sa.deleted_at is null AND sa.company_id = ${company_id} AND sa.finyear_id <= ${finyear_id} AND sa.enter_date <= '${date_to}' ) outward_qty, (SELECT IFNULL(sum(p.qty), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND p.deleted_at is null AND pa.deleted_at is null AND pa.company_id = ${company_id} AND pa.finyear_id <= ${finyear_id} AND pa.enter_date <= '${date_to}')  inward_qty FROM items t WHERE t.company_id = ${company_id} ";
 
       if ($item_id != 0) 
       {
-          $query = "SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.qty), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND sa.company_id = ${company_id} AND sa.enter_date <= '${date_to}' ) outward_qty, (SELECT IFNULL(sum(p.qty), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND pa.company_id = ${company_id} AND pa.enter_date <= '${date_to}')  inward_qty FROM items t WHERE t.company_id = ${company_id} AND t.id = ${item_id}";
+          $query = "SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.qty), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND s.deleted_at is null AND sa.deleted_at is null AND sa.company_id = ${company_id} AND sa.finyear_id <= ${finyear_id} AND sa.enter_date <= '${date_to}' ) outward_qty, (SELECT IFNULL(sum(p.qty), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND p.deleted_at is null AND pa.deleted_at is null AND pa.company_id = ${company_id} AND pa.finyear_id <= ${finyear_id} AND pa.enter_date <= '${date_to}')  inward_qty FROM items t WHERE t.company_id = ${company_id} AND t.id = ${item_id}";
       }
 
       $get_report = DB::select($query);
@@ -35,8 +36,9 @@ class ReportController extends Controller
     public function getStockValue(string $date_to)
     {
       $company_id = Auth::guard('admin')->user()->company_id;
+      $finyear_id = Auth::guard('admin')->user()->finyear_id;
       
-      $query = "SELECT SUM(purchase_amount) - SUM(sales_amount) amount FROM ( SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.amount), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND sa.company_id = ${company_id} AND sa.enter_date <= '${date_to}' ) sales_amount, (SELECT IFNULL(sum(p.final_amount), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND pa.company_id = ${company_id} AND pa.enter_date <= '${date_to}')  purchase_amount FROM items t WHERE t.company_id = ${company_id}) stocks";
+      $query = "SELECT SUM(purchase_amount) - SUM(sales_amount) amount FROM ( SELECT t.id, t.name item_name, (SELECT IFNULL(sum(s.amount), 0) FROM sales_order_items AS s LEFT JOIN sales_orders sa ON sa.id = s.sales_order_id WHERE s.item_id = t.id AND s.del_record = 0 AND s.deleted_at is null AND sa.deleted_at is null AND sa.company_id = ${company_id} AND sa.finyear_id <= ${finyear_id} AND sa.enter_date <= '${date_to}' ) sales_amount, (SELECT IFNULL(sum(p.final_amount), 0) FROM purchase_order_items AS p LEFT JOIN purchase_orders pa ON pa.id = p.purchase_order_id WHERE p.item_id = t.id AND p.del_record = 0 AND p.deleted_at is null AND pa.deleted_at is null AND pa.company_id = ${company_id} AND pa.finyear_id <= ${finyear_id} AND pa.enter_date <= '${date_to}')  purchase_amount FROM items t WHERE t.company_id = ${company_id}) stocks";
 
       $get_report = DB::select($query);
       
@@ -74,6 +76,7 @@ class ReportController extends Controller
                                 )
                         )
                         ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '<=', Auth::guard('admin')->user()->finyear_id)
                         ->whereIn('a.account_type_id', [4,5])
                         ->groupBy('o.acct_one_id');
 
@@ -93,6 +96,7 @@ class ReportController extends Controller
                                 )
                         )
                         ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '<=', Auth::guard('admin')->user()->finyear_id)
                         ->where('a.groupcode_id', 19)
                         ->groupBy('o.acct_one_id');
 
@@ -112,6 +116,7 @@ class ReportController extends Controller
                                 )
                         )
                         ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '<=', Auth::guard('admin')->user()->finyear_id)
                         ->where('a.groupcode_id', 10)
                         ->groupBy('o.acct_one_id');
 
@@ -132,6 +137,7 @@ class ReportController extends Controller
                                 )
                         )
                         ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '<=', Auth::guard('admin')->user()->finyear_id)
                         ->groupBy('o.acct_one_id')
                         ->orderBy('g.name')
                         ->orderBy('a.name');
@@ -195,6 +201,7 @@ class ReportController extends Controller
                                 )
                         )
                         ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '<=', Auth::guard('admin')->user()->finyear_id)
                         ->groupBy('o.acct_one_id')
                         ->orderBy('g.name')
                         ->orderBy('a.name');
@@ -523,6 +530,24 @@ class ReportController extends Controller
                 'date_from'   => $date_from,
               ];
 
+    }
+
+    public function printPloss(string $date_from, string $date_to)
+    {
+        $get_report = $this->getPloss($date_from, $date_to);
+
+        $date_to = new DateTime($date_to);
+        $date_from = new DateTime($date_from);
+
+
+
+
+        return view('print.ploss_report', [
+                                                'date_to'      => $date_to,
+                                                'date_from'    => $date_from,
+                                                'income'       => $get_report['income'],
+                                                'expense'     => $get_report['expense'],
+                                             ]);
     }
 
 

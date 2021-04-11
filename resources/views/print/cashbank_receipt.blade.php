@@ -21,7 +21,7 @@
 					<td colspan="2" style="text-align: center;"><strong>{{ $data->cashbank_order->cashbank_type->name }}</strong></td>
 				</tr>
 			</table>
-			<div style="border:2px solid black;">
+			<div style="border:2px solid #ECEFF1;">
 				<table style="table-layout:fixed;" class="table">
 					<tr>
 						<td><strong>Date:</strong> {{ $data->cashbank_order->enter_date  }}</td>
@@ -61,7 +61,7 @@
 					<td colspan="2" style="text-align: center;"><strong>{{ $data->cashbank_order->cashbank_type->name }}</strong></td>
 				</tr>
 			</table>
-			<div style="border:2px solid black;">
+			<div style="border:2px solid #ECEFF1;">
 				<table style="table-layout:fixed;" class="table">
 					<tr>
 						<td><strong>Date:</strong> {{ $data->cashbank_order->enter_date  }}</td>

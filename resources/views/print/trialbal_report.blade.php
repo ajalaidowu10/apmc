@@ -50,7 +50,7 @@
 				 	 return ['name'=>$name, 'debit'=>$debit, 'credit'=>$credit];
 				 } 
 			@endphp
-			<div style="border:2px solid black;">
+			<div style="border:2px solid #ECEFF1;">
 				<table style="table-layout:fixed;" class="table">
 					<thead>
 						<tr>

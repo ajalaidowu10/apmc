@@ -28,7 +28,7 @@
 					@endif
 				</div>
 			</div>
-			<div style="border:2px solid black;">
+			<div style="border:2px solid #ECEFF1;">
 				<table style="table-layout:fixed;" class="table">
 					<thead>
 						<tr>

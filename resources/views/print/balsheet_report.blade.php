@@ -40,7 +40,7 @@
 				 } 
 
 			@endphp
-			<div style="border:2px solid black; width: 50%; float: left;">
+			<div style="border:2px solid #ECEFF1; width: 50%; float: left;">
 				<h2>LIABILITY</h2>
 				<table style="table-layout:fixed;" class="table">
 					<thead>
@@ -93,7 +93,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div style="border:2px solid black; width: 50%; float: left;">
+			<div style="border:2px solid #ECEFF1; width: 50%; float: left;">
 				<h2>ASSET</h2>
 				<table style="table-layout:fixed;" class="table">
 					<thead>

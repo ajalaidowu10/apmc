@@ -18,7 +18,7 @@
   export default {
     created(){
       this.overlay = true;
-      axios.get(`report/print/ploss/${this.$route.params.dateTo}`)
+      axios.get(`report/print/ploss/${this.$route.params.dateFrom}/${this.$route.params.dateTo}`)
            .then(resp => {
             this.page = resp.data;
           })
