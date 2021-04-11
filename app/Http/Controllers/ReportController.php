@@ -183,7 +183,7 @@ class ReportController extends Controller
                                            ]);
     }
 
-    public function getLedgerWhere(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0, int $sale_purchase_id = 0, int $transactype_id = 0)
+    public function getLedgerWhere(string $date_to, int $parent_group_id = 0, int $not_parent_group_id = 0, int $sale_purchase_id = 0, int $transactype_id = 0, string $date_from = '')
     {
       $get_report = DB::table('ledgers as o')
                         ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
@@ -225,6 +225,11 @@ class ReportController extends Controller
                                ->first();
 
                             $get_report = $get_report->whereIn('o.acct_one_id', [$sale_acct->id, $purchase_acct->id]);
+                        }
+
+                        if ($date_from != '') 
+                        {
+                            $get_report = $get_report->where('o.enter_date', '>=', $date_from);
                         }
 
                         if ($date_to != '') 
@@ -315,8 +320,26 @@ class ReportController extends Controller
       return number_format((float)$result, 2, '.', '');
     }
 
+    public function net_profit(array $incomeArray, array $expenseArray):float
+    {
+      $income = 0;
+      $expense = 0;
 
 
+      foreach ($incomeArray as $value) 
+      {
+        $income = $income + $value['amount'];
+      }
+
+      foreach ($expenseArray as $value) 
+      {
+        $expense = $expense + $value['amount'];
+      }
+
+      $result = $income - $expense;
+            
+      return number_format((float)$result, 2, '.', '');
+    }
 
 
     public function getBalsheet(string $date_to)
@@ -342,7 +365,8 @@ class ReportController extends Controller
                               'amount' => number_format((float)$value->result, 2, '.', '') 
                             ]);
         }
-        else
+
+        if($value->result < 0)
         {
           array_push($liability, [
                                   'groupcode_id' => $value->groupcode_id, 
@@ -416,6 +440,89 @@ class ReportController extends Controller
                                                 'asset'        => $get_report['asset'],
                                                 'liability'    => $get_report['liability'],
                                              ]);
+    }
+
+    public function getPloss(string $date_from, string $date_to)
+    {
+      
+      $finyear_from = Auth::guard('admin')->user()->finyear->from_date;
+      $finyear_to   = Auth::guard('admin')->user()->finyear->to_date;
+      $date_from    = $finyear_from;
+
+      $date1        = date_create($finyear_to);
+      $date2        = now();
+      $diff         = date_diff($date1, $date2);
+      $monthsAhead  = $diff->m + ($diff->y * 12);
+
+      if ($monthsAhead >= 1) 
+      {
+        $date_to = $finyear_to;
+      } 
+      
+      
+
+      $expense_income     = $this->getLedgerWhere($date_to, 2, 0, 0, 0, $date_from);
+      $stock_value        = $this->stock_value($date_to);
+      $prev_stock_value   = $this->stock_value($date_from);
+
+      $expense = [];
+      $income = [];
+
+
+      foreach ($expense_income as $value) 
+      {
+        if($value->result > 0)
+        {
+          array_push($expense, [
+                              'groupcode_id' => $value->groupcode_id, 
+                              'groupcode_name' => $value->groupcode_name,
+                              'acct_name' => $value->acct_name,
+                              'amount' => number_format((float)$value->result, 2, '.', '') 
+                            ]);
+        }
+
+        if($value->result < 0)
+        {
+          array_push($income, [
+                                  'groupcode_id' => $value->groupcode_id, 
+                                  'groupcode_name' => $value->groupcode_name,
+                                  'acct_name' => $value->acct_name,
+                                  'amount' => number_format((float)$value->result1, 2, '.', '') 
+                                ]);
+        }
+      }
+
+      array_push($expense, [
+                            'groupcode_id' => 11, 
+                            'groupcode_name' => 'Purchase Account',
+                            'acct_name' => 'Previous Purchase',
+                            'amount' => number_format((float)$prev_stock_value, 2, '.', ''),
+                        ]);
+
+      array_push($income, [
+                            'groupcode_id' => 0, 
+                            'groupcode_name' => 'Stock Value',
+                            'acct_name' => 'Stock Value',
+                            'amount' => number_format((float)$stock_value, 2, '.', ''),
+                        ]);
+
+      $net_profit = $this->net_profit($income, $expense);
+
+
+      array_push($expense, [
+                            'groupcode_id' => 0, 
+                            'groupcode_name' => 'Net Profit',
+                            'acct_name' => 'Net Profit',
+                            'amount' => number_format((float)$net_profit, 2, '.', ''),
+                        ]);
+
+      return [
+                'income'    => $income,
+                'expense'   => $expense, 
+                'date_to'   => $date_to,
+                'date_from'   => $date_from,
+              ];
+
     }
 
 

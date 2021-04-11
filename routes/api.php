@@ -84,6 +84,8 @@ Route::get('report/get/trialbal/{date_from}/{date_to}/{groupcode_id?}', 'ReportC
 Route::get('report/print/trialbal/{date_from}/{date_to}/{groupcode_id?}', 'ReportController@printTrialbal');
 Route::get('report/get/balsheet/{date_to}', 'ReportController@getBalsheet');
 Route::get('report/print/balsheet/{date_to}', 'ReportController@printBalsheet');
+Route::get('report/get/ploss/{date_from}/{date_to}', 'ReportController@getPloss');
+Route::get('report/print/ploss/{date_from}/{date_to}', 'ReportController@printPloss');
 
 
 Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'LedgerController@getBalance');

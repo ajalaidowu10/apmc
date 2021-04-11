@@ -37,6 +37,8 @@ import ReportLedger from './components/admin/report/Ledger';
 import PrintLedgerReport from './components/admin/report/print/Ledger';
 import ReportSchedule from './components/admin/report/Schedule';
 import PrintScheduleReport from './components/admin/report/print/Schedule';
+import ReportPloss from './components/admin/report/Ploss';
+import PrintPlossReport from './components/admin/report/print/Ploss';
 import AdminDashboard from './components/admin/Dashboard';
 import AddUser from './components/admin/user/Add';
 import ViewUser from './components/admin/user/View';
@@ -95,6 +97,12 @@ const router = new Router({
 				      path: '/report/print/trialbal/:dateFrom/:dateTo',
 				      name: 'print-trialbal-report',
 				      component: PrintTrialbalReport,
+				      props: true,
+				    },
+				    {
+				      path: '/report/print/ploss/:dateFrom/:dateTo',
+				      name: 'print-ploss-report',
+				      component: PrintPlossReport,
 				      props: true,
 				    },
 				    {
@@ -285,6 +293,11 @@ const router = new Router({
 				      		path:'report/trialbal',
 				      		name: 'report-trialbal',
 				      		component: ReportTrialbal,
+				      	},
+				      	{
+				      		path:'report/ploss',
+				      		name: 'report-ploss',
+				      		component: ReportPloss,
 				      	},
 				      	{
 				      		path:'report/balsheet',

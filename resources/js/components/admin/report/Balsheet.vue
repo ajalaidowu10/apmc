@@ -207,7 +207,7 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'trailbal-report',
+      permission: 'balsheet-report',
       search: '',
       dateTo: new Date().toISOString().substr(0, 10),
       asset: [],
@@ -260,10 +260,6 @@
     },
     created(){
        this.index();
-       axios.get(`report/get/balsheet/${this.dateTo}`)
-         .then(resp => {
-          console.log(resp.data);
-        })
     },
     methods: {
               numberWithCommas(x) {
@@ -305,7 +301,7 @@
                      this.liability = resp.data.liability;
                    })
                    .catch(err => {
-                    // Exception.handle(err, 'admin');
+                    Exception.handle(err, 'admin');
                   });
 
                 this.overlay = false;
@@ -318,7 +314,7 @@
                      this.liability = resp.data.liability;
                    })
                    .catch(err => {
-                    // Exception.handle(err, 'admin');
+                    Exception.handle(err, 'admin');
                   });
                 this.overlay = false;
               },
