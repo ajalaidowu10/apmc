@@ -71,9 +71,9 @@ Route::get('purchase/print/report/{date_from?}/{date_to?}/{acct_id?}', 'Purchase
 Route::get('sales/report/{date_from?}/{date_to?}/{acct_id?}', 'SalesOrderController@getReport');
 Route::get('sales/print/report/{date_from?}/{date_to?}/{acct_id?}', 'SalesOrderController@printReport');
 
-Route::get('ledger/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@getReport');
-Route::get('ledger/print/report/{date_from?}/{date_to?}/{acct_id?}', 'LedgerController@printReport');
-Route::get('acctbal/print/report/{acct}/{date_to?}', 'LedgerController@printAcctBal');
+Route::get('ledger/report/{date_from?}/{date_to?}/{acct_id?}', 'ReportController@getLedgerReport');
+Route::get('ledger/print/report/{date_from?}/{date_to?}/{acct_id?}', 'ReportController@printLedgerReport');
+Route::get('acctbal/print/report/{acct}/{date_to?}', 'ReportController@printAcctBal');
 
 Route::get('report/get/stock/{date_to?}/{item_id?}', 'ReportController@getStockReport');
 Route::get('report/print/stock/{date_to?}/{item_id?}', 'ReportController@printStockReport');
@@ -86,6 +86,10 @@ Route::get('report/get/balsheet/{date_to}', 'ReportController@getBalsheet');
 Route::get('report/print/balsheet/{date_to}', 'ReportController@printBalsheet');
 Route::get('report/get/ploss/{date_from}/{date_to}', 'ReportController@getPloss');
 Route::get('report/print/ploss/{date_from}/{date_to}', 'ReportController@printPloss');
+Route::get('report/salesbill/{date_from?}/{date_to?}/{acct_id?}', 'ReportController@getSalesBill');
+Route::get('report/print/salesbill/{acct_id}/{date_to}', 'ReportController@printSalesBill');
+Route::get('report/purchasebill/{date_from?}/{date_to?}/{acct_id?}', 'ReportController@getPurchaseBill');
+Route::get('report/print/purchasebill/{acct_id}/{date_to}', 'ReportController@printPurchaseBill');
 
 
-Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'LedgerController@getBalance');
+Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'ReportController@getBalance');

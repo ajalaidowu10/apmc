@@ -17,6 +17,7 @@ class PermissionSeeder extends Seeder
       $module_master = Module::where('name','Master')->first();
       $module_data_entry = Module::where('name','Data Entry')->first();
       $module_report = Module::where('name','Reports')->first();
+      $module_printing = Module::where('name','Printing')->first();
       $module_enquiry = Module::where('name','Enquiry')->first();
       $module_utility = Module::where('name','Utility')->first();
       $module_dashboard = Module::where('name','Dashboard')->first();
@@ -132,6 +133,25 @@ class PermissionSeeder extends Seeder
       $new_permission->link = '/web-admin/sales';
       $new_permission->icon = 'mdi-alpha-s-box';
       $new_permission->save();
+
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_printing);
+      $new_permission->slug = 'purchase-printing';
+      $new_permission->name = 'Purchase Bill';
+      $new_permission->link = '/web-admin/printing/purchasebill';
+      $new_permission->icon = 'mdi-alpha-p-box';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_printing);
+      $new_permission->slug = 'sales-printing';
+      $new_permission->name = 'Sales Bill';
+      $new_permission->link = '/web-admin/printing/salesbill';
+      $new_permission->icon = 'mdi-alpha-s-box';
+      $new_permission->save();
+
+
 
 
       

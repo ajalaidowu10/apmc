@@ -846,6 +846,7 @@
             data['otherCharges']        = this.form.otherCharges;
             data['totalAmount']         = this.getTotalPurchaseAmount;
             data['totalQty']            = this.getTotalPurchaseCartQty();
+            data['purchaseAmount']      = this.getTotalPurchaseCartAmount();
             data['purchaseOrderItems']  = this.purchaseOrderItems;
             data['enterDate']           = this.enterDate;
 

@@ -13,7 +13,7 @@ class PurchaseOrder extends Model
                             'acct_id', 'invoice_no', 'enter_date', 'total_amount', 'motor_no', 
                             'other_charges', 'levy', 'apmc', 'map_levy', 'comm', 'tds',
                             'total_qty', 'created_by', 'status_id', 'deleted_at',
-                            'finyear_id', 'company_id',
+                            'finyear_id', 'company_id', 'purchase_amount'
                           ];
 
     public static function boot() {

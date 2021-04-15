@@ -8,6 +8,8 @@ use DB;
 use DateTime;
 use App\FinancialYear;
 use App\Account;
+use App\Company;
+use App\Ledger;
 
 class ReportController extends Controller
 {
@@ -15,6 +17,105 @@ class ReportController extends Controller
     {
       $this->middleware('JWT');
     } 
+
+    public static function getBalance(int $acct_id, $date_from = 0, $date_to = 0, $cr_dr = 1)
+    {
+      $total = 0;
+      $ledger = Ledger::where('acct_one_id', $acct_id)
+              ->selectRaw('IFNULL(SUM(IF(crdr_id = 1, amount, 0)), 0) credit, IFNULL(SUM(IF(crdr_id = 2, amount, 0)), 0) debit');
+              
+              if ($date_from != 0) 
+              {
+                  $ledger = $ledger->where('enter_date', '<', $date_from);
+              }
+              if ($date_to != 0) 
+              {
+                  $ledger = $ledger->where('enter_date', '<=', $date_to);
+              }
+
+         $ledger =  $ledger->first();
+
+         if ($cr_dr == 1) 
+         {
+           $total = $ledger->credit  - $ledger->debit;
+         } 
+         else 
+         {
+           $total = $ledger->debit  - $ledger->credit;
+         }
+         
+     return $total;
+
+    }
+
+    public function getLedgerReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    {
+      $get_report = DB::table('ledgers as o')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
+                        ->leftJoin('transactypes as t', 't.id', '=', 'o.transactype_id')
+                        ->select(
+                          DB::raw(
+                                  'IF(o.crdr_id = 1, o.amount, 0) credit, IF(o.crdr_id = 2, o.amount, 0) debit, o.enter_date enter_date, o.descp descp, a.name acct_name, a.name acct_name, t.name tran_name'
+                                )
+                        )
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id);
+
+                          if ($date_from != '') 
+                          {
+                              $get_report = $get_report->where('o.enter_date', '>=', $date_from);
+                          } 
+
+                          if ($date_to != '') 
+                          {
+                              $get_report = $get_report->where('o.enter_date', '<=', $date_to);
+                          }
+
+                          if ($acct_id != 0) 
+                          {
+                              $get_report = $get_report->where('o.acct_one_id', $acct_id);
+                          }
+                          
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function printLedgerReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    {
+      $get_report = $this->getLedgerReport($date_from, $date_to, $acct_id);
+
+      $open_bal = static::getBalance($acct_id, $date_from);
+
+      $acct_name = "";
+      $date_from = new DateTime($date_from);
+      $date_to = new DateTime($date_to);
+
+      if ($acct_id != 0) 
+      {
+       $get_acct = \App\Account::find($acct_id);
+       $acct_name = $get_acct->name;
+      }
+
+      return view('print.ledger_report', [
+                                              'get_report'    => $get_report,
+                                              'date_from'     => $date_from,
+                                              'date_to'       => $date_to,
+                                              'acct_id'       => $acct_id,
+                                              'acct_name'     => $acct_name,
+                                              'open_bal'      => $open_bal,
+                                           ]);
+    }
+
+
+    public function printAcctBal(Account $acct, string $date_to)
+    {
+      $open_bal = static::getBalance($acct->id, 0, $date_to);
+
+      return view('print.acctbal_report', [
+                                              'get_acct'      => $acct,
+                                              'date_to'       => $date_to,
+                                              'open_bal'      => $open_bal,
+                                           ]);
+    }
 
     public function getStockReport(string $date_to, int $item_id = 0)
     {
@@ -550,6 +651,151 @@ class ReportController extends Controller
                                              ]);
     }
 
+    public function getSalesBill(string $date_from, string $date_to, int $acct_id = 0)
+    {
+      $get_report = DB::table('sales_orders as oi')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'oi.acct_id')
+                        ->select(
+                          DB::raw(
+                                  'a.name acct_name, oi.acct_id, acct_id, oi.enter_date enter_date,  DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enterdate, SUM(oi.sales_amount) total_price, SUM(oi.comm) total_comm, SUM(oi.total_qty) total_qty, SUM(oi.total_amount) total_amount,   SUM(oi.levy + oi.apmc + oi.map_levy + oi.other_charges) total_charges'
+                                )
+                        )
+                        ->where('oi.deleted_at', '=', null)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
+
+                          if ($date_from != '') 
+                          {
+                              $get_report = $get_report->where('oi.enter_date', '>=', $date_from);
+                          } 
+
+                          if ($date_to != '') 
+                          {
+                              $get_report = $get_report->where('oi.enter_date', '<=', $date_to);
+                          }
+
+                          if ($acct_id != 0) 
+                          {
+                              $get_report = $get_report->where('oi.acct_id', '=', $acct_id);
+                          }
+
+      $get_report = $get_report->groupBy('oi.acct_id', 'oi.enter_date');
+      $get_report = $get_report->orderby('oi.enter_date');
+      $get_report = $get_report->orderby('a.name');
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function getSalesBillDetails(int $acct_id, string $date)
+    {
+      $get_report = DB::table('sales_order_items as o')
+                        ->leftJoin('sales_orders as oi', 'oi.id', '=', 'o.sales_order_id')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'oi.acct_id')
+                        ->leftJoin('items as t', 't.id', '=', 'o.item_id')
+                        ->select(
+                          DB::raw(
+                                  'oi.id inv_no, a.name acct_name, a.address_one address, a.area area, t.name item_name, DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enter_date,  o.*'
+                                )
+                        )
+                        ->where('o.deleted_at', '=', null)
+                        ->where('oi.deleted_at', '=', null)
+                        ->where('o.del_record', '=', 0)
+                        ->where('oi.enter_date', '=', $date)
+                        ->where('oi.acct_id', '=', $acct_id)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id)
+                        ->get();
+      return $get_report;
+    }
+
+    public function printSalesBill(int $acct_id, string $date)
+    {
+        $get_report = $this->getSalesBillDetails($acct_id, $date);
+        $get_company = Company::find(Auth::guard('admin')->user()->company_id);
+        $prev_bal = static::getBalance($acct_id, $date, 0, 2);
+
+        $date = new DateTime($date);
+
+        return view('print.sales_bill', [
+                                          'date'         => $date,
+                                          'company'      => $get_company,
+                                          'prev_bal'     => $prev_bal,
+                                          'get_report'   => $get_report,
+                                       ]);
+    }
+
+    public function getPurchaseBill(string $date_from, string $date_to, int $acct_id = 0)
+    {
+      $get_report = DB::table('purchase_orders as oi')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'oi.acct_id')
+                        ->select(
+                          DB::raw(
+                                  'a.name acct_name, oi.acct_id, acct_id, oi.enter_date enter_date,  DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enterdate, SUM(oi.purchase_amount) total_price, SUM(oi.comm) total_comm, SUM(oi.total_qty) total_qty, SUM(oi.total_amount) total_amount,   SUM(oi.levy + oi.apmc + oi.map_levy + oi.other_charges) total_charges'
+                                )
+                        )
+                        ->where('oi.deleted_at', '=', null)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
+
+                          if ($date_from != '') 
+                          {
+                              $get_report = $get_report->where('oi.enter_date', '>=', $date_from);
+                          } 
+
+                          if ($date_to != '') 
+                          {
+                              $get_report = $get_report->where('oi.enter_date', '<=', $date_to);
+                          }
+
+                          if ($acct_id != 0) 
+                          {
+                              $get_report = $get_report->where('oi.acct_id', '=', $acct_id);
+                          }
+
+      $get_report = $get_report->groupBy('oi.acct_id', 'oi.enter_date');
+      $get_report = $get_report->orderby('oi.enter_date');
+      $get_report = $get_report->orderby('a.name');
+      $get_report = $get_report->get();                          
+      return $get_report;
+    }
+
+    public function getPurchaseBillDetails(int $acct_id, string $date)
+    {
+      $get_report = DB::table('purchase_order_items as o')
+                        ->leftJoin('purchase_orders as oi', 'oi.id', '=', 'o.purchase_order_id')
+                        ->leftJoin('accounts as a', 'a.id', '=', 'oi.acct_id')
+                        ->leftJoin('items as t', 't.id', '=', 'o.item_id')
+                        ->select(
+                          DB::raw(
+                                  'oi.id inv_no, a.name acct_name, a.address_one address, a.area area, t.name item_name, DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enter_date,  o.*'
+                                )
+                        )
+                        ->where('o.deleted_at', '=', null)
+                        ->where('oi.deleted_at', '=', null)
+                        ->where('o.del_record', '=', 0)
+                        ->where('oi.enter_date', '=', $date)
+                        ->where('oi.acct_id', '=', $acct_id)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id)
+                        ->get();
+      return $get_report;
+    }
+
+    public function printPurchaseBill(int $acct_id, string $date)
+    {
+        $get_report = $this->getPurchaseBillDetails($acct_id, $date);
+        $get_company = Company::find(Auth::guard('admin')->user()->company_id);
+        $prev_bal = static::getBalance($acct_id, $date, 0, 1);
+
+        $date = new DateTime($date);
+
+        return view('print.purchase_bill', [
+                                          'date'         => $date,
+                                          'company'      => $get_company,
+                                          'prev_bal'     => $prev_bal,
+                                          'get_report'   => $get_report,
+                                       ]);
+    }
 
 }
      

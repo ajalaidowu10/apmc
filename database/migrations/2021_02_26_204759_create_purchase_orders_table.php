@@ -20,6 +20,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->string('motor_no');
             $table->date('enter_date');
             $table->decimal('total_qty');
+            $table->decimal('purchase_amount');
             $table->decimal('total_amount');
             $table->decimal('other_charges');
             $table->decimal('levy');

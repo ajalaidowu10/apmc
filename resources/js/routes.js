@@ -62,6 +62,10 @@ import AddCompany from './components/admin/company/Add';
 import ViewCompany from './components/admin/company/View';
 import AddFinYear from './components/admin/finyear/Add';
 import ViewFinYear from './components/admin/finyear/View';
+import ReportSalesBill from './components/admin/printing/SalesBill';
+import PrintSalesBill from './components/admin/printing/print/SalesBill';
+import ReportPurchaseBill from './components/admin/printing/PurchaseBill';
+import PrintPurchaseBill from './components/admin/printing/print/PurchaseBill';
 
 
 
@@ -130,9 +134,21 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/schedule/print/report/:dateFrom/:dateTo/:groupcodeId',
-				      name: 'print-schedule-report',
-				      component: PrintScheduleReport,
+				      path: '/ledger/print/report/:dateFrom/:dateTo/:acctId',
+				      name: 'print-ledger-report',
+				      component: PrintLedgerReport,
+				      props: true,
+				    },
+				    {
+				      path: '/salesbill/printing/:acctId/:date',
+				      name: 'print-sales-bill',
+				      component: PrintSalesBill,
+				      props: true,
+				    },
+				    {
+				      path: '/purchasebill/printing/:acctId/:date',
+				      name: 'print-purchase-bill',
+				      component: PrintPurchaseBill,
 				      props: true,
 				    },
 				    {
@@ -323,6 +339,16 @@ const router = new Router({
 				      		path:'report/schedule',
 				      		name: 'report-schedule',
 				      		component: ReportSchedule,
+				      	},
+				      	{
+				      		path:'printing/salesbill',
+				      		name: 'printing-sales',
+				      		component: ReportSalesBill,
+				      	},
+				      	{
+				      		path:'printing/purchasebill',
+				      		name: 'printing-purchase',
+				      		component: ReportPurchaseBill,
 				      	},
 				      	{
 				      		path:'dashboard',

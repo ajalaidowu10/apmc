@@ -149,7 +149,7 @@ class AdminAuthController extends Controller
     {
       $admin = Auth::guard('admin')->user();
       $adminPermissions = $admin->permissions;
-      $menu = $item1 = $item2 = $item3 = $item4 = $item5 =  $menu1 = $menu2 = $menu3 = $menu4 = $menu5 =[];
+      $menu = $item1 = $item2 = $item3 = $item4 = $item5 = $item6 =  $menu1 = $menu2 = $menu3 = $menu4 = $menu5 = $menu6 =[];
 
 
       foreach ($adminPermissions as $permission) 
@@ -188,6 +188,13 @@ class AdminAuthController extends Controller
             
             break;
 
+            case 6:
+              $new_data = ['id'=>$permission->slug, 'name'=>$permission->name, 'icon'=>$permission->icon, 'link'=>$permission->link];
+              array_push($item6, $new_data);
+              $menu6 = ['id'=>'menu'.$permission->module_id, 'name'=>$permission->module->name, 'icon'=>$permission->module->icon, 'items'=>$item6];
+            
+            break;
+
           default:
             # code...
             break;
@@ -213,6 +220,10 @@ class AdminAuthController extends Controller
       if ($menu5) 
       {
           array_push($menu, $menu5);
+      }
+      if ($menu6) 
+      {
+          array_push($menu, $menu6);
       }
       
 
