@@ -120,8 +120,8 @@
 		    		$total_rate = $total_rate + $bill->rate;
 		    		$total_amount = $total_amount + $bill->amount;
 		    		$total_comm = $total_comm + $bill->comm;
-		    		$total_apmc = $total_apmc + $bill->apmc;
-		    		$total_levy = $total_levy + $bill->levy + $bill->map_levy;
+		    		$total_apmc = $total_apmc + $bill->apmc + $bill->map_levy;
+		    		$total_levy = $total_levy + $bill->levy ;
 		    		$total_final_amount = $total_final_amount + $bill->final_amount;
 		    	@endphp
 		    	<tr> 

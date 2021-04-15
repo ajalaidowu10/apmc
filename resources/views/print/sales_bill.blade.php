@@ -76,21 +76,9 @@
 		<table class="table table-bordered" cellspacing="0" style="margin-top: -20px;">
 		  <thead>
 		    <tr style="text-align: left; background-color: #f8f9fa;">
-		      <th>BILL TO</th>
+		      <th>BILL TO: {{ $get_report{0}->acct_name }} | {{ $get_report{0}->area }}</th>
 		    </tr>
 		  </thead>
-		  <tbody>
-		    <tr>
-		      <td>
-		        <h5>{{ $get_report{0}->acct_name }}</h5>
-		        <p>
-		          {{ $get_report{0}->address }}
-		          <br>
-		          {{ $get_report{0}->area }}
-		        </p>
-		      </td>
-		    </tr>
-		  </tbody>
 		</table> 
 		<table class="table  table-bordered" cellspacing="0" style="margin-top: -20px;"> 
 		 <thead> 
@@ -120,8 +108,8 @@
 		    		$total_rate = $total_rate + $bill->rate;
 		    		$total_amount = $total_amount + $bill->amount;
 		    		$total_comm = $total_comm + $bill->comm;
-		    		$total_apmc = $total_apmc + $bill->apmc;
-		    		$total_levy = $total_levy + $bill->levy + $bill->map_levy;
+		    		$total_apmc = $total_apmc + $bill->apmc + $bill->map_levy;
+		    		$total_levy = $total_levy + $bill->levy ;
 		    		$total_final_amount = $total_final_amount + $bill->final_amount;
 		    	@endphp
 		    	<tr> 
