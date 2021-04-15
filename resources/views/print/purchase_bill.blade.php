@@ -76,21 +76,9 @@
 		<table class="table table-bordered" cellspacing="0" style="margin-top: -20px;">
 		  <thead>
 		    <tr style="text-align: left; background-color: #f8f9fa;">
-		      <th>BILL TO</th>
+		      <th>BILL TO: {{ $get_report{0}->acct_name }} | {{ $get_report{0}->area }}</th>
 		    </tr>
 		  </thead>
-		  <tbody>
-		    <tr>
-		      <td>
-		        <h5>{{ $get_report{0}->acct_name }}</h5>
-		        <p>
-		          {{ $get_report{0}->address }}
-		          <br>
-		          {{ $get_report{0}->area }}
-		        </p>
-		      </td>
-		    </tr>
-		  </tbody>
 		</table> 
 		<table class="table  table-bordered" cellspacing="0" style="margin-top: -20px;"> 
 		 <thead> 
