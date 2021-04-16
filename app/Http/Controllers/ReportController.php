@@ -18,19 +18,27 @@ class ReportController extends Controller
       $this->middleware('JWT');
     } 
 
-    public static function getBalance(int $acct_id, $date_from = 0, $date_to = 0, $cr_dr = 1)
+
+    public static function getBalance(int $acct_id, string $date, int $type, int $cr_dr = 1)
     {
       $total = 0;
       $ledger = Ledger::where('acct_one_id', $acct_id)
               ->selectRaw('IFNULL(SUM(IF(crdr_id = 1, amount, 0)), 0) credit, IFNULL(SUM(IF(crdr_id = 2, amount, 0)), 0) debit');
               
-              if ($date_from != 0) 
+              if ($type == 1) 
               {
-                  $ledger = $ledger->where('enter_date', '<', $date_from);
+                  $ledger = $ledger->where('enter_date', '<', $date);
               }
-              if ($date_to != 0) 
+
+              if ($type == 2) 
               {
-                  $ledger = $ledger->where('enter_date', '<=', $date_to);
+                  $ledger = $ledger->where('enter_date', '<=', $date);
+              }
+
+              if ($type == 3) 
+              {
+                  $ledger = $ledger->where('transactype_id', 4);
+                  $ledger = $ledger->where('enter_date', '=', $date);
               }
 
          $ledger =  $ledger->first();
@@ -83,7 +91,7 @@ class ReportController extends Controller
     {
       $get_report = $this->getLedgerReport($date_from, $date_to, $acct_id);
 
-      $open_bal = static::getBalance($acct_id, $date_from);
+      $open_bal = static::getBalance($acct_id, $date_from, 1);
 
       $acct_name = "";
       $date_from = new DateTime($date_from);
@@ -108,7 +116,7 @@ class ReportController extends Controller
 
     public function printAcctBal(Account $acct, string $date_to)
     {
-      $open_bal = static::getBalance($acct->id, 0, $date_to);
+      $open_bal = static::getBalance($acct->id, $date_to, 2);
 
       return view('print.acctbal_report', [
                                               'get_acct'      => $acct,
@@ -712,7 +720,8 @@ class ReportController extends Controller
     {
         $get_report = $this->getSalesBillDetails($acct_id, $date);
         $get_company = Company::find(Auth::guard('admin')->user()->company_id);
-        $prev_bal = static::getBalance($acct_id, $date, 0, 2);
+        $prev_bal = static::getBalance($acct_id, $date, 1, 2);
+        $cur_bal = static::getBalance($acct_id, $date, 3, 1);
 
         $date = new DateTime($date);
 
@@ -720,6 +729,7 @@ class ReportController extends Controller
                                           'date'         => $date,
                                           'company'      => $get_company,
                                           'prev_bal'     => $prev_bal,
+                                          'cur_bal'      => $cur_bal,
                                           'get_report'   => $get_report,
                                        ]);
     }
@@ -785,7 +795,8 @@ class ReportController extends Controller
     {
         $get_report = $this->getPurchaseBillDetails($acct_id, $date);
         $get_company = Company::find(Auth::guard('admin')->user()->company_id);
-        $prev_bal = static::getBalance($acct_id, $date, 0, 1);
+        $prev_bal = static::getBalance($acct_id, $date, 1, 1);
+        $cur_bal = static::getBalance($acct_id, $date, 3, 2);
 
         $date = new DateTime($date);
 
@@ -793,6 +804,7 @@ class ReportController extends Controller
                                           'date'         => $date,
                                           'company'      => $get_company,
                                           'prev_bal'     => $prev_bal,
+                                          'cur_bal'      => $cur_bal,
                                           'get_report'   => $get_report,
                                        ]);
     }

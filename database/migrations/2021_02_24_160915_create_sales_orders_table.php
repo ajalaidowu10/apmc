@@ -17,7 +17,7 @@ class CreateSalesOrdersTable extends Migration
             $table->id();
             $table->foreignId('acct_id');
             $table->string('invoice_no')->nullable();
-            $table->string('motor_no');
+            $table->string('motor_no')->nullable();
             $table->date('enter_date');
             $table->decimal('total_qty');
             $table->decimal('sales_amount');

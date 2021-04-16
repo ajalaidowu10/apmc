@@ -36,7 +36,7 @@ class PurchaseOrderRequest extends FormRequest
             'tds'                   => 'required|numeric',
             'total_qty'             => 'required|numeric',
             'total_amount'          => 'required|numeric',
-            'motor_no'              => 'required|string',
+            'motor_no'              => 'nullable|string',
             'purchase_order_items'   => 'required|array',
 
         ];

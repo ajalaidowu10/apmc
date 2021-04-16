@@ -137,10 +137,6 @@
                   dense
                   label="Motor No."
                   v-model="form.motorNo"
-                  :error-messages="motorNoErrors"
-                  @input="$v.form.motorNo.$touch()"
-                  @blur="$v.form.motorNo.$touch()"
-                  required
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -461,7 +457,6 @@
            rate:         {required},
            item:        {required},
            acct:     {required},
-           motorNo:       {required},
          }
      },
     data: () => ({
@@ -573,7 +568,7 @@
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
           let result = dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount;
-          return parseFloat(result).toFixed(2);
+           return parseFloat(Math.round(result)).toFixed(2);
         }
         return 0;
         
@@ -643,19 +638,7 @@
         !this.$v.form.rate.required && errors.push('Rate is required')
         return errors
       },
-      motorNoErrors () {
-        const errors = []
-        if (!this.$v.form.motorNo.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'motorNo') {
-            errors.push(this.form.allError.motorNo[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.motorNo.required && errors.push('Motor No. is required')
-        return errors
-      },
+      
       getTotalPurchaseAmount()
         {
           return Number(this.finalAmount) +  Number(this.form.otherCharges);

@@ -150,22 +150,27 @@
 		    <tr>
 		      <td colspan="3">&nbsp;</td>
 		      <td><strong>PREVIOUS BALANCE</strong></td>
-		      <td style="text-align: right;">{{ number_format($prev_bal, 2) }}</td>
+		      <td style="text-align: right;">{{ number_format(round($prev_bal), 2) }}</td>
 		    </tr>
+		    @php
+		    	$total = $prev_bal + $total_final_amount;
+		    	$amount_paid_today = $cur_bal;
+		    	$new_total = $total - $amount_paid_today;
+		    @endphp
 		    <tr>
 		      <td colspan="3">&nbsp;</td>
 		      <td><strong>TOTAL</strong></td>
-		      <td style="text-align: right;"><strong>{{ number_format(round($prev_bal + $total_final_amount), 2) }}</strong></td>
+		      <td style="text-align: right;"><strong>{{ number_format(round($total), 2) }}</strong></td>
 		    </tr>
 		    <tr>
 		      <td colspan="3">Subject to Navi Mumbai Jurisdiction</td>
 		      <td><strong>AMOUNT RECEIVED</strong></td>
-		      <td>&nbsp;</td>
+		      <td style="text-align: right;">{{ number_format(round($amount_paid_today), 2) }}</td>
 		    </tr>
 		    <tr>
 		      <td colspan="3">E. & O. E.</td>
 		      <td><strong>TOTAL</strong></td>
-		      <td style="text-align: right;"><strong>{{ number_format(round($prev_bal + $total_final_amount), 2) }}</strong></td>
+		      <td style="text-align: right;"><strong>{{ number_format(round($new_total), 2) }}</strong></td>
 		    </tr>
 		  </tbody> 
 		</table>

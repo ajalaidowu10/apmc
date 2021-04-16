@@ -124,7 +124,6 @@ class CashbankOrderController extends Controller
      */
     public function update(CashbankOrderRequest $request, CashbankOrder $cashbank)
     {
-          $cashbank->update($request->all());
           $cashbank_order_items = $request->input('cashbank_order_items');
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
@@ -159,9 +158,9 @@ class CashbankOrderController extends Controller
                                     'enter_date'        => $cashbank->enter_date,
                                     'crdr_id'           => $cashbank->cashbank_type_id == 1 ? 2 : 1,
                                     'descp'             => $cashbank_item->descp,
-                                    'created_by'        => $cashbank_order->created_by,
-                                    'company_id'        => $cashbank_order->company_id,
-                                    'finyear_id'        => $cashbank_order->finyear_id,
+                                    'created_by'        => $cashbank->created_by,
+                                    'company_id'        => $cashbank->company_id,
+                                    'finyear_id'        => $cashbank->finyear_id,
                                 ]);
 
                     Ledger::create([
@@ -173,9 +172,9 @@ class CashbankOrderController extends Controller
                                     'enter_date'        => $cashbank->enter_date,
                                     'crdr_id'           => $cashbank->cashbank_type_id == 1 ? 1 : 2,
                                     'descp'             => $cashbank_item->descp,
-                                    'created_by'        => $cashbank_order->created_by,
-                                    'company_id'        => $cashbank_order->company_id,
-                                    'finyear_id'        => $cashbank_order->finyear_id,
+                                    'created_by'        => $cashbank->created_by,
+                                    'company_id'        => $cashbank->company_id,
+                                    'finyear_id'        => $cashbank->finyear_id,
                                 ]);
                   } 
                   

@@ -252,13 +252,13 @@
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
-                      // .catch(err => Exception.handle(err, 'admin'));
+                      .catch(err => Exception.handle(err, 'admin'));
                 axios.get(`report/purchasebill/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                      .then(resp => {
                       this.itemOrders = resp.data;
                     })
                      .catch(err => {
-                      // Exception.handle(err, 'admin');
+                      Exception.handle(err, 'admin');
                     });
                 this.overlay = false;
               },
@@ -269,7 +269,7 @@
                         this.itemOrders = resp.data;
                       })
                        .catch(err => {
-                        // Exception.handle(err, 'admin');
+                        Exception.handle(err, 'admin');
                       });
                 this.overlay = false;
               },
