@@ -277,6 +277,7 @@
         })
         .catch(err => {
           this.form.loading = false;
+          this.showFinyear = false;
           swal('Notification', "Email or Password does not match");
         });
         
