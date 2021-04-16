@@ -124,7 +124,7 @@
 		    	<td><strong>SUB TOTAL</strong></td>
 		    	<td style="text-align: right;"><strong>{{ number_format($total_qty, 2) }}</strong></td>
 		    	<td style="text-align: right;"><strong>{{ number_format($total_grwt, 2) }}</strong></td>
-		    	<td style="text-align: right;"><strong>{{ number_format($total_rate, 2) }}</strong></td>
+		    	<td style="text-align: right;"></td>
 		    	<td style="text-align: right;"><strong>{{ number_format($total_amount, 2) }}</strong></td>
 		    </tr>
 		    <tr>
