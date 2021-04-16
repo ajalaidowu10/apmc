@@ -100,7 +100,6 @@
                 { text: 'S/No', value: 'id' },
                 { text: 'Date', value: 'enter_date' },
                 { text: 'Account Name', value: 'acct' },
-                { text: 'Motor No.', value: 'motor_no' },
                 { text: 'Total Qty', value: 'total_qty' },
                 { text: 'COMM', value: 'comm' },
                 { text: 'APMC', value: 'apmc' },

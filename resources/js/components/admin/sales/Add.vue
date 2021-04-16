@@ -119,7 +119,7 @@
                   </v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col
+              <!-- <v-col
                 cols="4"
                >
                 <v-text-field
@@ -132,7 +132,7 @@
                   @blur="$v.form.motorNo.$touch()"
                   required
                 ></v-text-field>
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-card>
           <v-card
@@ -451,7 +451,6 @@
            rate:         {required},
            item:        {required},
            acct:     {required},
-           motorNo:       {required},
          }
      },
     data: () => ({
@@ -469,7 +468,7 @@
               qty: null,
               otherCharges: 0,
               grwt: null,
-              motorNo: null,
+              motorNo: 'None',
               rate: null, 
               totalQty: null,
               item:null,
