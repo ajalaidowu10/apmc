@@ -18,16 +18,16 @@
              <div>
                 <v-card-title
                   class="headline"
-                >{{ countUnconfirmedBooking }}</v-card-title>
+                >{{ totalCashBankBalance }}</v-card-title>
 
-                <v-card-subtitle>Unconfirmed Booking</v-card-subtitle>
+                <v-card-subtitle>Cash &amp; Bank Balance</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
                     outlined
                     rounded
                     small
-                    @click="viewUnconfirmedBooking"
+                    @click="viewCashBankBalance"
                   >
                     View Details
                   </v-btn>
@@ -37,22 +37,22 @@
         </v-card>
       </v-col>
       <v-col cols="3">
-        <v-card color="amber lighten-5" class="pa-5">
+        <v-card color="pink lighten-5" class="pa-5">
           <div class="d-flex flex-no-wrap justify-space-between">
-             <v-icon size="50" color="amber">mdi-bank-check</v-icon>
+             <v-icon size="50" color="pink">mdi-home-variant-outline</v-icon>
              <div>
                 <v-card-title
                   class="headline"
-                >{{countCheckin}}</v-card-title>
+                >{{ totalPayable }}</v-card-title>
 
-                <v-card-subtitle>Check In</v-card-subtitle>
+                <v-card-subtitle>Payables</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
                     outlined
                     rounded
                     small
-                    @click="viewCheckin"
+                    @click="viewPayable"
                   >
                     View Details
                   </v-btn>
@@ -68,16 +68,16 @@
              <div>
                 <v-card-title
                   class="headline"
-                >{{ countDebitCustomer }}</v-card-title>
+                >{{ totalReceivable }}</v-card-title>
 
-                <v-card-subtitle>Debit Customer</v-card-subtitle>
+                <v-card-subtitle>Receivable</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
                     outlined
                     rounded
                     small
-                    @click="viewDebitCustomer"
+                    @click="viewReceivable"
                   >
                     View Details
                   </v-btn>
@@ -87,22 +87,22 @@
         </v-card>
       </v-col>
       <v-col cols="3">
-        <v-card color="pink lighten-5" class="pa-5">
+        <v-card color="amber lighten-5" class="pa-5">
           <div class="d-flex flex-no-wrap justify-space-between">
-             <v-icon size="50" color="pink">mdi-home-variant-outline</v-icon>
+             <v-icon size="50" color="amber">mdi-bank-check</v-icon>
              <div>
                 <v-card-title
                   class="headline"
-                >{{ countFreeRoom }}</v-card-title>
+                >{{totalItem}}</v-card-title>
 
-                <v-card-subtitle>Room are Free</v-card-subtitle>
+                <v-card-subtitle>Stock Quantity</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
                     outlined
                     rounded
                     small
-                    @click="viewRoom"
+                    @click="viewItem"
                   >
                     View Details
                   </v-btn>
@@ -112,7 +112,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row v-if="unconfirmedBooking">
+    <v-row v-if="cashbankBalance">
       <v-col cols="12">
         <v-card>
           <v-card-title>
@@ -126,97 +126,15 @@
             </v-text-field>
           </v-card-title>
           <v-data-table
-            :headers="unconfirmedBookingHeaders"
-            :items="getUnconfirmedBooking"
-            :search="search"
-            >
-            <template v-slot:item.view="{ item }">
-              <v-btn
-                color="primary"
-                text
-                small
-                @click="seeUnconfirmedBooking(item.id)"
-              >
-                <v-icon>
-                  mdi-eye
-                </v-icon>
-              </v-btn>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-if="checkin">
-      <v-col cols="12">
-        <v-card>
-          <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-              >
-            </v-text-field>
-          </v-card-title>
-          <v-data-table
-            :headers="checkinHeaders"
-            :items="checkinOrders"
-            :search="search"
-            >
-            <template v-slot:item.room="{ item }">
-              <strong>{{ item.room_name }}</strong>
-              <v-chip v-if="item.extraBed != 0"
-                class="ma-2"
-                color="deep-purple accent-4"
-                outlined
-              >
-                <v-icon left>
-                  mdi-bed
-                </v-icon>
-                {{ item.extra_bed }}
-              </v-chip>
-            </template>
-            <template v-slot:item.checkoutRoom="{ item }">
-              <v-btn v-if="item.status_id == 5"
-                color="success"
-                dark
-                large
-                @click="checkout(item.id, item.room_id)"
-               >
-
-                <v-icon>
-                   mdi-check-outline
-                 </v-icon>
-              </v-btn>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-if="debitCustomer">
-      <v-col cols="12">
-        <v-card>
-          <v-card-title>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-              >
-            </v-text-field>
-          </v-card-title>
-          <v-data-table
-            :headers="debitCustomerHeaders"
-            :items="getDebitCustomer"
+            :headers="cashbankBalanceHeaders"
+            :items="cashBankBalance"
             :search="search"
             >
           </v-data-table>
         </v-card>
       </v-col>
     </v-row>
-    <v-row v-if="rooms">
+    <v-row v-if="item">
       <v-col cols="12">
         <v-card>
           <v-card-title>
@@ -230,28 +148,57 @@
             </v-text-field>
           </v-card-title>
           <v-data-table
-            :headers="roomHeaders"
-            :items="roomOrders"
+            :headers="itemHeaders"
+            :items="itemOrders"
             :search="search"
             >
-            <template v-slot:item.status="{ item }">
-              <v-btn
-                v-if="item.status == 'Active'"
-                color="success"
-                text
-                small
-              >
-                {{ item.status }}
-              </v-btn>
-              <v-btn
-                v-else
-                color="primary"
-                text
-                small
-              >
-                Free
-              </v-btn>
+            <template v-slot:item.balance="{ item }">
+              {{ item.inward_qty - item.outward_qty }}
             </template>
+          </v-data-table>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row v-if="receivable">
+      <v-col cols="12">
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+              >
+            </v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="receivableHeaders"
+            :items="getNewReceivable"
+            :search="search"
+            >
+          </v-data-table>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row v-if="payable">
+      <v-col cols="12">
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+              >
+            </v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="payableHeaders"
+            :items="getNewPayable"
+            :search="search"
+            >
           </v-data-table>
         </v-card>
       </v-col>
@@ -273,102 +220,133 @@
     data: () => ({
       alert: false,
       permission: 'dashboard',
-      unconfirmedBooking: true,
-      checkin: false,
-      debitCustomer: false,
-      rooms: false,
+      cashbankBalance: true,
+      dateTo: new Date().toISOString().substr(0, 10),
+      item: false,
+      receivable: false,
+      payable: false,
       orderid: null,
       alert: false,
       search: '',
-      roomHeaders: [
-                { text: 'Room Group Type', value: 'room_group' },
-                { text: 'Room Name', value: 'name' },
-                { text: 'Room Intercom', value: 'intercom' },
-                { text: 'Status', value: 'status' },
-              ],
-      unconfirmedBookingHeaders: [
+      payableHeaders: [
                 {
-                  text: 'Booking ID',
-                  align: 'start',
-                  sortable: true,
-                  value: 'id',
-                },
-                { text: 'Room Type', value: 'room_group' },
-                { text: 'Checkin', value: 'date_from' },
-                { text: 'Checkout', value: 'date_to' },
-                { text: 'No. of Night', value: 'num_of_night' },
-                { text: 'Total Amount', value: 'total_amount' },
-                { text: 'View', value: 'view' },
-              ],
-      checkinHeaders: [
-                {
-                  text: 'Booking ID',
-                  align: 'start',
-                  sortable: true,
-                  value: 'booking_order.id',
-                },
-                { text: 'First Name', value: 'booking_order.user.first_name' },
-                { text: 'Last Name', value: 'booking_order.user.last_name' },
-                { text: 'Email', value: 'booking_order.user.email' },
-                { text: 'Room', value: 'room' },
-                { text: 'Checkout Date', value: 'booking_order.date_to' },
-                { text: 'Checkout Room', value: 'checkoutRoom' },
-              ],
-      debitCustomerHeaders: [
-                {
-                  text: 'Customer Name',
+                  text: 'Accounts',
                   align: 'start',
                   sortable: true,
                   value: 'acct_name',
                 },
-                { text: 'Phone Number', value: 'phone' },
-                { text: 'Email', value: 'email' },
-                { text: 'Amount', value: 'balance' },
+                { text: 'Payables', value: 'balance' },
               ],
-      bookingOrders: [],
-      checkinOrders: [],
-      roomOrders: [],
-      debitCustomerOrders: [],
+      cashbankBalanceHeaders: [
+                {
+                  text: 'Accounts',
+                  align: 'start',
+                  sortable: true,
+                  value: 'acct_name',
+                },
+                { text: 'Balances', value: 'balance' },
+              ],
+      itemHeaders: [
+                {
+                  text: 'Item',
+                  align: 'start',
+                  sortable: true,
+                  value: 'item_name',
+                },
+                { text: 'Inward Qty', value: 'inward_qty' },
+                { text: 'Outward Qty', value: 'outward_qty' },
+                { text: 'Balance Qty', value: 'balance' },
+              ],
+      receivableHeaders: [
+                {
+                  text: 'Accounts',
+                  align: 'start',
+                  sortable: true,
+                  value: 'acct_name',
+                },
+                { text: 'Receivables', value: 'balance' },
+              ],
+      cashBankBalance: [],
+      itemOrders: [],
+      payableOrders: [],
+      receivableOrders: [],
       overlay: false,
     }),
     computed: {
-      getUnconfirmedBooking(){
-        return this.bookingOrders.filter(item => item.status == "Not Confirmed");
+      getNewPayable(){
+        return this.payableOrders.filter(item => item.balance > 0);
       },
-      getFreeRoom(){
-        return this.roomOrders.filter(item => item.status == "Inactive");
+      getNewReceivable(){
+          return this.receivableOrders.filter(item => item.balance > 0);
       },
-      getDebitCustomer(){
-          return this.debitCustomerOrders.filter(item => item.balance > 0);
+      totalCashBankBalance(){
+        if (this.cashBankBalance.length > 0) {
+          let result = this.cashBankBalance.reduce((prev, cur) => ({balance: Number(prev.balance) + Number(cur.balance)})).balance
+          result = Number(result).toFixed(2);
+          return this.numberWithCommas(result);
+        }
+        
+        return 0;
       },
-      countUnconfirmedBooking(){
-        return this.getUnconfirmedBooking.length; 
+      totalItem(){
+        let result = Number(this.totalInward) - Number(this.totalOutward)
+        return this.numberWithCommas(result);
       },
-      countCheckin(){
-        return this.checkinOrders.length; 
+      totalReceivable(){
+          if (this.getNewReceivable.length > 0) {
+            let result = this.getNewReceivable.reduce((prev, cur) => ({balance: Number(prev.balance) + Number(cur.balance)})).balance
+            result = Number(result).toFixed(2);
+            return this.numberWithCommas(result);
+          }
+          
+          return 0; 
       },
-      countDebitCustomer(){
-          return this.getDebitCustomer.length; 
+      totalPayable(){
+          if (this.getNewPayable.length > 0) {
+            let result = this.getNewPayable.reduce((prev, cur) => ({balance: Number(prev.balance) + Number(cur.balance)})).balance
+            result = Number(result).toFixed(2);
+            return this.numberWithCommas(result);
+          }
+          
+          return 0;
       },
-      countFreeRoom(){
-          return this.getFreeRoom.length; 
+
+      totalInward(){
+        if (this.itemOrders.length > 0) {
+          let result = this.itemOrders.reduce((prev, cur) => ({inward_qty: Number(prev.inward_qty) + Number(cur.inward_qty)})).inward_qty
+
+          return Number(result).toFixed(2);
+        }
+        
+        return 0;
+      },
+      totalOutward(){
+        if (this.itemOrders.length > 0) {
+          let result = this.itemOrders.reduce((prev, cur) => ({outward_qty: Number(prev.outward_qty) + Number(cur.outward_qty)})).outward_qty
+
+          return Number(result).toFixed(2);
+        }
+        
+        return 0;
       },
     },
     created(){
-       this.getLedgerAcct();
-       this.getBooking();
-       this.getCheckin();
-       this.getRoom();
-
+       this.getReceivable();
+       this.getCashBankBalance();
+       this.getItem();
+       this.getPayable();
     },
     methods: {
-              getRoom()
+              numberWithCommas(x) {
+                  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              },
+              getPayable()
               {
                 this.overlay = true;
-                axios.get('room')
+                axios.get('report/get/payable')
                      .then(resp => {
                       this.overlay = false;
-                      this.roomOrders = resp.data.data;
+                      this.payableOrders = resp.data;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');
@@ -376,42 +354,36 @@
                     });
                 this.overlay = false;
               },
-              getBooking()
+              getCashBankBalance()
               {
                 this.overlay = true;
-                axios.get('booking')
+                axios.get('report/get/cashbankbalance')
                      .then(resp => {
-                      this.bookingOrders = resp.data.data;
+                      this.cashBankBalance = resp.data;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');
                     });
                 this.overlay = false;
               },
-              getCheckin()
+              getItem()
               {
                 this.overlay = true;
-                axios.get('booking/get/checkout')
+                axios.get(`report/get/stock/${this.dateTo}/0`)
                      .then(resp => {
-                      this.checkinOrders = resp.data.data;
-                      if (this.$route.params.message) {
-                        this.alert = true;
-                      }
+                      this.itemOrders = resp.data;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');
                     });
                this.overlay = false;
               },
-              getLedgerAcct()
+              getReceivable()
               {
                 this.overlay = true;
-                axios.get(`ledger/get/acct/2/1`)
+                axios.get(`report/get/receivable`)
                      .then(resp => {
-                      this.debitCustomerOrders = resp.data;
-                      if (this.$route.params.message) {
-                        this.alert = true;
-                      }
+                      this.receivableOrders = resp.data;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');
@@ -419,58 +391,31 @@
                this.overlay = false;
               },
               disableAll(){
-                this.unconfirmedBooking = false;
-                this.checkin = false;
-                this.rooms = false;
-                this.debitCustomer = false;
+                this.cashbankBalance = false;
+                this.item = false;
+                this.payable = false;
+                this.receivable = false;
                 this.$route.params.message = null;
               },
-              viewUnconfirmedBooking(){
+              viewCashBankBalance(){
                 this.disableAll();
-                this.unconfirmedBooking = true;
-                this.getBooking();
+                this.cashbankBalance = true;
+                this.getCashBankBalance();
               },
-              viewDebitCustomer(){
+              viewReceivable(){
                 this.disableAll();
-                this.debitCustomer = true;
-                this.getLedgerAcct();
+                this.receivable = true;
+                this.getReceivable();
               },
-              viewCheckin(){
+              viewItem(){
                 this.disableAll();
-                this.checkin = true;
-                this.getCheckin();
+                this.item = true;
+                this.getItem();
               },
-              viewRoom(){
+              viewPayable(){
                 this.disableAll();
-                this.rooms = true;
-                this.getRoom();
-              },
-              seeUnconfirmedBooking(id)
-              {
-                this.$router.push({name:'view-booking', params:{orderid:id}});
-              },
-              checkout(id, room_id){ 
-                let data = {};
-                data.id = id;
-                data.room_id =  room_id;
-                swal({
-                      title: "Notification!",
-                      text: 'Are you sure you want to CHECKOUT this room',
-                      buttons: ['No', 'Yes']
-                    })
-                .then((yes) => {
-                  if (yes) {
-                    this.overlay = true;
-                    axios.post('booking/store/checkout', data)
-                         .then(resp => {
-                          this.$route.params.message = resp.data.message;
-                          this.getCheckin();
-                         })
-                         .catch(err => Exception.handle(err, 'admin'));
-                    this.overlay = false;
-                  }
-                });
-
+                this.payable = true;
+                this.getPayable();
               },
         }
   }

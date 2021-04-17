@@ -23,6 +23,21 @@ class CreateAccountsTable extends Migration
             $table->foreignId('groupcode_id');
             $table->integer('is_visible')->default(1);
             $table->foreignId('created_by')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('ifsc_code')->nullable();
+            $table->string('address_one')->nullable();
+            $table->string('address_two')->nullable();
+             $table->string('area')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('branch')->nullable();
+            $table->string('acct_no')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->integer('credit_days')->nullable();
+            $table->integer('credit_limit')->nullable();
+            $table->foreignId('company_id');
             $table->softDeletes();
             $table->timestamps();
 

@@ -27,8 +27,8 @@ class JournalOrderRequest extends FormRequest
         return [
             'total_cr_amount'          => 'required|numeric',
             'total_dr_amount'          => 'required|numeric',
-            'enter_date'            => 'required|date',
-            'journal_order_items'   => 'required|array',
+            'enter_date'               => 'required|date',
+            'journal_order_items'       => 'required|array',
 
         ];
     }

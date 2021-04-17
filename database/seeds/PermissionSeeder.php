@@ -17,6 +17,7 @@ class PermissionSeeder extends Seeder
       $module_master = Module::where('name','Master')->first();
       $module_data_entry = Module::where('name','Data Entry')->first();
       $module_report = Module::where('name','Reports')->first();
+      $module_printing = Module::where('name','Printing')->first();
       $module_enquiry = Module::where('name','Enquiry')->first();
       $module_utility = Module::where('name','Utility')->first();
       $module_dashboard = Module::where('name','Dashboard')->first();
@@ -40,6 +41,14 @@ class PermissionSeeder extends Seeder
       $new_permission->icon = 'mdi-account-tie';
       $new_permission->save();
 
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_utility);
+      $new_permission->slug = 'backup-restore';
+      $new_permission->name = 'Backup/Restore';
+      $new_permission->link = '/web-admin/backup';
+      $new_permission->icon = 'mdi-backup-restore';
+      $new_permission->save();
+
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
@@ -51,92 +60,101 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'area';
+      $new_permission->name = 'Area';
+      $new_permission->icon = 'mdi-air-horn';
+      $new_permission->link = '/web-admin/area';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'narration';
+      $new_permission->name = 'Narration';
+      $new_permission->icon = 'mdi-message-text';
+      $new_permission->link = '/web-admin/narration';
+      $new_permission->save();
+
+      
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
       $new_permission->slug = 'item';
       $new_permission->name = 'Item';
-      $new_permission->icon = 'mdi-food-variant';
+      $new_permission->icon = 'mdi-star';
       $new_permission->link = '/web-admin/item';
       $new_permission->save();
 
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_master);
+      $new_permission->slug = 'item-exp';
+      $new_permission->name = 'Item Expense';
+      $new_permission->icon = 'mdi-star-cog';
+      $new_permission->link = '/web-admin/itemexp';
+      $new_permission->save();
+
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
-      $new_permission->slug = 'room-group';
-      $new_permission->name = 'Room Group';
-      $new_permission->link = '/web-admin/roomgroup';
-      $new_permission->icon = 'mdi-android-auto';
+      $new_permission->slug = 'account-group';
+      $new_permission->name = 'Account Group';
+      $new_permission->icon = 'mdi-account-network';
+      $new_permission->link = '/web-admin/acctgroup';
       $new_permission->save();
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
-      $new_permission->slug = 'room';
-      $new_permission->name = 'Room';
-      $new_permission->link = '/web-admin/room';
-      $new_permission->icon = 'mdi-home-thermometer';
+      $new_permission->slug = 'company';
+      $new_permission->name = 'Company';
+      $new_permission->icon = 'mdi-account-supervisor-circle';
+      $new_permission->link = '/web-admin/company';
       $new_permission->save();
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_master);
-      $new_permission->slug = 'service';
-      $new_permission->name = 'Service';
-      $new_permission->link = '/web-admin/service';
-      $new_permission->icon = 'mdi-hail';
-      $new_permission->save();
-
-      
-
-      $new_permission = new Permission();
-      $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'booking';
-      $new_permission->name = 'Booking';
-      $new_permission->icon = 'mdi-notebook-check-outline';
-      $new_permission->link = '/web-admin/booking';
-      $new_permission->save();
-
-      
-      $new_permission = new Permission();
-      $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'check-in';
-      $new_permission->name = 'Checkin';
-      $new_permission->link = '/web-admin/checkin';
-      $new_permission->icon = 'mdi-home-import-outline';
-
-      $new_permission->save();
-
-      $new_permission = new Permission();
-      $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'check-out';
-      $new_permission->name = 'Checkout';
-      $new_permission->link = '/web-admin/checkout';
-      $new_permission->icon = 'mdi-home-export-outline';
-      $new_permission->save();
-
-      $new_permission = new Permission();
-      $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'invoice-report';
-      $new_permission->name = 'Invoice';
-      $new_permission->link = '/web-admin/invoice';
-      $new_permission->icon = 'mdi-note-text';
+      $new_permission->slug = 'fin-year';
+      $new_permission->name = 'Financial Year';
+      $new_permission->icon = 'mdi-bullseye-arrow';
+      $new_permission->link = '/web-admin/finyear';
       $new_permission->save();
 
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'restuarant-sales';
-      $new_permission->name = 'Restuarant';
+      $new_permission->slug = 'purchase-entry';
+      $new_permission->name = 'Purchase Entry';
+      $new_permission->link = '/web-admin/purchase';
+      $new_permission->icon = 'mdi-alpha-p-box';
+      $new_permission->save();
+
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_data_entry);
+      $new_permission->slug = 'sales-entry';
+      $new_permission->name = 'Sales Entry';
       $new_permission->link = '/web-admin/sales';
-      $new_permission->icon = 'mdi-food-fork-drink';
+      $new_permission->icon = 'mdi-alpha-s-box';
       $new_permission->save();
 
 
       $new_permission = new Permission();
-      $new_permission->module()->associate($module_data_entry);
-      $new_permission->slug = 'service-order';
-      $new_permission->name = 'Service Order';
-      $new_permission->link = '/web-admin/serviceorder';
-      $new_permission->icon = 'mdi-hail';
+      $new_permission->module()->associate($module_printing);
+      $new_permission->slug = 'purchase-printing';
+      $new_permission->name = 'Purchase Bill';
+      $new_permission->link = '/web-admin/printing/purchasebill';
+      $new_permission->icon = 'mdi-alpha-p-box';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_printing);
+      $new_permission->slug = 'sales-printing';
+      $new_permission->name = 'Sales Bill';
+      $new_permission->link = '/web-admin/printing/salesbill';
+      $new_permission->icon = 'mdi-alpha-s-box';
       $new_permission->save();
 
 
+
+
+      
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_data_entry);
@@ -176,19 +194,62 @@ class PermissionSeeder extends Seeder
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'purchase-report';
+      $new_permission->name = 'Purchase';
+      $new_permission->link = '/web-admin/report/purchase';
+      $new_permission->icon = 'mdi-alpha-p-box';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'sales-report';
+      $new_permission->name = 'Sales';
+      $new_permission->link = '/web-admin/report/sales';
+      $new_permission->icon = 'mdi-alpha-s-box';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
       $new_permission->slug = 'ledger-report';
       $new_permission->name = 'Ledger';
       $new_permission->link = '/web-admin/report/ledger';
       $new_permission->icon = 'mdi-file-document-multiple-outline';
       $new_permission->save();
 
-      // $new_permission = new Permission();
-      // $new_permission->module()->associate($module_enquiry);
-      // $new_permission->slug = 'room-report';
-      // $new_permission->link = '/web-admin/enquiry/room';   
-      // $new_permission->name = 'Room Report';
-      // $new_permission->icon = 'mdi-home-variant-outline';
-      // $new_permission->save();
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'trialbal-report';
+      $new_permission->name = 'Trial Balance';
+      $new_permission->link = '/web-admin/report/trialbal';
+      $new_permission->icon = 'mdi-table-large';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'balsheet-report';
+      $new_permission->name = 'Balance Sheet';
+      $new_permission->link = '/web-admin/report/balsheet';
+      $new_permission->icon = 'mdi-scale-balance';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'ploss-report';
+      $new_permission->name = 'Proft & Loss';
+      $new_permission->link = '/web-admin/report/ploss';
+      $new_permission->icon = 'mdi-cash-plus';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_report);
+      $new_permission->slug = 'schedule-report';
+      $new_permission->name = 'Schedule';
+      $new_permission->link = '/web-admin/report/schedule';
+      $new_permission->icon = 'mdi-book-open-outline';
+      $new_permission->save();
+
+      
+
 
       $new_permission = new Permission();
       $new_permission->module()->associate($module_enquiry);
@@ -196,6 +257,14 @@ class PermissionSeeder extends Seeder
       $new_permission->link = '/web-admin/enquiry/acctbal';
       $new_permission->name = 'Account Balance';
       $new_permission->icon = 'mdi-cash-multiple';
+      $new_permission->save();
+
+      $new_permission = new Permission();
+      $new_permission->module()->associate($module_enquiry);
+      $new_permission->slug = 'stock-report';
+      $new_permission->link = '/web-admin/enquiry/stock';   
+      $new_permission->name = 'Stock Report';
+      $new_permission->icon = 'mdi-card-bulleted';
       $new_permission->save();
 
       

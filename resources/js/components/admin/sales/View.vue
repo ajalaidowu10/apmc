@@ -73,19 +73,6 @@
                   </v-icon>
                 </v-btn>
               </template>
-              <template v-slot:item.print="{ item }">
-
-                <v-btn
-                  color="red"
-                  text
-                  small
-                  @click="printData(item.id)"
-                >
-                  <v-icon>
-                    mdi-file-pdf-outline
-                  </v-icon>
-                </v-btn>
-              </template>
             </v-data-table>
           </v-card>
         </v-container>
@@ -106,18 +93,19 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
-      permission: 'restuarant-sales',
+       permission: 'sales-entry',
       alert: false,
       search: '',
       headers: [
                 { text: 'S/No', value: 'id' },
-                { text: 'Customer Account Name', value: 'cus_acct' },
-                { text: 'Total Quantity', value: 'total_qty' },
+                { text: 'Date', value: 'enter_date' },
+                { text: 'Account Name', value: 'acct' },
+                { text: 'Total Qty', value: 'total_qty' },
+                { text: 'COMM', value: 'comm' },
+                { text: 'APMC', value: 'apmc' },
+                { text: 'Other Charges', value: 'other_charges' },
                 { text: 'Total Amount', value: 'total_amount' },
-                { text: 'Narration',  value: 'descp' },
-                { text: 'Date Added', value: 'created_at' },
                 { text: 'View', value: 'view' },
-                { text: 'Print', value: 'print' },
               ],
       itemOrders: [],
       overlay: false,
@@ -138,7 +126,7 @@
               {
 
                 this.overlay = true;
-                axios.get(`sales`)
+                axios.get(`salesorder`)
                      .then(resp => {
                       this.overlay = false;
                       this.itemOrders = resp.data.data;

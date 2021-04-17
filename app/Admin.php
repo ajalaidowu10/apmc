@@ -48,7 +48,7 @@ class Admin extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'status_id', 'deleted_at',
+        'name', 'email', 'password', 'role_id', 'status_id', 'deleted_at', 'company_id', 'finyear_id',
     ];
 
     public function setPasswordAttribute($value)
@@ -78,6 +78,16 @@ class Admin extends Authenticatable implements JWTSubject
     public function status()
     {
       return $this->belongsTo('App\Status');
+    }
+
+    public function company()
+    {
+      return $this->belongsTo('App\Company');
+    }
+
+    public function finyear()
+    {
+      return $this->belongsTo('App\FinancialYear', 'finyear_id');
     }
 
     public function role()

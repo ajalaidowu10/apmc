@@ -22,6 +22,8 @@ class CreateJournalOrdersTable extends Migration
             $table->foreignId('created_by');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreignId('company_id');
+            $table->foreignId('finyear_id');
 
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('created_by')->references('id')->on('admins');

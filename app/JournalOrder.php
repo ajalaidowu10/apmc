@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class JournalOrder extends Model
 {
   use SoftDeletes;
-  protected $fillable = ['enter_date', 'total_cr_amount', 'total_dr_amount',  'created_by', 'status_id', 'deleted_at'];
+  protected $fillable = [
+                          'enter_date', 'total_cr_amount', 'total_dr_amount',  
+                          'created_by', 'status_id', 'deleted_at', 'finyear_id', 'company_id'
+                        ];
 
   protected static function boot()
   {
@@ -25,4 +28,6 @@ class JournalOrder extends Model
   {
     return $this->hasMany('App\JournalOrderItem');
   }
+
+  
 }

@@ -22,7 +22,6 @@ class CreateCashbankOrderItemsTable extends Migration
             $table->boolean('del_record')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            
             $table->foreign('acct_two_id')->references('id')->on('accounts');
             $table->foreign('cashbank_order_id')->references('id')->on('cashbank_orders');
         });

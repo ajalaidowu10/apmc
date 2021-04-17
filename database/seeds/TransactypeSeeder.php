@@ -13,12 +13,10 @@ class TransactypeSeeder extends Seeder
     public function run()
     {
         Transactype::create(['name' => 'Opening Balance']);
-        Transactype::create(['name' => 'Online Booking']);
-        Transactype::create(['name' => 'Room Sales']);
+        Transactype::create(['name' => 'Purchase Entry']);
+        Transactype::create(['name' => 'Sales Entry']);
         Transactype::create(['name' => 'Cash Bank']);
         Transactype::create(['name' => 'Journal']);
-        Transactype::create(['name' => 'Restuarant Sales']);
-        Transactype::create(['name' => 'Service Sales']);
 
 
     }

@@ -13,7 +13,7 @@ use App\Ledger;
 use Auth;
 use DB;
 use DateTime;
-use App\Http\Controllers\LedgerController;
+use App\Http\Controllers\ReportController;
 
 class CashbankOrderController extends Controller
 {   
@@ -29,7 +29,9 @@ class CashbankOrderController extends Controller
      */
     public function index()
     {
-        return CashbankOrderResource::collection(CashbankOrder::latest()->get());
+        return CashbankOrderResource::collection(CashbankOrder::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->where('finyear_id', Auth::guard('admin')->user()->finyear_id)
+                                                 ->latest()->get());
     }
 
     /**
@@ -44,6 +46,12 @@ class CashbankOrderController extends Controller
         $cashbank_order_items = $request->input('cashbank_order_items');
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
+
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+        $request->merge($company_id);
+
+        $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+        $request->merge($finyear_id);
 
         DB::beginTransaction();
           try 
@@ -64,7 +72,9 @@ class CashbankOrderController extends Controller
                                 'enter_date'        => $cashbank_order->enter_date,
                                 'crdr_id'           => $cashbank_order->cashbank_type_id == 1 ? 2 : 1,
                                 'descp'             => $cashbank_item->descp,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $cashbank_order->created_by,
+                                'company_id'        => $cashbank_order->company_id,
+                                'finyear_id'        => $cashbank_order->finyear_id,
                             ]);
 
                 Ledger::create([
@@ -76,7 +86,9 @@ class CashbankOrderController extends Controller
                                 'enter_date'        => $cashbank_order->enter_date,
                                 'crdr_id'           => $cashbank_order->cashbank_type_id == 1 ? 1 : 2,
                                 'descp'             => $cashbank_item->descp,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $cashbank_order->created_by,
+                                'company_id'        => $cashbank_order->company_id,
+                                'finyear_id'        => $cashbank_order->finyear_id,
                             ]);
               }
 
@@ -112,10 +124,15 @@ class CashbankOrderController extends Controller
      */
     public function update(CashbankOrderRequest $request, CashbankOrder $cashbank)
     {
-          $cashbank->update($request->all());
           $cashbank_order_items = $request->input('cashbank_order_items');
           $created_by = ['created_by' => Auth::guard('admin')->user()->id];
           $request->merge($created_by);
+
+          $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+          $request->merge($company_id);
+
+          $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+          $request->merge($finyear_id);
 
           DB::beginTransaction();
             try 
@@ -141,7 +158,9 @@ class CashbankOrderController extends Controller
                                     'enter_date'        => $cashbank->enter_date,
                                     'crdr_id'           => $cashbank->cashbank_type_id == 1 ? 2 : 1,
                                     'descp'             => $cashbank_item->descp,
-                                    'created_by'        => Auth::guard('admin')->user()->id,
+                                    'created_by'        => $cashbank->created_by,
+                                    'company_id'        => $cashbank->company_id,
+                                    'finyear_id'        => $cashbank->finyear_id,
                                 ]);
 
                     Ledger::create([
@@ -153,7 +172,9 @@ class CashbankOrderController extends Controller
                                     'enter_date'        => $cashbank->enter_date,
                                     'crdr_id'           => $cashbank->cashbank_type_id == 1 ? 1 : 2,
                                     'descp'             => $cashbank_item->descp,
-                                    'created_by'        => Auth::guard('admin')->user()->id,
+                                    'created_by'        => $cashbank->created_by,
+                                    'company_id'        => $cashbank->company_id,
+                                    'finyear_id'        => $cashbank->finyear_id,
                                 ]);
                   } 
                   
@@ -188,12 +209,16 @@ class CashbankOrderController extends Controller
 
     public function printReceipt(CashbankOrderItem $cashbank)
     {
-      return view('print.cashbank_receipt', ['data' => $cashbank]);
+      $company = Auth::guard('admin')->user()->company;
+      return view('print.cashbank_receipt', [
+                                                'data' => $cashbank,
+                                                'company'      => $company,
+                                            ]);
     }
 
-    public function getReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    public function getRecord(string $date_from='', string $date_to='', int $acct_id = 0)
     {
-      $get_report = DB::table('cashbank_orders as o')
+      $report = DB::table('cashbank_orders as o')
                         ->leftJoin('cashbank_order_items as oi', 'oi.cashbank_order_id', '=', 'o.id')
                         ->leftJoin('accounts as a1', 'a1.id', '=', 'oi.acct_two_id')
                         ->leftJoin('accounts as a2', 'a2.id', '=', 'o.acct_one_id')
@@ -205,31 +230,48 @@ class CashbankOrderController extends Controller
                         )
                         ->where('o.deleted_at', '=', null)
                         ->where('oi.deleted_at', '=', null)
-                        ->where('oi.del_record', '=', 0);
+                        ->where('oi.del_record', '=', 0)
+                        ->where('o.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('o.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
 
                           if ($date_from != '') 
                           {
-                              $get_report = $get_report->where('o.enter_date', '>=', $date_from);
+                              $report = $report->where('o.enter_date', '>=', $date_from);
                           } 
 
                           if ($date_to != '') 
                           {
-                              $get_report = $get_report->where('o.enter_date', '<=', $date_to);
+                              $report = $report->where('o.enter_date', '<=', $date_to);
                           }
 
                           if ($acct_id != 0) 
                           {
-                              $get_report = $get_report->where('o.acct_one_id', $acct_id);
+                              $report = $report->where('o.acct_one_id', $acct_id);
                           }
                           
-      $get_report = $get_report->get();
-      return $get_report;
+      $report = $report->get();
+      return $report;
     }
+
+    public function getReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    {
+      $report = $this->getRecord($date_from, $date_to, $acct_id);
+
+      $open_bal = ReportController::getBalance($acct_id, $date_from, 2);
+
+      return [
+                'report'        => $report,
+                'open_bal'      => $open_bal,
+             ];
+      
+    }
+
+
 
     public function printReport(string $date_from='', string $date_to='', int $acct_id = 0)
     {
+      $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getReport($date_from, $date_to, $acct_id);
-      $open_bal = LedgerController::getBalance($acct_id, $date_from);
 
       $acct_name = "";
       $date_from = new DateTime($date_from);
@@ -242,12 +284,13 @@ class CashbankOrderController extends Controller
       }
 
       return view('print.cashbank_report', [
-                                              'get_report'    => $get_report,
+                                              'get_report'    => $get_report['report'],
                                               'date_from'     => $date_from,
                                               'date_to'       => $date_to,
                                               'acct_id'       => $acct_id,
                                               'acct_name'     => $acct_name,
-                                              'open_bal'      => $open_bal,
+                                              'open_bal'      => $get_report['open_bal'],
+                                              'company'       => $company,
                                            ]);
     }
 

@@ -19,7 +19,7 @@ class JournalOrderResource extends JsonResource
           'enter_date'              => $this->enter_date,
           'total_cr_amount'         => $this->total_cr_amount,
           'total_dr_amount'         => $this->total_dr_amount,
-          'journal_order_items'    => JournalOrderItemResource::collection($this->journal_order_items),
+          'journal_order_items'     => JournalOrderItemResource::collection($this->journal_order_items)
         ];
     }
 }

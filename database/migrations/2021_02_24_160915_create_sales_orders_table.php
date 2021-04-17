@@ -15,17 +15,27 @@ class CreateSalesOrdersTable extends Migration
     {
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cus_acct_id');
+            $table->foreignId('acct_id');
+            $table->string('invoice_no')->nullable();
+            $table->string('motor_no')->nullable();
             $table->date('enter_date');
             $table->decimal('total_qty');
+            $table->decimal('sales_amount');
             $table->decimal('total_amount');
-            $table->string('descp');
+            $table->decimal('other_charges');
+            $table->decimal('levy');
+            $table->decimal('apmc');
+            $table->decimal('map_levy');
+            $table->decimal('comm');
+            $table->decimal('tds');
             $table->foreignId('status_id')->default(1);
             $table->foreignId('created_by');
+            $table->foreignId('company_id');
+            $table->foreignId('finyear_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('cus_acct_id')->references('id')->on('accounts');
+            $table->foreign('acct_id')->references('id')->on('accounts');
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('created_by')->references('id')->on('admins');
         });

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Groupcode extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['parent_groupcode_id', 'name', 'descp', 'status_id', 'created_by', 'is_visible', 'deleted_at'];
+    protected $fillable = ['parent_groupcode_id', 'name', 'descp', 'status_id', 'created_by', 'is_visible', 'deleted_at', 'company_id'];
 
     public function parent_groupcode()
     {

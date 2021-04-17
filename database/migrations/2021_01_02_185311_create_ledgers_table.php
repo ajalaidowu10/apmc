@@ -25,9 +25,10 @@ class CreateLedgersTable extends Migration
             $table->foreignId('crdr_id');
             $table->string('descp');
             $table->boolean('is_visible')->default(1);
+            $table->foreignId('company_id');
+            $table->foreignId('finyear_id')->nullable();
             $table->timestamps();
             $table->foreignId('created_by')->nullable();
-
             $table->foreign('transactype_id')->references('id')->on('transactypes');
             $table->foreign('acct_one_id')->references('id')->on('accounts');
             $table->foreign('acct_two_id')->references('id')->on('accounts');

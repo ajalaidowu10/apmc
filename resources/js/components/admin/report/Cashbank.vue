@@ -246,7 +246,7 @@
       permission: 'cashbank-report',
       open_bal: 0,
       search: '',
-      acctId: 4,
+      acctId: 0,
       acct: [],
       dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
@@ -257,21 +257,27 @@
     }),
     computed:{
       closingBal(){
-        return  Number(this.open_bal) - Number(this.total);
+        let result = Number(this.open_bal) - Number(this.total);
+
+        return Number(result).toFixed(2);
       },
       total(){
-        return  Number(this.totalDebit) - Number(this.totalCredit);
+        let result = Number(this.totalDebit) - Number(this.totalCredit);
+
+        return Number(result).toFixed(2);
       },
       totalDebit(){
         if (this.itemOrders.length > 0) {
-          return this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+          let result = this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+          return Number(result).toFixed(2);
         }
         return 0;
       },
 
       totalCredit(){
         if (this.itemOrders.length > 0) {
-          return this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+          let result = this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+          return Number(result).toFixed(2);
         }
         return 0;
       },
@@ -284,25 +290,11 @@
               {
 
                 this.overlay = true;
-                axios.get(`account/get/0/${this.acctId}`)
+                axios.get(`account/get/0/4`)
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
-                axios.get(`cashbank/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
-                     .then(resp => {
-                      this.itemOrders = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                 this.overlay = false;
               },
               setAccountOne(data){
@@ -310,17 +302,10 @@
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                   axios.get(`cashbank/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                        .then(resp => {
-                        this.overlay = false;
-                        this.itemOrders = resp.data;
+                        this.open_bal = resp.data.open_bal;
+                        this.itemOrders = resp.data.report;
                       })
                        .catch(err => {
                         Exception.handle(err, 'admin');
