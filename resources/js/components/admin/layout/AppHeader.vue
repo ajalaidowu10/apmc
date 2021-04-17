@@ -5,7 +5,7 @@
       dense
       dark
     >
-      <v-toolbar-title class="pl-10">Hotel Manager</v-toolbar-title>
+      <v-toolbar-title class="pl-10">{{ company }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -21,7 +21,11 @@
 </template>
 <script>
   export default {
+      data:() => ({
+        company: 'Apmc Manager',
+      }),
       created() {
+        this.company = Admin.company();
         EventBus.$on("logout", () => {
           Admin.logout();
         });

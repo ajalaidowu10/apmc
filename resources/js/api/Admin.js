@@ -10,11 +10,12 @@ class Admin {
     }
 
     responseAfterLogin(res) {
-        const access_token = res.data.access_token
-        const username = res.data.user
+        const access_token = res.data.access_token;
+        const username = res.data.user;
+        const company = res.data.company;
 
         if (Token.isValidAdmin(access_token)) {
-            AppStorage.store(username, access_token)
+            AppStorage.store(username, access_token, company);
             window.location = '/web-admin'
         }
     }
@@ -42,6 +43,12 @@ class Admin {
         }
     }
 
+    company() {
+        if (this.loggedIn()) {
+            return AppStorage.getCompany()
+        }
+    }
+
     id() {
         if (this.loggedIn()) {
             const payload = Token.payload(AppStorage.getToken())
@@ -51,12 +58,7 @@ class Admin {
 
     own(id) {
         return this.id() == id
-    }
-
-    admin() {
-        return this.id() == 1
-    }
-
+    }    
 }
 
 export default Admin = new Admin();

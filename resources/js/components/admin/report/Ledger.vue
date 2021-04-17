@@ -249,21 +249,29 @@
     }),
     computed:{
       closingBal(){
-        return  Number(this.open_bal) - Number(this.total);
+        let result = Number(this.open_bal) - Number(this.total);
+
+        return Number(result).toFixed(2);
       },
       total(){
-        return  Number(this.totalDebit) - Number(this.totalCredit);
+        let result = Number(this.totalDebit) - Number(this.totalCredit);
+
+        return Number(result).toFixed(2);
       },
       totalDebit(){
         if (this.itemOrders.length > 0) {
-          return this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+          let result = this.itemOrders.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+
+          return Number(result).toFixed(2);
         }
         return 0;
       },
 
       totalCredit(){
         if (this.itemOrders.length > 0) {
-          return this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+          let result = this.itemOrders.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+
+          return Number(result).toFixed(2);
         }
         return 0;
       },
@@ -281,21 +289,6 @@
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
-                axios.get(`ledger/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
-                     .then(resp => {
-                      this.overlay = false;
-                      this.itemOrders = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                 this.overlay = false;
               },
               setAccountOne(data){
@@ -303,16 +296,10 @@
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                   axios.get(`ledger/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                        .then(resp => {
-                        this.itemOrders = resp.data;
+                        this.itemOrders = resp.data.report;
+                        this.open_bal = resp.data.open_bal;
                       })
                        .catch(err => {
                         Exception.handle(err, 'admin');

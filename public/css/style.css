@@ -2,8 +2,9 @@
     font-family: 'eadesigner';
     src: url('../fonts/EaDesignerBold.ttf');
 }
-
-
+.img-fluid {
+    width: 100%;
+}
 #nav-title, #nav-title1, #nav-tab{
 	font-family: eadesigner!important;
 }

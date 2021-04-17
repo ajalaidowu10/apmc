@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
    use SoftDeletes;
-   protected $fillable = ['item_group_id', 'name', 'price', 'status_id','deleted_at'];
+   protected $fillable = ['name', 'unit', 'weight_pb', 'status_id','deleted_at', 'company_id'];
 
-   public function item_group()
-   {
-     return $this->belongsTo('App\ItemGroup');
-   }
    public function status()
    {
      return $this->belongsTo('App\Status');
+   }
+
+   public function item_exps()
+   {
+   		return $this->hasMany('App\ItemExp');
    }
 }

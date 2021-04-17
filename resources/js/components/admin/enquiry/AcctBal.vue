@@ -118,8 +118,8 @@
                 </thead>
                 <tbody>
                   <tr class="success lighten-5">
-                    <td>{{ dateTo }}</td>
-                    <td>{{ acctName }}</td>
+                    <td>{{ searchDateTo }}</td>
+                    <td>{{ searchAcctName }}</td>
                     <td v-if="open_bal < 0"><strong>{{ open_bal * -1 }} DR</strong></td>
                     <td v-else-if="open_bal > 0"><strong>{{ open_bal  }} CR</strong></td>
                     <td v-else><strong>00.00</strong></td>
@@ -163,8 +163,10 @@
       permission: 'account-bal',
       open_bal: 0,
       search: '',
-      acctId: 4,
+      acctId: null,
       acctName: null,
+      searchAcctName: null,
+      searchDateTo: null,
       acct: [],
       dateTo: new Date().toISOString().substr(0, 10),
       menuFrom: false,
@@ -177,26 +179,12 @@
     methods: {
               index()
               {
-
                 this.overlay = true;
-                axios.get(`account/${this.acctId}`)
-                      .then(resp=>{
-                        this.acctId = resp.data.data.id;
-                        this.acctName = resp.data.data.name;
-                      })
-                      .catch(err => Exception.handle(err, 'admin'));
                 axios.get(`account`)
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`acctbal/${this.acctId}/0/${this.dateTo}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                 this.overlay = false;
               },
               setAccountOne(data){
@@ -205,10 +193,12 @@
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`acctbal/${this.acctId}/0/${this.dateTo}`)
+                  axios.get(`acctbal/${this.acctId}/${this.dateTo}/2/1`)
                      .then(resp => {
                       console.log(resp);
                       this.open_bal = resp.data;
+                      this.searchAcctName = this.acctName;
+                      this.searchDateTo = this.dateTo;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');

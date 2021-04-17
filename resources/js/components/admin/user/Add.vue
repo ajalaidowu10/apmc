@@ -121,7 +121,7 @@
                color="red"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="deleteUser"
                >
@@ -141,7 +141,7 @@
                color="primary"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="saveUser"
                >
@@ -301,7 +301,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             else
@@ -313,7 +313,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
 

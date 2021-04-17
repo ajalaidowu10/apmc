@@ -15,13 +15,13 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_group_id');
             $table->string('name');
-            $table->decimal('price');
+            $table->decimal('unit');
+            $table->decimal('weight_pb');
+            $table->foreignId('company_id');
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('status_id')->default(1);
-            $table->foreign('item_group_id')->references('id')->on('item_groups');
             $table->foreign('status_id')->references('id')->on('statuses');
         });
     }

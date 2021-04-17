@@ -1,43 +1,26 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Home from './views/Home';
-import AddBooking from './views/AddBooking';
-import AdminAddBooking from './components/admin/booking/Add';
-import ViewBooking from './components/admin/booking/View';
-import PrintBooking from './components/admin/booking/Print';
-import ViewCheckin from './components/admin/booking/Checkin';
-import ViewCheckout from './components/admin/booking/Checkout';
-import UserLogin from './views/UserLogin';
 import AdminLogin from './views/AdminLogin';
-import PaymentSuccess from './views/PaymentSuccess';
-import BookingSuccess from './views/BookingSuccess';
-import Signup from './views/Signup';
-import Terms from './views/Terms';
 import WebAdmin from './views/WebAdmin';
 import AddItem from './components/admin/item/Add';
 import ViewItem from './components/admin/item/View';
-import AddRoom from './components/admin/room/Add';
-import ViewRoom from './components/admin/room/View';
+import AddItemExp from './components/admin/itemexp/Add';
+import ViewItemExp from './components/admin/itemexp/View';
 import AddAccount from './components/admin/account/Add';
 import ViewAccount from './components/admin/account/View';
-import ViewInvoice from './components/admin/booking/Invoice';
 import AddCashbank from './components/admin/cashbank/Add';
 import ViewCashbank from './components/admin/cashbank/View';
 import PrintCashbank from './components/admin/cashbank/Print';
 import EditCashbank from './components/admin/cashbank/Edit';
-import AddGroupRoom from './components/admin/roomgroup/Add';
-import ViewGroupRoom from './components/admin/roomgroup/View';
 import AddSales from './components/admin/sales/Add';
 import ViewSales from './components/admin/sales/View';
 import EditSales from './components/admin/sales/Edit';
 import PrintSales from './components/admin/sales/Print';
-import AddService from './components/admin/service/Add';
-import ViewService from './components/admin/service/View';
-import AddServiceOrder from './components/admin/serviceorder/Add';
-import ViewServiceOrder from './components/admin/serviceorder/View';
-import EditServiceOrder from './components/admin/serviceorder/Edit';
-import PrintServiceOrder from './components/admin/serviceorder/Print';
+import AddPurchase from './components/admin/purchase/Add';
+import ViewPurchase from './components/admin/purchase/View';
+import EditPurchase from './components/admin/purchase/Edit';
+import PrintPurchase from './components/admin/purchase/Print';
 import AddJournal from './components/admin/journal/Add';
 import ViewJournal from './components/admin/journal/View';
 import EditJournal from './components/admin/journal/Edit';
@@ -45,8 +28,16 @@ import ReportCashbank from './components/admin/report/Cashbank';
 import PrintCashbankReport from './components/admin/report/print/Cashbank';
 import ReportJournal from './components/admin/report/Journal';
 import PrintJournalReport from './components/admin/report/print/Journal';
+import ReportTrialbal from './components/admin/report/Trialbal';
+import PrintTrialbalReport from './components/admin/report/print/Trialbal';
+import ReportBalsheet from './components/admin/report/Balsheet';
+import PrintBalsheetReport from './components/admin/report/print/Balsheet'
 import ReportLedger from './components/admin/report/Ledger';
 import PrintLedgerReport from './components/admin/report/print/Ledger';
+import ReportSchedule from './components/admin/report/Schedule';
+import PrintScheduleReport from './components/admin/report/print/Schedule';
+import ReportPloss from './components/admin/report/Ploss';
+import PrintPlossReport from './components/admin/report/print/Ploss';
 import AdminDashboard from './components/admin/Dashboard';
 import AddUser from './components/admin/user/Add';
 import ViewUser from './components/admin/user/View';
@@ -54,6 +45,27 @@ import EditUser from './components/admin/user/Edit';
 import Logout from './views/Logout';
 import AcctBal from './components/admin/enquiry/AcctBal';
 import PrintAcctBalReport from './components/admin/enquiry/print/AcctBal';
+import Stock from './components/admin/enquiry/Stock';
+import PrintStockReport from './components/admin/enquiry/print/Stock';
+import AddAcctGroup from './components/admin/acctgroup/Add';
+import ViewAcctGroup from './components/admin/acctgroup/View';
+import AddArea from './components/admin/area/Add';
+import ViewArea from './components/admin/area/View';
+import AddNarration from './components/admin/narration/Add';
+import ViewNarration from './components/admin/narration/View';
+import ReportPurchase from './components/admin/report/Purchase';
+import PrintPurchaseReport from './components/admin/report/print/Purchase';
+import ReportSales from './components/admin/report/Sales';
+import PrintSalesReport from './components/admin/report/print/Sales';
+import AddCompany from './components/admin/company/Add';
+import ViewCompany from './components/admin/company/View';
+import AddFinYear from './components/admin/finyear/Add';
+import ViewFinYear from './components/admin/finyear/View';
+import ReportSalesBill from './components/admin/printing/SalesBill';
+import PrintSalesBill from './components/admin/printing/print/SalesBill';
+import ReportPurchaseBill from './components/admin/printing/PurchaseBill';
+import PrintPurchaseBill from './components/admin/printing/print/PurchaseBill';
+
 
 
 Vue.use(Router);
@@ -66,26 +78,6 @@ const router = new Router({
       return { x: 0, y: 0 };
   },
   routes: [
-				    {
-				      path: '/',
-				      name: 'home',
-				      component: Home,
-				    },
-				    {
-				      path: '/booking',
-				      name: 'booking',
-				      component: AddBooking,
-				    },
-				    {
-				      path: '/terms-and-conditions',
-				      name: 'terms',
-				      component: Terms,
-				    },
-				    {
-				      path: '/payment/success',
-				      name: 'payment-success',
-				      component: PaymentSuccess,
-				    },
 				    {
 				      path: '/cashbank/receipt/:id',
 				      name: 'print-cashbank',
@@ -105,9 +97,63 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
+				      path: '/report/print/trialbal/:dateFrom/:dateTo',
+				      name: 'print-trialbal-report',
+				      component: PrintTrialbalReport,
+				      props: true,
+				    },
+				    {
+				      path: '/report/print/trialbal/:dateFrom/:dateTo/:groupcodeId',
+				      name: 'print-schedule-report',
+				      component: PrintScheduleReport,
+				      props: true,
+				    },
+				    {
+				      path: '/report/print/ploss/:dateFrom/:dateTo',
+				      name: 'print-ploss-report',
+				      component: PrintPlossReport,
+				      props: true,
+				    },
+				    {
+				      path: '/report/print/balsheet/:dateTo',
+				      name: 'print-balsheet-report',
+				      component: PrintBalsheetReport,
+				      props: true,
+				    },
+				    {
+				      path: '/purchase/print/report/:dateFrom/:dateTo/:acctId',
+				      name: 'print-purchase-report',
+				      component: PrintPurchaseReport,
+				      props: true,
+				    },
+				    {
+				      path: '/sales/print/report/:dateFrom/:dateTo/:acctId',
+				      name: 'print-sales-report',
+				      component: PrintSalesReport,
+				      props: true,
+				    },
+				    {
 				      path: '/ledger/print/report/:dateFrom/:dateTo/:acctId',
 				      name: 'print-ledger-report',
 				      component: PrintLedgerReport,
+				      props: true,
+				    },
+				    {
+				      path: '/ledger/print/report/:dateFrom/:dateTo/:acctId',
+				      name: 'print-ledger-report',
+				      component: PrintLedgerReport,
+				      props: true,
+				    },
+				    {
+				      path: '/salesbill/printing/:acctId/:date',
+				      name: 'print-sales-bill',
+				      component: PrintSalesBill,
+				      props: true,
+				    },
+				    {
+				      path: '/purchasebill/printing/:acctId/:date',
+				      name: 'print-purchase-bill',
+				      component: PrintPurchaseBill,
 				      props: true,
 				    },
 				    {
@@ -117,37 +163,22 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
+				      path: '/report/print/stock/:dateTo/:itemId',
+				      name: 'print-stock-report',
+				      component: PrintStockReport,
+				      props: true,
+				    },
+				    {
 				      path: '/sales/invoice/:id',
 				      name: 'print-sales',
 				      component: PrintSales,
 				      props: true,
 				    },
 				    {
-				      path: '/serviceorder/invoice/:id',
-				      name: 'print-serviceorder',
-				      component: PrintServiceOrder,
+				      path: '/purchase/invoice/:id',
+				      name: 'print-purchase',
+				      component: PrintPurchase,
 				      props: true,
-				    },
-				    {
-				      path: '/booking/invocie/:id',
-				      name: 'print-booking',
-				      component: PrintBooking,
-				      props: true,
-				    },
-				    {
-				      path: '/booking/success/:bookingid?',
-				      name: 'booking-success',
-				      component: BookingSuccess,
-				    },
-				    {
-				      path: '/login',
-				      name: 'login',
-				      component: UserLogin,
-				    },
-				    {
-				      path: '/signup',
-				      name: 'signup',
-				      component: Signup,
 				    },
 				    {
 				      path: '/web-admin',
@@ -160,16 +191,6 @@ const router = new Router({
 				      component: WebAdmin,
 				      children: [
 				      	{
-				      		path:'booking',
-				      		name: 'add-booking',
-				      		component: AdminAddBooking,
-				      	},
-				      	{
-				      		path:'booking',
-				      		name: 'view-booking',
-				      		component: ViewBooking,
-				      	},
-				      	{
 				      		path:'item',
 				      		name: 'add-item',
 				      		component: AddItem,
@@ -180,49 +201,14 @@ const router = new Router({
 				      		component: ViewItem,
 				      	},
 				      	{
-				      		path:'service',
-				      		name: 'add-service',
-				      		component: AddService,
+				      		path:'itemexp',
+				      		name: 'add-itemexp',
+				      		component: AddItemExp,
 				      	},
 				      	{
-				      		path:'service',
-				      		name: 'view-service',
-				      		component: ViewService,
-				      	},
-				      	{
-				      	  path: 'checkin',
-				      	  name: 'view-checkin',
-				      	  component: ViewCheckin,
-				      	},
-				      	{
-				      	  path: 'invoice',
-				      	  name: 'view-invoice',
-				      	  component: ViewInvoice,
-				      	},
-				      	{
-				      	  path: 'checkout',
-				      	  name: 'checkout',
-				      	  component: ViewCheckout,
-				      	},
-				      	{
-				      		path:'roomgroup',
-				      		name: 'add-roomgroup',
-				      		component: AddGroupRoom,
-				      	},
-				      	{
-				      		path:'roomgroup',
-				      		name: 'view-roomgroup',
-				      		component: ViewGroupRoom,
-				      	},
-				      	{
-				      		path:'room',
-				      		name: 'add-room',
-				      		component: AddRoom,
-				      	},
-				      	{
-				      		path:'room',
-				      		name: 'view-room',
-				      		component: ViewRoom,
+				      		path:'itemexp',
+				      		name: 'view-itemexp',
+				      		component: ViewItemExp,
 				      	},
 				      	{
 				      		path:'account',
@@ -233,6 +219,26 @@ const router = new Router({
 				      		path:'account',
 				      		name: 'view-account',
 				      		component: ViewAccount,
+				      	},
+				      	{
+				      		path:'company',
+				      		name: 'add-company',
+				      		component: AddCompany,
+				      	},
+				      	{
+				      		path:'company',
+				      		name: 'view-company',
+				      		component: ViewCompany,
+				      	},
+				      	{
+				      		path:'finyear',
+				      		name: 'add-finyear',
+				      		component: AddFinYear,
+				      	},
+				      	{
+				      		path:'finyear',
+				      		name: 'view-finyear',
+				      		component: ViewFinYear,
 				      	},
 				      	{
 				      		path:'cashbank',
@@ -265,19 +271,19 @@ const router = new Router({
 				      		component: EditSales,
 				      	},
 				      	{
-				      		path:'serviceorder',
-				      		name: 'add-serviceorder',
-				      		component: AddServiceOrder,
+				      		path:'purchase',
+				      		name: 'add-purchase',
+				      		component: AddPurchase,
 				      	},
 				      	{
-				      		path:'serviceorder',
-				      		name: 'view-serviceorder',
-				      		component: ViewServiceOrder,
+				      		path:'purchase',
+				      		name: 'view-purchase',
+				      		component: ViewPurchase,
 				      	},
 				      	{
-				      		path:'serviceorder',
-				      		name: 'edit-serviceorder',
-				      		component: EditServiceOrder,
+				      		path:'purchase',
+				      		name: 'edit-purchase',
+				      		component: EditPurchase,
 				      	},
 				      	{
 				      		path:'journal',
@@ -305,9 +311,49 @@ const router = new Router({
 				      		component: ReportJournal,
 				      	},
 				      	{
+				      		path:'report/trialbal',
+				      		name: 'report-trialbal',
+				      		component: ReportTrialbal,
+				      	},
+				      	{
+				      		path:'report/ploss',
+				      		name: 'report-ploss',
+				      		component: ReportPloss,
+				      	},
+				      	{
+				      		path:'report/balsheet',
+				      		name: 'report-balsheet',
+				      		component: ReportBalsheet,
+				      	},
+				      	{
+				      		path:'report/purchase',
+				      		name: 'report-purchase',
+				      		component: ReportPurchase,
+				      	},
+				      	{
+				      		path:'report/sales',
+				      		name: 'report-sales',
+				      		component: ReportSales,
+				      	},
+				      	{
 				      		path:'report/ledger',
 				      		name: 'report-ledger',
 				      		component: ReportLedger,
+				      	},
+				      	{
+				      		path:'report/schedule',
+				      		name: 'report-schedule',
+				      		component: ReportSchedule,
+				      	},
+				      	{
+				      		path:'printing/salesbill',
+				      		name: 'printing-sales',
+				      		component: ReportSalesBill,
+				      	},
+				      	{
+				      		path:'printing/purchasebill',
+				      		name: 'printing-purchase',
+				      		component: ReportPurchaseBill,
 				      	},
 				      	{
 				      		path:'dashboard',
@@ -333,6 +379,41 @@ const router = new Router({
 				      		path:'enquiry/acctbal',
 				      		name: 'enquiry-acctbal',
 				      		component: AcctBal,
+				      	},
+				      	{
+				      		path:'enquiry/stock',
+				      		name: 'enquiry-stock',
+				      		component: Stock,
+				      	},
+				      	{
+				      		path:'acctgroup',
+				      		name: 'add-acctgroup',
+				      		component: AddAcctGroup,
+				      	},
+				      	{
+				      		path:'acctgroup',
+				      		name: 'view-acctgroup',
+				      		component: ViewAcctGroup,
+				      	},
+				      	{
+				      		path:'area',
+				      		name: 'add-area',
+				      		component: AddArea,
+				      	},
+				      	{
+				      		path:'area',
+				      		name: 'view-area',
+				      		component: ViewArea,
+				      	},
+				      	{
+				      		path:'narration',
+				      		name: 'add-narration',
+				      		component: AddNarration,
+				      	},
+				      	{
+				      		path:'narration',
+				      		name: 'view-narration',
+				      		component: ViewNarration,
 				      	},
 
 				      ]

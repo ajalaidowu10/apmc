@@ -18,8 +18,16 @@ class CreateSalesOrderItemsTable extends Migration
             $table->foreignId('sales_order_id');
             $table->foreignId('item_id');
             $table->decimal('qty');
-            $table->decimal('item_price');
+            $table->decimal('grwt');
+            $table->decimal('rate');
             $table->decimal('amount');
+            $table->decimal('levy');
+            $table->decimal('map_levy');
+            $table->decimal('apmc');
+            $table->decimal('comm');
+            $table->decimal('tds');
+            $table->decimal('final_amount');
+            $table->longText('item_exp_object');
             $table->boolean('del_record')->default(0);
             $table->timestamps();
             $table->softDeletes();

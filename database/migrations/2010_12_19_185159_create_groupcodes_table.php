@@ -18,11 +18,12 @@ class CreateGroupcodesTable extends Migration
             $table->foreignId('parent_groupcode_id');
             $table->string('name');
             $table->string('descp')->default('');
-            $table->boolean('is_visible')->default(0);
+            $table->boolean('is_visible')->default(1);
             $table->softDeletes();
             $table->foreignId('created_by');
             $table->timestamps();
             $table->foreignId('status_id');
+            $table->foreignId('company_id')->nullable();
             
             $table->foreign('parent_groupcode_id')->references('id')->on('parent_groupcodes');
             $table->foreign('status_id')->references('id')->on('statuses');

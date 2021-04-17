@@ -252,14 +252,18 @@
               },
               totalDebit(itemArray){
                 if (itemArray.length > 0) {
-                  return itemArray.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+                  let result = itemArray.reduce((prev, cur) => ({debit: Number(prev.debit) + Number(cur.debit)})).debit
+
+                  return Number(result).toFixed(2);
                 }
                 return 0;
               },
 
               totalCredit(itemArray){
                 if (itemArray.length > 0) {
-                  return itemArray.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+                  let result = itemArray.reduce((prev, cur) => ({credit: Number(prev.credit) + Number(cur.credit)})).credit
+
+                  return Number(result).toFixed(2);
                 }
                 return 0;
               },
@@ -271,13 +275,13 @@
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
-                      // .catch(err => Exception.handle(err, 'admin'));
+                      .catch(err => Exception.handle(err, 'admin'));
                 axios.get(`journal/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                      .then(resp => {
                       this.itemOrders = resp.data;
                     })
                      .catch(err => {
-                      // Exception.handle(err, 'admin');
+                      Exception.handle(err, 'admin');
                     });
                 this.overlay = false;
               },
@@ -291,7 +295,7 @@
                         this.itemOrders = resp.data;
                       })
                        .catch(err => {
-                        // Exception.handle(err, 'admin');
+                        Exception.handle(err, 'admin');
                       });
                 this.overlay = false;
               },

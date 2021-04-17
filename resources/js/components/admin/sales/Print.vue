@@ -28,7 +28,7 @@
       this.overlay = false;
     },
     data: () => ({
-      permission: 'restuarant-sales',
+       permission: 'sales-entry',
       overlay: false,
       page: null,
     }),

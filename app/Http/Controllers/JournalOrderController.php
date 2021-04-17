@@ -27,7 +27,9 @@ class JournalOrderController extends Controller
      */
     public function index()
     {
-        return JournalOrderResource::collection(JournalOrder::latest()->get());
+        return JournalOrderResource::collection(JournalOrder::where('company_id', Auth::guard('admin')->user()->company_id)
+                                                 ->where('finyear_id', Auth::guard('admin')->user()->finyear_id)
+                                                 ->latest()->get());
     }
 
     /**
@@ -42,6 +44,12 @@ class JournalOrderController extends Controller
         $journal_order_items = $request->input('journal_order_items');
         $created_by = ['created_by' => Auth::guard('admin')->user()->id];
         $request->merge($created_by);
+
+        $company_id = ['company_id' => Auth::guard('admin')->user()->company_id];
+        $request->merge($company_id);
+
+        $finyear_id = ['finyear_id' => Auth::guard('admin')->user()->finyear_id];
+        $request->merge($finyear_id);
 
         DB::beginTransaction();
           try 
@@ -61,7 +69,9 @@ class JournalOrderController extends Controller
                                 'enter_date'        => $journal_order->enter_date,
                                 'crdr_id'           => $journal_item->crdr_id,
                                 'descp'             => $journal_item->descp,
-                                'created_by'        => Auth::guard('admin')->user()->id,
+                                'created_by'        => $journal_order->created_by,
+                                'company_id'        => $journal_order->company_id,
+                                'finyear_id'        => $journal_order->finyear_id,
                             ]);
               }
 
@@ -125,7 +135,9 @@ class JournalOrderController extends Controller
                                     'enter_date'        => $journal->enter_date,
                                     'crdr_id'           => $journal_item->crdr_id,
                                     'descp'             => $journal_item->descp,
-                                    'created_by'        => Auth::guard('admin')->user()->id,
+                                    'created_by'        => $journal_order->created_by,
+                                    'company_id'        => $journal_order->company_id,
+                                    'finyear_id'        => $journal_order->finyear_id,
                                 ]);
                     
                   } 
@@ -171,7 +183,9 @@ class JournalOrderController extends Controller
                         )
                         ->where('o.deleted_at', '=', null)
                         ->where('oi.deleted_at', '=', null)
-                        ->where('o.del_record', '=', 0);
+                        ->where('o.del_record', '=', 0)
+                        ->where('oi.company_id', '=', Auth::guard('admin')->user()->company_id)
+                        ->where('oi.finyear_id', '=', Auth::guard('admin')->user()->finyear_id);
 
                           if ($date_from != '') 
                           {
@@ -194,6 +208,7 @@ class JournalOrderController extends Controller
 
     public function printReport(string $date_from='', string $date_to='', int $acct_id = 0)
     {
+      $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getReport($date_from, $date_to, $acct_id);
 
       $acct_name = "";
@@ -212,6 +227,7 @@ class JournalOrderController extends Controller
                                               'date_to'       => $date_to,
                                               'acct_id'       => $acct_id,
                                               'acct_name'     => $acct_name,
+                                              'company'       => $company,
                                            ]);
     }
 

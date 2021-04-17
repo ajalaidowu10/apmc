@@ -52,23 +52,6 @@
           <v-row>
             <v-col
               cols="12"
-              >
-              <v-combobox
-                v-model="form.itemGroup"
-                label="Item Group"
-                :items="itemGroup"
-                item-text="name"
-                item-value="id"
-                :error-messages="itemGroupErrors"
-                @input="$v.form.itemGroup.$touch()"
-                @blur="$v.form.itemGroup.$touch()"
-                dense
-                @change="setItemGroup($event)"
-                outlined
-              ></v-combobox>
-            </v-col>
-            <v-col
-              cols="12"
              >
               <v-text-field
                 outlined
@@ -87,12 +70,27 @@
               <v-text-field
                 outlined
                 dense
-                label="Item Price*"
-                v-model="form.price"
+                label="Item Unit*"
+                v-model="form.unit"
                 type="number"
-                :error-messages="priceErrors"
-                @input="$v.form.price.$touch()"
-                @blur="$v.form.price.$touch()"
+                :error-messages="unitErrors"
+                @input="$v.form.unit.$touch()"
+                @blur="$v.form.unit.$touch()"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+             >
+              <v-text-field
+                outlined
+                dense
+                label="Item Weight Conversion*"
+                v-model="form.weightPb"
+                type="number"
+                :error-messages="weightPbErrors"
+                @input="$v.form.weightPb.$touch()"
+                @blur="$v.form.weightPb.$touch()"
                 required
               ></v-text-field>
             </v-col>
@@ -124,7 +122,7 @@
                color="red"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="deleteItem"
                >
@@ -144,7 +142,7 @@
                color="primary"
                class="pa-10"
                dark
-               min-width="300"
+                
                x-large
                @click="saveItem"
                >
@@ -179,8 +177,8 @@
      validations: {
          form:{
            name:  {required },
-           price: {required},
-           itemGroup: {required },
+           unit: {required},
+           weightPb: {required},
            status: {required},
          }
      },
@@ -188,13 +186,11 @@
       orderid: 0,
       permission: 'item',
       overlay: false,
-      itemGroup: [],
       status: [{'id':1, 'name':'Active'}, {'id':2, 'name':'Inactive'}],
       form: {
               name: null,
-              itemGroup:null,
-              itemGroupId:null,
-              price: null,
+              unit: null,
+              weightPb: null,
               status:null,
               statusId:null,
               overlay: false,
@@ -204,20 +200,14 @@
     }),
     created(){
       this.overlay = true;
-      axios.get(`itemgroup`)
-            .then(resp=>{
-              this.itemGroup = transformKeys.camelCase(resp.data.data);
-            })
-            .catch(err => Exception.handle(err, 'admin'));
       if (this.$route.params.orderid) {
         this.orderid = this.$route.params.orderid;
         axios.get(`item/${this.orderid}`)
              .then(resp => {
               let getItemOrder            = transformKeys.camelCase(resp.data.data);
               this.form.name              = getItemOrder.name;
-              this.form.price             = getItemOrder.price;
-              this.form.itemGroup         = getItemOrder.itemGroup;
-              this.form.itemGroupId       = getItemOrder.itemGroupId;
+              this.form.unit             = getItemOrder.unit;
+              this.form.weightPb             = getItemOrder.weightPb;
               this.form.status            = getItemOrder.status;
               this.form.statusId          = getItemOrder.statusId;
              })
@@ -227,19 +217,6 @@
       
     },
     computed: {
-      itemGroupErrors () {
-        const errors = [];
-        if (!this.$v.form.itemGroup.$dirty) return errors; 
-        for (let items in this.form.allError) {
-          if (items == 'itemGroupId') {
-            errors.push(this.form.allError.itemGroupId[0]);
-            break;
-          } 
-
-        } 
-        !this.$v.form.itemGroup.required && errors.push('Item Group is required')
-        return errors
-      },
       statusErrors () {
         const errors = [];
         if (!this.$v.form.status.$dirty) return errors; 
@@ -266,25 +243,35 @@
         !this.$v.form.name.required && errors.push('Item Name is required')
         return errors
       },
-      priceErrors () {
+      unitErrors () {
         const errors = []
-        if (!this.$v.form.price.$dirty) return errors; 
+        if (!this.$v.form.unit.$dirty) return errors; 
         for (let items in this.form.allError) {
-          if (items == 'price') {
-            errors.push(this.form.allError.price[0]);
+          if (items == 'unit') {
+            errors.push(this.form.allError.unit[0]);
             break;
           } 
 
         } 
-        !this.$v.form.price.required && errors.push('Item Price is required')
+        !this.$v.form.unit.required && errors.push('Item Price is required')
+        return errors
+      },
+      weightPbErrors () {
+        const errors = []
+        if (!this.$v.form.weightPb.$dirty) return errors; 
+        for (let items in this.form.allError) {
+          if (items == 'weightPb') {
+            errors.push(this.form.allError.weightPb[0]);
+            break;
+          } 
+
+        } 
+        !this.$v.form.weightPb.required && errors.push('Item Weight PB is required')
         return errors
       },
       
     },
     methods: {
-          setItemGroup(data){
-            this.form.itemGroupId = data.id;
-          },
           setStatus(data){
             this.form.statusId = data.id;
           },
@@ -327,7 +314,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
             else
@@ -339,7 +326,7 @@
                     .catch(err => {
                       this.overlay = false;
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
-                      console.log(this.form.allError);
+                      if (!this.form.allError) Exception.handle(err, 'admin');
                     });
             }
 

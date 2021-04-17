@@ -103,6 +103,11 @@ class AdminAuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        Auth::guard('admin')->user()->company_id = request('company_id');
+        Auth::guard('admin')->user()->finyear_id = request('finyear_id');
+        Auth::guard('admin')->user()->save();
+
+
         return $this->respondWithToken($token);
     }
 
@@ -126,6 +131,7 @@ class AdminAuthController extends Controller
     {
         Auth::guard('admin')->logout();
 
+
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -143,7 +149,7 @@ class AdminAuthController extends Controller
     {
       $admin = Auth::guard('admin')->user();
       $adminPermissions = $admin->permissions;
-      $menu = $item1 = $item2 = $item3 = $item4 = $item5 =  $menu1 = $menu2 = $menu3 = $menu4 = $menu5 =[];
+      $menu = $item1 = $item2 = $item3 = $item4 = $item5 = $item6 =  $menu1 = $menu2 = $menu3 = $menu4 = $menu5 = $menu6 =[];
 
 
       foreach ($adminPermissions as $permission) 
@@ -182,6 +188,13 @@ class AdminAuthController extends Controller
             
             break;
 
+            case 6:
+              $new_data = ['id'=>$permission->slug, 'name'=>$permission->name, 'icon'=>$permission->icon, 'link'=>$permission->link];
+              array_push($item6, $new_data);
+              $menu6 = ['id'=>'menu'.$permission->module_id, 'name'=>$permission->module->name, 'icon'=>$permission->module->icon, 'items'=>$item6];
+            
+            break;
+
           default:
             # code...
             break;
@@ -208,6 +221,10 @@ class AdminAuthController extends Controller
       {
           array_push($menu, $menu5);
       }
+      if ($menu6) 
+      {
+          array_push($menu, $menu6);
+      }
       
 
       return $menu;
@@ -223,11 +240,15 @@ class AdminAuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $company = Auth::guard('admin')->user()->company->name;
+        $finyear_from = substr(Auth::guard('admin')->user()->finyear->from_date, 0, 4);
+        $finyear_to = substr(Auth::guard('admin')->user()->finyear->to_date, 2, 2);
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::guard('admin')->factory()->getTTL() * 60,
             'user' => Auth::guard('admin')->user()->name,
+            'company' => $company.' | '.$finyear_from.' - '.$finyear_to,
         ]);
     }
 }

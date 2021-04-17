@@ -7,11 +7,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Redstoneresort.in') }}| Experience unlimited Joy</title>
+    <title>{{ config('app.name', 'Apmc') }}| Softwey Solutions</title>
     
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon" />
+
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}?v=76693885" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,4 +25,5 @@
 <body>
     <div id="app"></div>
 </body>
+
 </html>
