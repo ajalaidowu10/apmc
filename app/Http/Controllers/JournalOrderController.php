@@ -208,6 +208,7 @@ class JournalOrderController extends Controller
 
     public function printReport(string $date_from='', string $date_to='', int $acct_id = 0)
     {
+      $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getReport($date_from, $date_to, $acct_id);
 
       $acct_name = "";
@@ -226,6 +227,7 @@ class JournalOrderController extends Controller
                                               'date_to'       => $date_to,
                                               'acct_id'       => $acct_id,
                                               'acct_name'     => $acct_name,
+                                              'company'       => $company,
                                            ]);
     }
 

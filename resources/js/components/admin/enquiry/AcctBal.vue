@@ -118,8 +118,8 @@
                 </thead>
                 <tbody>
                   <tr class="success lighten-5">
-                    <td>{{ dateTo }}</td>
-                    <td>{{ acctName }}</td>
+                    <td>{{ searchDateTo }}</td>
+                    <td>{{ searchAcctName }}</td>
                     <td v-if="open_bal < 0"><strong>{{ open_bal * -1 }} DR</strong></td>
                     <td v-else-if="open_bal > 0"><strong>{{ open_bal  }} CR</strong></td>
                     <td v-else><strong>00.00</strong></td>
@@ -165,6 +165,8 @@
       search: '',
       acctId: null,
       acctName: null,
+      searchAcctName: null,
+      searchDateTo: null,
       acct: [],
       dateTo: new Date().toISOString().substr(0, 10),
       menuFrom: false,
@@ -191,10 +193,12 @@
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`acctbal/${this.acctId}/0/${this.dateTo}`)
+                  axios.get(`acctbal/${this.acctId}/${this.dateTo}/2/1`)
                      .then(resp => {
                       console.log(resp);
                       this.open_bal = resp.data;
+                      this.searchAcctName = this.acctName;
+                      this.searchDateTo = this.dateTo;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');

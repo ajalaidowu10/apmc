@@ -89,6 +89,7 @@ class ReportController extends Controller
 
     public function printLedgerReport(string $date_from='', string $date_to='', int $acct_id = 0)
     {
+      $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getLedgerReport($date_from, $date_to, $acct_id);
 
       $open_bal = static::getBalance($acct_id, $date_from, 1);
@@ -110,18 +111,21 @@ class ReportController extends Controller
                                               'acct_id'       => $acct_id,
                                               'acct_name'     => $acct_name,
                                               'open_bal'      => $open_bal,
+                                              'company'       => $company,
                                            ]);
     }
 
 
     public function printAcctBal(Account $acct, string $date_to)
     {
+      $company = Auth::guard('admin')->user()->company;
       $open_bal = static::getBalance($acct->id, $date_to, 2);
 
       return view('print.acctbal_report', [
                                               'get_acct'      => $acct,
                                               'date_to'       => $date_to,
                                               'open_bal'      => $open_bal,
+                                              'company'       => $company,
                                            ]);
     }
 
@@ -544,6 +548,7 @@ class ReportController extends Controller
 
     public function printBalsheet(string $date_to)
     {
+        $company = Auth::guard('admin')->user()->company;
         $get_report = $this->getBalsheet($date_to);
 
         $date_to = new DateTime($date_to);
@@ -555,6 +560,7 @@ class ReportController extends Controller
                                                 'date_to'      => $date_to,
                                                 'asset'        => $get_report['asset'],
                                                 'liability'    => $get_report['liability'],
+                                                'company'      => $company,
                                              ]);
     }
 

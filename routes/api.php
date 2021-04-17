@@ -54,7 +54,6 @@ Route::patch('permission/refresh/{admin}', 'PermissionController@refreshPermissi
 
 
 Route::get('cashbank/print/receipt/{cashbank}', 'CashbankOrderController@printReceipt');
-Route::get('sales/print/invoice/{sale}', 'SalesOrderController@printInvoice');
 
 Route::get('account/get/{payment_type_id}/{account_type_id?}/{account_id?}/{groupcode_id?}', 'AccountController@getAccount');
 Route::get('get/itemexp/{date_to}', 'ItemExpController@getItemExp');
@@ -92,4 +91,4 @@ Route::get('report/purchasebill/{date_from?}/{date_to?}/{acct_id?}', 'ReportCont
 Route::get('report/print/purchasebill/{acct_id}/{date_to}', 'ReportController@printPurchaseBill');
 
 
-Route::get('acctbal/{acct_id}/{date_from?}/{date_to?}', 'ReportController@getBalance');
+Route::get('acctbal/{acct_id}/{date}/{type}/{cr_dr?}', 'ReportController@getBalance');

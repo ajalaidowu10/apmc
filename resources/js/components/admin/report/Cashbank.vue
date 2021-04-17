@@ -246,7 +246,7 @@
       permission: 'cashbank-report',
       open_bal: 0,
       search: '',
-      acctId: 4,
+      acctId: 0,
       acct: [],
       dateFrom: new Date().toISOString().substr(0, 10),
       dateTo: new Date().toISOString().substr(0, 10),
@@ -295,16 +295,11 @@
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                 axios.get(`cashbank/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                      .then(resp => {
-                      this.itemOrders = resp.data;
+                      console.log(resp);
+                      this.open_bal = resp.open_bal.data;
+                      this.itemOrders = resp.report.data;
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');
@@ -316,17 +311,10 @@
               },
               searchData(){
                 this.overlay = true;
-                  axios.get(`acctbal/${this.acctId}/${this.dateFrom}`)
-                     .then(resp => {
-                      this.open_bal = resp.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                   axios.get(`cashbank/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                        .then(resp => {
-                        this.overlay = false;
-                        this.itemOrders = resp.data;
+                        this.open_bal = resp.open_bal.data;
+                        this.itemOrders = resp.report.data;
                       })
                        .catch(err => {
                         Exception.handle(err, 'admin');

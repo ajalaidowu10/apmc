@@ -355,7 +355,7 @@
                      this.dateFrom = resp.data.date_from;
                    })
                    .catch(err => {
-                    // Exception.handle(err, 'admin');
+                    Exception.handle(err, 'admin');
                   });
 
                 this.overlay = false;
@@ -370,7 +370,7 @@
                      this.dateFrom = resp.data.date_from;
                    })
                    .catch(err => {
-                    // Exception.handle(err, 'admin');
+                    Exception.handle(err, 'admin');
                   });
                 this.overlay = false;
               },
