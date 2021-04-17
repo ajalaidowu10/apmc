@@ -290,20 +290,11 @@
               {
 
                 this.overlay = true;
-                axios.get(`account/get/0/${this.acctId}`)
+                axios.get(`account/get/0/4`)
                       .then(resp=>{
                         this.acct = transformKeys.camelCase(resp.data.data);
                       })
                       .catch(err => Exception.handle(err, 'admin'));
-                axios.get(`cashbank/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
-                     .then(resp => {
-                      console.log(resp);
-                      this.open_bal = resp.open_bal.data;
-                      this.itemOrders = resp.report.data;
-                    })
-                     .catch(err => {
-                      Exception.handle(err, 'admin');
-                    });
                 this.overlay = false;
               },
               setAccountOne(data){
@@ -313,8 +304,8 @@
                 this.overlay = true;
                   axios.get(`cashbank/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                        .then(resp => {
-                        this.open_bal = resp.open_bal.data;
-                        this.itemOrders = resp.report.data;
+                        this.open_bal = resp.data.open_bal;
+                        this.itemOrders = resp.data.report;
                       })
                        .catch(err => {
                         Exception.handle(err, 'admin');

@@ -103,6 +103,12 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
+				      path: '/report/print/trialbal/:dateFrom/:dateTo/:groupcodeId',
+				      name: 'print-schedule-report',
+				      component: PrintScheduleReport,
+				      props: true,
+				    },
+				    {
 				      path: '/report/print/ploss/:dateFrom/:dateTo',
 				      name: 'print-ploss-report',
 				      component: PrintPlossReport,

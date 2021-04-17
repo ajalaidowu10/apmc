@@ -56,7 +56,7 @@ class ReportController extends Controller
 
     }
 
-    public function getLedgerReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    public function getLedgerRecord(string $date_from='', string $date_to='', int $acct_id = 0)
     {
       $get_report = DB::table('ledgers as o')
                         ->leftJoin('accounts as a', 'a.id', '=', 'o.acct_one_id')
@@ -87,12 +87,24 @@ class ReportController extends Controller
       return $get_report;
     }
 
+    public function getLedgerReport(string $date_from='', string $date_to='', int $acct_id = 0)
+    {
+      $report = $this->getLedgerRecord($date_from, $date_to, $acct_id);
+
+      $open_bal = static::getBalance($acct_id, $date_from, 1);
+
+      return [
+                'report'        => $report,
+                'open_bal'      => $open_bal,
+             ];
+      
+    }
+    
+
     public function printLedgerReport(string $date_from='', string $date_to='', int $acct_id = 0)
     {
       $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getLedgerReport($date_from, $date_to, $acct_id);
-
-      $open_bal = static::getBalance($acct_id, $date_from, 1);
 
       $acct_name = "";
       $date_from = new DateTime($date_from);
@@ -105,12 +117,12 @@ class ReportController extends Controller
       }
 
       return view('print.ledger_report', [
-                                              'get_report'    => $get_report,
+                                              'get_report'    => $get_report['report'],
                                               'date_from'     => $date_from,
                                               'date_to'       => $date_to,
                                               'acct_id'       => $acct_id,
                                               'acct_name'     => $acct_name,
-                                              'open_bal'      => $open_bal,
+                                              'open_bal'      => $get_report['open_bal'],
                                               'company'       => $company,
                                            ]);
     }
@@ -280,6 +292,7 @@ class ReportController extends Controller
 
     public function printTrialbal(string $date_from, string $date_to, int $groupcode_id = 0)
     {
+      $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getTrialbal($date_from, $date_to,$groupcode_id);
 
       $date_from = new DateTime($date_from);
@@ -299,6 +312,7 @@ class ReportController extends Controller
                                               'date_to'       => $date_to,
                                               'groupcode_id'       => $groupcode_id,
                                               'groupcode_name'     => $groupcode_name,
+                                              'company'       => $company,
                                            ]);
     }
 
@@ -649,6 +663,7 @@ class ReportController extends Controller
 
     public function printPloss(string $date_from, string $date_to)
     {
+        $company = Auth::guard('admin')->user()->company;
         $get_report = $this->getPloss($date_from, $date_to);
 
         $date_to = new DateTime($date_to);
@@ -662,6 +677,7 @@ class ReportController extends Controller
                                                 'date_from'    => $date_from,
                                                 'income'       => $get_report['income'],
                                                 'expense'     => $get_report['expense'],
+                                                'company'       => $company,
                                              ]);
     }
 

@@ -329,7 +329,7 @@
                   let routeData = this.$router.resolve({name: 'print-schedule-report',  params:{
                                                                                         dateFrom:this.dateFrom, 
                                                                                         dateTo:this.dateTo,
-                                                                                        groupcodeId:this.showGroup
+                                                                                        groupcodeId:this.groupcodeId
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },
