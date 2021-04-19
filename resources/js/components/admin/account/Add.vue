@@ -399,11 +399,11 @@
               name: null,
               accountType:null,
               accountTypeId:null,
-              openingBal: null,
-              status:null,
-              statusId:null,
-              crdr:null,
-              crdrId:null,
+              openingBal: 0,
+              status:'Active',
+              statusId:1,
+              crdr:'Cr',
+              crdrId:1,
               groupcode:null,
               groupcodeId:null,
               phone: null,
@@ -551,6 +551,73 @@
     methods: {
           setAccountType(data){
             this.form.accountTypeId = data.id;
+            if (this.form.accountTypeId == 2) {
+                this.form.crdr = 'Dr';
+                this.form.crdrId = 2;
+                this.form.groupcode = "Sundry Debtor";
+                this.form.groupcodeId = 10;
+            }
+            else if (this.form.accountTypeId == 3) {
+              this.form.crdr = 'Cr';
+              this.form.crdrId = 1;
+              this.form.groupcode = "Sundry Creditors";
+              this.form.groupcodeId = 19;
+            }
+             else if (this.form.accountTypeId == 4) {
+              this.form.crdr = 'Dr';
+              this.form.crdrId = 2;
+              this.form.groupcode = "Bank Account";
+              this.form.groupcodeId = 9;
+            }
+            else if (this.form.accountTypeId == 5) {
+              this.form.crdr = 'Dr';
+              this.form.crdrId = 2;
+              this.form.groupcode = "Cash In Hand";
+              this.form.groupcodeId = 8;
+            }
+            else if (this.form.accountTypeId == 7) {
+              this.form.crdr = 'Cr';
+              this.form.crdrId = 1;
+              this.form.groupcode = "Direct Incomes";
+              this.form.groupcodeId = 13;
+            }
+            else if (this.form.accountTypeId == 8) {
+              this.form.crdr = 'Dr';
+              this.form.crdrId = 2;
+              this.form.groupcode = "Direct Expense";
+              this.form.groupcodeId = 15;
+            }
+            else if (this.form.accountTypeId == 10) {
+              this.form.crdr = 'Cr';
+              this.form.crdrId = 1;
+              this.form.groupcode = "Capital Account";
+              this.form.groupcodeId = 24;
+            }
+            else if (this.form.accountTypeId == 11) {
+              this.form.crdr = 'Cr';
+              this.form.crdrId = 1;
+              this.form.groupcode = "Sundry Creditors";
+              this.form.groupcodeId = 19;
+            }
+            else if (this.form.accountTypeId == 12) {
+              this.form.crdr = 'Cr';
+              this.form.crdrId = 1;
+              this.form.groupcode = "Sundry Creditors";
+              this.form.groupcodeId = 19;
+            }
+            else {
+              this.form.crdr = 'Cr';
+              this.form.crdrId = 1;
+              this.form.groupcode = null;
+              this.form.groupcodeId = null;
+            }
+
+
+
+
+
+            
+
           },
           setStatus(data){
             this.form.statusId = data.id;
