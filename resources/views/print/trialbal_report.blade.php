@@ -74,7 +74,7 @@
 						@endphp
 						@if ($get_report)
 							@php
-								$id = $get_report{0}->groupcode_id;
+								$id = $get_report[0]->groupcode_id;
 								$get_head = getHead($get_report, $id);
 							@endphp
 								<tr>
