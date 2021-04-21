@@ -62,7 +62,7 @@
 		    <tr>
 		      <td>
 		        <p>
-		          <strong>Invoice#:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $get_report{0}->inv_no }}
+		          <strong>Invoice#:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $get_report[0]->inv_no }}
 		        </p>
 		        <p>
 		         <strong>Invoice Date:</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date_format($date, 'jS F Y') }}</p> 
@@ -76,7 +76,7 @@
 		<table class="table table-bordered" cellspacing="0" style="margin-top: -20px;">
 		  <thead>
 		    <tr style="text-align: left; background-color: #f8f9fa;">
-		      <th>BILL TO: {{ $get_report{0}->acct_name }} | {{ $get_report{0}->area }}</th>
+		      <th>BILL TO: {{ $get_report[0]->acct_name }} | {{ $get_report[0]->area }}</th>
 		    </tr>
 		  </thead>
 		</table> 

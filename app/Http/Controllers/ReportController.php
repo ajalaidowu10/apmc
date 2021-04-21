@@ -172,6 +172,7 @@ class ReportController extends Controller
 
     public function printStockReport(string $date_to, int $item_id = 0)
     {
+      $company = Auth::guard('admin')->user()->company;
       $get_report = $this->getStockReport($date_to, $item_id);
 
       $item_name = "";
@@ -184,6 +185,7 @@ class ReportController extends Controller
       }
 
       return view('print.stock_report', [
+                                              'company'     => $company,
                                               'get_report'    => $get_report,
                                               'date_to'       => $date_to,
                                               'item_id'       => $item_id,
@@ -740,8 +742,9 @@ class ReportController extends Controller
 
     public function printSalesBill(int $acct_id, string $date)
     {
+        $company = Auth::guard('admin')->user()->company;
         $get_report = $this->getSalesBillDetails($acct_id, $date);
-        $get_company = Company::find(Auth::guard('admin')->user()->company_id);
+        
         $prev_bal = static::getBalance($acct_id, $date, 1, 2);
         $cur_bal = static::getBalance($acct_id, $date, 3, 1);
 
@@ -749,7 +752,7 @@ class ReportController extends Controller
 
         return view('print.sales_bill', [
                                           'date'         => $date,
-                                          'company'      => $get_company,
+                                          'company'      => $company,
                                           'prev_bal'     => $prev_bal,
                                           'cur_bal'      => $cur_bal,
                                           'get_report'   => $get_report,
@@ -815,8 +818,9 @@ class ReportController extends Controller
 
     public function printPurchaseBill(int $acct_id, string $date)
     {
+        $company = Auth::guard('admin')->user()->company;
         $get_report = $this->getPurchaseBillDetails($acct_id, $date);
-        $get_company = Company::find(Auth::guard('admin')->user()->company_id);
+        
         $prev_bal = static::getBalance($acct_id, $date, 1, 1);
         $cur_bal = static::getBalance($acct_id, $date, 3, 2);
 
@@ -824,7 +828,7 @@ class ReportController extends Controller
 
         return view('print.purchase_bill', [
                                           'date'         => $date,
-                                          'company'      => $get_company,
+                                          'company'      => $company,
                                           'prev_bal'     => $prev_bal,
                                           'cur_bal'      => $cur_bal,
                                           'get_report'   => $get_report,
