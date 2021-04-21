@@ -61,7 +61,7 @@
 						@endphp
 						@if ($liability)
 							@php
-								$id = $liability{0}['groupcode_id'];
+								$id = $liability[0]['groupcode_id'];
 								$get_head = getHead($liability, $id);
 							@endphp
 								<tr>
@@ -114,7 +114,7 @@
 						@endphp
 						@if ($asset)
 							@php
-								$id = $asset{0}['groupcode_id'];
+								$id = $asset[0]['groupcode_id'];
 								$get_head = getHead($asset, $id);
 							@endphp
 								<tr>
