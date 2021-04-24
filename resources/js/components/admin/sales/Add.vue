@@ -371,7 +371,6 @@
                 <v-text-field
                   outlined
                   dense
-                  disabled
                   label="Other Charges"
                   v-model="form.otherCharges"
                   type="number"
@@ -563,10 +562,6 @@
         let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
           let result = dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount;
-
-          let otherCharges = Number(result) - Math.trunc(result);
-          this.form.otherCharges = otherCharges.toFixed(2);
-          result = Math.trunc(result);
           return parseFloat(result).toFixed(2);
         }
         return 0;
@@ -652,7 +647,7 @@
       },
       getTotalSalesAmount()
         {
-          return Number(this.finalAmount);
+          return Number(this.finalAmount) +  Number(this.form.otherCharges);
         },
       
     },
