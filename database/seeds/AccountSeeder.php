@@ -161,7 +161,7 @@ class AccountSeeder extends Seeder
                           'name' => 'Other Charges Account',
                           'opening_bal'=> 0,
                           'crdr_id' => 2,
-                          'groupcode_id' => 19,
+                          'groupcode_id' => 15,
                           'is_visible' => 0,
                           'company_id' => 1,
                       ]);

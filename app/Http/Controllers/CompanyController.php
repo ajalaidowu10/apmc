@@ -193,7 +193,7 @@ class CompanyController extends Controller
                             'name' => 'Other Charges Account',
                             'opening_bal'=> 0,
                             'crdr_id' => 2,
-                            'groupcode_id' => 19,
+                            'groupcode_id' => 15,
                             'is_visible' => 0,
                             'company_id' => $company->id,
                         ]);
