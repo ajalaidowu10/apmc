@@ -31,7 +31,7 @@ class GroupcodeSeeder extends Seeder
         Groupcode::create(['parent_groupcode_id' => 2, 'name'=>'Indirect Incomes', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
         Groupcode::create(['parent_groupcode_id' => 2, 'name'=>'Indirect Expense', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
         Groupcode::create(['parent_groupcode_id' => 3, 'name'=>'Reserves & Surplus', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
-        Groupcode::create(['parent_groupcode_id' => 3, 'name'=>'Sundry Creditors', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
+        Groupcode::create(['parent_groupcode_id' => 3, 'name'=>'Sundry Creditor', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
         Groupcode::create(['parent_groupcode_id' => 3, 'name'=>'Bank OD A/c', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
         Groupcode::create(['parent_groupcode_id' => 3, 'name'=>'Secured Loans', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);
         Groupcode::create(['parent_groupcode_id' => 3, 'name'=>'Unsecured Loans', 'status_id'=> 1, 'created_by'=> 1, 'is_visible'=> 0]);

@@ -562,7 +562,7 @@
         let dataArray = this.salesOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
           let result = dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount;
-          return parseFloat(result).toFixed(2);
+          return parseFloat(Math.round(result)).toFixed(2);
         }
         return 0;
         

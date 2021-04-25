@@ -56,6 +56,7 @@ Route::patch('permission/refresh/{admin}', 'PermissionController@refreshPermissi
 Route::get('cashbank/print/receipt/{cashbank}', 'CashbankOrderController@printReceipt');
 
 Route::get('account/get/{payment_type_id}/{account_type_id?}/{account_id?}/{groupcode_id?}', 'AccountController@getAccount');
+Route::post('account/import/csv', 'AccountController@importCsv');
 Route::get('get/itemexp/{date_to}', 'ItemExpController@getItemExp');
 
 Route::get('cashbank/report/{date_from?}/{date_to?}/{acct_id?}', 'CashbankOrderController@getReport');
