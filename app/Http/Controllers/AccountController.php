@@ -9,6 +9,9 @@ use App\Http\Resources\AccountResource;
 use App\Account;
 use App\Ledger;
 use Auth;
+use DB;
+use App\Imports\AccountImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AccountController extends Controller
 {  
@@ -170,5 +173,16 @@ class AccountController extends Controller
                               ->delete();
       $account->delete();
       return response(null, Response::HTTP_NO_CONTENT);
+   }
+   
+
+   /**
+    * @return \Illuminate\Support\Collection
+    */
+   public function importCsv()
+   {
+     Excel::import(new AccountImport, request()->file('file'));
+
+     return response(['message' => 'Accounts imported successfully'], Response::HTTP_ACCEPTED);
    }
 }
