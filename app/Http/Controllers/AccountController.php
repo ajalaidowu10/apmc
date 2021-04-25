@@ -183,6 +183,6 @@ class AccountController extends Controller
    {
      Excel::import(new AccountImport, request()->file('file'));
 
-     return response(['message' => 'Account imported successfully'], Response::HTTP_ACCEPTED);
+     return response(['message' => 'Accounts imported successfully'], Response::HTTP_ACCEPTED);
    }
 }

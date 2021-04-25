@@ -305,6 +305,59 @@
              </v-btn>
             </v-col>
 
+            <v-col cols="auto" v-if="orderid == 0">
+              <v-dialog
+                transition="dialog-top-transition"
+                max-width="600"
+               >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="pa-10"
+                    x-large
+                    color="primary"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                  Import Account
+                  <v-icon
+                    right
+                    dark
+                   >
+                    mdi-google-spreadsheet
+                  </v-icon>
+                </v-btn>
+                </template>
+                <template v-slot:default="dialog">
+                  <v-card>
+                    <v-toolbar
+                      color="primary"
+                      dark
+                    >Import Account Csv</v-toolbar>
+                    <v-card-text>
+                      <v-col cols="6">
+                          Sample Csv
+                          <img src="/images/csv.png"  title="Sample Csv" />
+                      </v-col>
+                      <v-file-input accept="text/csv" 
+                        outlined
+                        dense
+                        label="Upload Account CSV"
+                        chips
+                        v-model="form.csvfile"
+                        @change="addFiles">
+                      </v-file-input>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                      <v-btn
+                        text
+                        @click="dialog.value = false"
+                      >Close</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-dialog>
+            </v-col>
+
           </v-row>
         </v-container>
       </v-card>
@@ -415,6 +468,7 @@
               area: null,
               state: null,
               zip: null,
+              csvfile: null,
               creditDays: null,
               creditLimit: null,
               overlay: false,
@@ -549,6 +603,20 @@
       
     },
     methods: {
+
+          addFiles(){
+                          const data = new FormData();
+                          data.append('file', this.form.csvfile);
+                          this.overlay = true;
+                          axios.post(`account/import/csv`, data)
+                               .then(resp => {
+                                  this.form.csvfile = null;
+                                  this.$router.push({name:'view-account', params: { message: `${resp.data.message}` }});
+                               })
+                               .catch(err => Exception.handle(err, 'admin'));
+                          this.overlay = false;
+
+          },
           setAccountType(data){
             this.form.accountTypeId = data.id;
             if (this.form.accountTypeId == 2) {

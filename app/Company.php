@@ -26,22 +26,51 @@ class Company extends Model
 
    public function getInvheaderPathAttribute()
    {
-       return asset(\Storage::url($this->invheader ? 'images/company/'.$this->invheader : 'images/company/default.png'));
+       if ($this->invheader) 
+       {
+         return asset(\Storage::url('images/company/'.$this->invheader));
+       } 
+       else 
+       {
+         return asset('images/default.png');
+       }
+       
    }
 
    public function getInvfooterPathAttribute()
    {
-       return asset(\Storage::url($this->invfooter ? 'images/company/'.$this->invfooter : 'images/company/default.png'));
+       if ($this->invfooter) 
+       {
+         return asset(\Storage::url('images/company/'.$this->invfooter));
+       } 
+       else 
+       {
+         return asset('images/default.png');
+       }
    }
 
    public function getRecheaderPathAttribute()
    {
-       return asset(\Storage::url($this->recheader ? 'images/company/'.$this->recheader : 'images/company/default.png'));
+      if ($this->recheader) 
+      {
+        return asset(\Storage::url('images/company/'.$this->recheader));
+      } 
+      else 
+      {
+        return asset('images/default.png');
+      }
    }
 
    public function getRecfooterPathAttribute()
    {
-       return asset(\Storage::url($this->recfooter ? 'images/company/'.$this->recfooter : 'images/company/default.png'));
+      if ($this->recfooter) 
+      {
+        return asset(\Storage::url('images/company/'.$this->recfooter));
+      } 
+      else 
+      {
+        return asset('images/default.png');
+      }
    }
 
 }

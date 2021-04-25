@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Account;
-use App\AccounType;
+use App\AccountType;
 use App\Status;
 use App\Crdr;
 use App\Groupcode;
@@ -11,6 +11,8 @@ use App\Ledger;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Auth;
+use DB;
+
 
 class AccountImport implements ToModel, WithHeadingRow
 {
@@ -24,21 +26,14 @@ class AccountImport implements ToModel, WithHeadingRow
         DB::beginTransaction();
           try 
            {
+                $account_type = AccountType::where('name', $row['account_type'])->first();
+                $groupcode = Groupcode::where('name', $row['groupcode'])->first();
                 $account = new Account([
-                            'account_type_id'   => AccountType::where('name', $row['account_type'])
-                                                            ->where('company_id', Auth::guard('admin')->user()->company_id)
-                                                            ->first()->value('id'),
-                            'status_id'         => Status::where('name', $row['status'])
-                                                            ->where('company_id', Auth::guard('admin')->user()->company_id)
-                                                            ->first()->value('id'),
+                            'account_type_id'   => $account_type->id,
                             'name'              => $row['name'],
                             'opening_bal'       => $row['opening_bal'],
-                            'crdr_id'           => Crdr::where('name', $row['crdr'])
-                                                            ->where('company_id', Auth::guard('admin')->user()->company_id)
-                                                            ->first()->value('id'),
-                            'groupcode_id'      => Groupcode::where('name', $row['groupcode'])
-                                                            ->where('company_id', Auth::guard('admin')->user()->company_id)
-                                                            ->first()->value('id'),
+                            'crdr_id'           => $row['crdr'] == 'Dr' ? 2 : 1,
+                            'groupcode_id'      => $groupcode->id,
                             'phone'             => $row['phone'],
                             'email'             => $row['email'],
                             'bank_name'         => $row['bank_name'],
@@ -53,6 +48,7 @@ class AccountImport implements ToModel, WithHeadingRow
                             'contact_person'    => $row['contact_person'],
                             'credit_days'       => $row['credit_days'],
                             'credit_limit'      => $row['credit_limit'],
+                            'status_id'         => 1,
                             'company_id'        => Auth::guard('admin')->user()->company_id,
 
                         ]);
@@ -83,6 +79,6 @@ class AccountImport implements ToModel, WithHeadingRow
 
         DB::commit();
 
-        return true;
+        return $account;
     }
 }
