@@ -613,7 +613,7 @@
                                   this.form.csvfile = null;
                                   this.$router.push({name:'view-account', params: { message: `${resp.data.message}` }});
                                })
-                               .catch(err => Exception.handle(err, 'admin'));
+                               .catch(err => swal('Notification', 'An error occured.Kindly check the uploaded csv file'));
                           this.overlay = false;
 
           },
