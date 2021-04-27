@@ -87,9 +87,9 @@ Route::get('report/print/balsheet/{date_to}', 'ReportController@printBalsheet');
 Route::get('report/get/ploss/{date_from}/{date_to}', 'ReportController@getPloss');
 Route::get('report/print/ploss/{date_from}/{date_to}', 'ReportController@printPloss');
 Route::get('report/salesbill/{date_from?}/{date_to?}/{acct_id?}', 'ReportController@getSalesBill');
-Route::get('report/print/salesbill/{acct_id}/{date_to}', 'ReportController@printSalesBill');
+Route::post('report/print/salesbill', 'ReportController@printMultipleSalesBill');
 Route::get('report/purchasebill/{date_from?}/{date_to?}/{acct_id?}', 'ReportController@getPurchaseBill');
-Route::get('report/print/purchasebill/{acct_id}/{date_to}', 'ReportController@printPurchaseBill');
+Route::post('report/print/purchasebill', 'ReportController@printMultiplePurchaseBill');
 
 
 Route::get('acctbal/{acct_id}/{date}/{type}/{cr_dr?}', 'ReportController@getBalance');

@@ -18,9 +18,13 @@
   export default {
     created(){
       this.overlay = true;
-      axios.get(`report/print/salesbill/${this.$route.params.acctId}/${this.$route.params.date}`)
+      let data = {};
+      data['print']  = this.$route.params.printArray.split('/');
+      console.log(data);
+      axios.post(`report/print/salesbill`, data)
            .then(resp => {
             this.page = resp.data;
+
           })
            .catch(err => {
             console.log(err);
