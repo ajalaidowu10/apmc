@@ -191,22 +191,32 @@
                     <td>{{ item.total_comm }}</td>
                     <td>{{ item.total_amount }}</td>
                     <td>
-                      <v-btn
-                        color="red"
-                        text
-                        small
-                        @click="printBill(item.acct_id, item.enter_date)"
-                      >
-                        <v-icon>
-                          mdi-file-pdf-outline
-                        </v-icon>
-                      </v-btn>
+                      <v-checkbox
+                        v-model="printArray"
+                        multiple
+                        :value="item.acct_id + ',' + item.enter_date"
+                      ></v-checkbox>
+
                     </td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
           </v-card>
+          <br>
+          <div class="text-center">
+            <v-btn
+              color="red"
+              dark
+              large
+              @click="printBill"
+             >
+             PRINT REPORT
+               <v-icon right>
+                  mdi-file-pdf-outline
+               </v-icon>
+            </v-btn>
+          </div>
         </v-container>
       </v-card>
     </v-card>
@@ -225,6 +235,7 @@
   import transformKeys from '../../../utils/transformKeys';
   export default {
     data: () => ({
+      printArray: [],
       permission: 'sales-printing',
       search: '',
       dateFrom: new Date().toISOString().substr(0, 10),
@@ -273,11 +284,10 @@
                       });
                 this.overlay = false;
               },
-              printBill(acct_id, date)
+              printBill()
               {
                   let routeData = this.$router.resolve({name: 'print-sales-bill',  params:{
-                                                                                        acctId:acct_id,
-                                                                                        date:date, 
+                                                                                        printArray:this.printArray, 
                                                                                       }});
                   window.open(routeData.href, '_blank');
               },

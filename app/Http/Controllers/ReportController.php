@@ -742,7 +742,6 @@ class ReportController extends Controller
 
     public function printSalesBill(int $acct_id, string $date)
     {
-        $company = Auth::guard('admin')->user()->company;
         $get_report = $this->getSalesBillDetails($acct_id, $date);
         
         $prev_bal = static::getBalance($acct_id, $date, 1, 2);
@@ -750,13 +749,40 @@ class ReportController extends Controller
 
         $date = new DateTime($date);
 
-        return view('print.sales_bill', [
-                                          'date'         => $date,
-                                          'company'      => $company,
-                                          'prev_bal'     => $prev_bal,
-                                          'cur_bal'      => $cur_bal,
-                                          'get_report'   => $get_report,
-                                       ]);
+        return                   [
+                                    'date'         => $date,
+                                    'prev_bal'     => $prev_bal,
+                                    'cur_bal'      => $cur_bal,
+                                    'get_report'   => $get_report,
+                                 ];
+    }
+
+    public function printMultipleSalesBill()
+    {
+      $company = Auth::guard('admin')->user()->company;
+      $print_array = [];
+      $get_reports = [];
+      $data = request()->input('print');
+      
+      foreach ($data as $value) {
+        $index = explode(',', $value);
+        $object = ['acct_id' => (int) $index[0], 'date' => $index[1]];
+
+        array_push($print_array, $object);
+      }
+
+      foreach ($print_array as $key) {
+        $report = $this->printSalesBill($key['acct_id'], $key['date']);
+
+        array_push($get_reports, $report);
+
+      }
+
+
+      return view('print.sales_bill', [
+                                        'company'      => $company,
+                                        'get_reports'   => $get_reports,
+                                     ]);
     }
 
     public function getPurchaseBill(string $date_from, string $date_to, int $acct_id = 0)
@@ -818,7 +844,7 @@ class ReportController extends Controller
 
     public function printPurchaseBill(int $acct_id, string $date)
     {
-        $company = Auth::guard('admin')->user()->company;
+        
         $get_report = $this->getPurchaseBillDetails($acct_id, $date);
         
         $prev_bal = static::getBalance($acct_id, $date, 1, 1);
@@ -826,13 +852,40 @@ class ReportController extends Controller
 
         $date = new DateTime($date);
 
-        return view('print.purchase_bill', [
+        return                       [
                                           'date'         => $date,
-                                          'company'      => $company,
                                           'prev_bal'     => $prev_bal,
                                           'cur_bal'      => $cur_bal,
                                           'get_report'   => $get_report,
-                                       ]);
+                                       ];
+    }
+
+    public function printMultiplePurchaseBill()
+    {
+      $company = Auth::guard('admin')->user()->company;
+      $print_array = [];
+      $get_reports = [];
+      $data = request()->input('print');
+      
+      foreach ($data as $value) {
+        $index = explode(',', $value);
+        $object = ['acct_id' => (int) $index[0], 'date' => $index[1]];
+
+        array_push($print_array, $object);
+      }
+
+      foreach ($print_array as $key) {
+        $report = $this->printPurchaseBill($key['acct_id'], $key['date']);
+
+        array_push($get_reports, $report);
+
+      }
+
+
+      return view('print.purchase_bill', [
+                                        'company'      => $company,
+                                        'get_reports'   => $get_reports,
+                                     ]);
     }
 
 }
