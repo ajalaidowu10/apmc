@@ -15,9 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'app');
 Route::view('/{any}', 'app');
-Route::view('/{any}/{any1}', 'app');
-Route::view('/{any}/{any1}/{any2}', 'app');
-Route::view('/{any}/{any1}/{any2}/{any3}', 'app');
-Route::view('/{any}/{any1}/{any2}/{any3}/{any4}', 'app');
-Route::view('/{any}/{any1}/{any2}/{any3}/{any4}/{any5}', 'app');
-Route::view('/{any}/{any1}/{any2}/{any3}/{any4}/{any5}/{any6}', 'app');
+Route::view('/{any}/{any1}', 'app')->where('any1', '(.*)');

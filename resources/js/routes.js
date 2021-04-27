@@ -145,13 +145,13 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/salesbill/printing/:acctId/:date',
+				      path: '/salesbill/printing/:printArray*',
 				      name: 'print-sales-bill',
 				      component: PrintSalesBill,
 				      props: true,
 				    },
 				    {
-				      path: '/purchasebill/printing/:acctId/:date',
+				      path: '/purchasebill/printing/:printArray*',
 				      name: 'print-purchase-bill',
 				      component: PrintPurchaseBill,
 				      props: true,
