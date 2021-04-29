@@ -17,7 +17,7 @@
              <v-icon size="50" color="lime">mdi-dots-grid</v-icon>
              <div>
                 <v-card-title
-                  class="headline"
+                  class="headline1"
                 >{{ totalCashBankBalance }}</v-card-title>
 
                 <v-card-subtitle>Cash &amp; Bank Balance</v-card-subtitle>
@@ -42,7 +42,7 @@
              <v-icon size="50" color="pink">mdi-home-variant-outline</v-icon>
              <div>
                 <v-card-title
-                  class="headline"
+                  class="headline1"
                 >{{ totalPayable }}</v-card-title>
 
                 <v-card-subtitle>Payables</v-card-subtitle>
@@ -67,7 +67,7 @@
              <v-icon size="50" color="blue-grey">mdi-ship-wheel</v-icon>
              <div>
                 <v-card-title
-                  class="headline"
+                  class="headline1"
                 >{{ totalReceivable }}</v-card-title>
 
                 <v-card-subtitle>Receivable</v-card-subtitle>
@@ -92,7 +92,7 @@
              <v-icon size="50" color="amber">mdi-bank-check</v-icon>
              <div>
                 <v-card-title
-                  class="headline"
+                  class="headline1"
                 >{{totalItem}}</v-card-title>
 
                 <v-card-subtitle>Stock Quantity</v-card-subtitle>
