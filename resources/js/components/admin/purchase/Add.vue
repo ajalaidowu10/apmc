@@ -377,9 +377,10 @@
                 <v-text-field
                   outlined
                   dense
+                  disabled
                   label="Other Charges"
-                  v-model="form.otherCharges"
                   type="number"
+                  :value="otherCharges"
                   required
                 ></v-text-field>
               </v-col>
@@ -472,7 +473,6 @@
       form: {
               id: 0,
               qty: null,
-              otherCharges: 0,
               grwt: null,
               motorNo: null,
               rate: null, 
@@ -505,7 +505,6 @@
              .then(resp => {
               let getSalesOrder         = transformKeys.camelCase(resp.data.data);
               this.form.acct            = getSalesOrder.acct;
-              this.form.otherCharges    = getSalesOrder.otherCharges;
               this.form.acctId          = getSalesOrder.acctId;
               this.form.invoiceNo       = getSalesOrder.invoiceNo;
               this.form.motorNo         = getSalesOrder.motorNo;
@@ -568,10 +567,18 @@
         let dataArray = this.purchaseOrderItems.filter(data => data.delRecord == 0);
         if (dataArray.length > 0) {
           let result = dataArray.reduce((prev, cur) => ({finalAmount: Number(prev.finalAmount) + Number(cur.finalAmount)})).finalAmount;
-           return parseFloat(Math.round(result)).toFixed(2);
+           return parseFloat(result).toFixed(2);
         }
+
         return 0;
+      },
+      otherCharges(){
+        if (this.salesOrderItems.length > 0) {
+          let result =  this.finalAmount - Math.trunc(this.finalAmount) == 0 ? 0 : 1 - (this.finalAmount - Math.trunc(this.finalAmount));
+          return parseFloat(result).toFixed(2);
+        }
         
+        return 0;  
       },
       itemErrors () {
         const errors = [];
@@ -641,7 +648,7 @@
       
       getTotalPurchaseAmount()
         {
-          return Number(this.finalAmount) +  Number(this.form.otherCharges);
+          return Number(this.finalAmount) +  Number(this.otherCharges);
         },
       
     },
@@ -826,7 +833,7 @@
             data['apmc']                = this.apmc;
             data['mapLevy']             = this.mapLevy;
             data['tds']                 = this.tds;
-            data['otherCharges']        = this.form.otherCharges;
+            data['otherCharges']        = this.otherCharges;
             data['totalAmount']         = this.getTotalPurchaseAmount;
             data['totalQty']            = this.getTotalPurchaseCartQty();
             data['purchaseAmount']      = this.getTotalPurchaseCartAmount();
