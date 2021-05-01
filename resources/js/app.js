@@ -40,6 +40,31 @@ Vue.mixin({
       			}
       		})
     },
+    computed: {
+          enterDateComputed () {
+            return this.formatDate(this.enterDate)
+          },
+
+          enterDateComputedForm () {
+            return this.formatDate(this.form.enterDate)
+          },
+
+          fromDateComputed () {
+            return this.formatDate(this.form.fromDate)
+          },
+
+          toDateComputed () {
+            return this.formatDate(this.form.toDate)
+          },
+
+          dateFromComputed () {
+            return this.formatDate(this.dateFrom)
+          },
+
+          dateToComputed () {
+            return this.formatDate(this.dateTo)
+          },
+    },
     methods: {
       async hasPermission() {
 
@@ -49,7 +74,14 @@ Vue.mixin({
       		 return fetchData;
       	}
       	return {'status': 401};
-      }
+      },
+
+      formatDate (date) {
+        if (!date) return null
+
+        const [year, month, day] = date.split('-')
+        return `${day}-${month}-${year}`
+      },
     }
 });
 
