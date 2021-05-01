@@ -88,7 +88,7 @@
                     <v-text-field
                       outlined
                       dense
-                      v-model="enterDate"
+                      v-model="enterDateComputed"
                       label="Date"
                       append-icon="mdi-calendar"
                       readonly
@@ -573,7 +573,7 @@
         return 0;
       },
       otherCharges(){
-        if (this.salesOrderItems.length > 0) {
+        if (this.purchaseOrderItems.length > 0) {
           let result =  this.finalAmount - Math.trunc(this.finalAmount) == 0 ? 0 : 1 - (this.finalAmount - Math.trunc(this.finalAmount));
           return parseFloat(result).toFixed(2);
         }

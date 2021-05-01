@@ -55,7 +55,7 @@
                       <v-text-field
                         outlined
                         dense
-                        v-model="dateFrom"
+                        v-model="dateFromComputed"
                         label="Date From"
                         append-icon="mdi-calendar"
                         readonly
@@ -102,7 +102,7 @@
                       <v-text-field
                         outlined
                         dense
-                        v-model="dateTo"
+                        v-model="dateToComputed"
                         label="Date To"
                         append-icon="mdi-calendar"
                         readonly

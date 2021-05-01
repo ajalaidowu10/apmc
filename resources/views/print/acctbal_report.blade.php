@@ -40,7 +40,7 @@
 					<tbody>
 						@if ($get_acct)
 							<tr style="background-color: #E8F5E9;">
-								<td>{{ $date_to }}</td>
+								<td>{{ date_format(date_create($date_to), 'd-m-Y') }}</td>
 								<td>{{ $get_acct->name }}</td>
 								@if ($open_bal < 0)
 									<td>{{ $open_bal * -1 }} DR</td>

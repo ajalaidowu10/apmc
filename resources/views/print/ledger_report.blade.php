@@ -76,7 +76,7 @@
 								$total_credit = $total_credit + $report->credit;
 							@endphp
 								<tr>
-									<td>{{ $report->enter_date }}</td>
+									<td>{{ date_format(date_create($report->enter_date), 'd-m-Y') }}</td>
 									<td>{{ $report->acct_name }}</td>
 									<td>{{ $report->descp }}</td>
 									<td>{{ $report->debit == 0 ? '' : $report->debit}}</td>

@@ -55,7 +55,7 @@
                       <v-text-field
                         outlined
                         dense
-                        v-model="dateTo"
+                        v-model="dateToComputed"
                         label="Date To"
                         append-icon="mdi-calendar"
                         readonly
@@ -118,7 +118,7 @@
                 </thead>
                 <tbody>
                   <tr class="success lighten-5">
-                    <td>{{ searchDateTo }}</td>
+                    <td>{{ formatDate(searchDateTo) }}</td>
                     <td>{{ searchAcctName }}</td>
                     <td v-if="open_bal < 0"><strong>{{ open_bal * -1 }} DR</strong></td>
                     <td v-else-if="open_bal > 0"><strong>{{ open_bal  }} CR</strong></td>

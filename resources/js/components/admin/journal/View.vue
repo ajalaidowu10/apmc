@@ -61,6 +61,9 @@
               :items="itemOrders"
               :search="search"
               >
+               <template v-slot:item.enterdate="{ item }">
+                {{ formatDate(item.enter_date) }}
+              </template>
               <template v-slot:item.view="{ item }">
                 <v-btn
                   color="primary"
@@ -98,7 +101,7 @@
       search: '',
       headers: [
                 { text: 'S/No', value: 'id' },
-                { text: 'Date', value: 'enter_date' },
+                { text: 'Date', value: 'enterdate' },
                 { text: 'Total Credit Amount', value: 'total_cr_amount' },
                 { text: 'Total Debit Amount', value: 'total_dr_amount' },
                 { text: 'View', value: 'view' },

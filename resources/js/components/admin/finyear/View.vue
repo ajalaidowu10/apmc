@@ -61,6 +61,12 @@
               :items="itemOrders"
               :search="search"
               >
+              <template v-slot:item.fromdate="{ item }">
+                {{ formatDate(item.from_date) }}
+              </template>
+              <template v-slot:item.todate="{ item }">
+                {{ formatDate(item.to_date) }}
+              </template>
               <template v-slot:item.edit="{ item }">
                 <v-btn
                   color="primary"
@@ -116,8 +122,8 @@
       search: '',
       headers: [
                 { text: 'Company', value: 'company' },
-                { text: 'Year From', value: 'from_date' },
-                { text: 'Year To', value: 'to_date' },
+                { text: 'Year From', value: 'fromdate' },
+                { text: 'Year To', value: 'todate' },
                 { text: 'Edit', value: 'edit' },
                 { text: 'Status', value: 'status' },
               ],
