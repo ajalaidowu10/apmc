@@ -88,7 +88,7 @@
                     <v-text-field
                       outlined
                       dense
-                      v-model="enterDate"
+                      v-model="enterDateComputed"
                       label="Date"
                       append-icon="mdi-calendar"
                       readonly

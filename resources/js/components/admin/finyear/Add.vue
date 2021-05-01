@@ -83,7 +83,7 @@
                   <v-text-field
                     outlined
                     dense
-                    v-model="form.fromDate"
+                    v-model="fromDateComputed"
                     label="Year From"
                     append-icon="mdi-calendar"
                     readonly
@@ -130,7 +130,7 @@
                   <v-text-field
                     outlined
                     dense
-                    v-model="form.toDate"
+                    v-model="toDateComputed"
                     label="Year To"
                     append-icon="mdi-calendar"
                     readonly

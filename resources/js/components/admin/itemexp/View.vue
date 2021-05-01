@@ -61,6 +61,9 @@
               :items="itemOrders"
               :search="search"
               >
+              <template v-slot:item.enterdate="{ item }">
+                {{ formatDate(item.enter_date) }}
+              </template>
               <template v-slot:item.edit="{ item }">
                 <v-btn
                   color="primary"
@@ -98,7 +101,7 @@
       search: '',
       headers: [
                 { text: 'Item Name', value: 'item' },
-                { text: 'Date', value: 'enter_date' },
+                { text: 'Date', value: 'enterdate' },
                 { text: 'Commission', value: 'comm' },
                 { text: 'P Hamali', value: 'p_hamali' },
                 { text: 'B Hamali', value: 'b_hamali' },

@@ -55,7 +55,7 @@
                       <v-text-field
                         outlined
                         dense
-                        v-model="dateFrom"
+                        v-model="dateFromComputed"
                         label="Date From"
                         append-icon="mdi-calendar"
                         readonly
@@ -102,7 +102,7 @@
                       <v-text-field
                         outlined
                         dense
-                        v-model="dateTo"
+                        v-model="dateToComputed"
                         label="Date To"
                         append-icon="mdi-calendar"
                         readonly
@@ -181,7 +181,7 @@
                     v-for="(item, index) in itemOrders"
                     :key="index"
                    >
-                    <td>{{ item.enter_date }}</td>
+                    <td>{{ formatDate(item.enter_date) }}</td>
                     <td>{{ item.acct_name }}</td>
                     <td>{{ item.descp }}</td>
                     <td>{{ item.debit == 0 ? '' : item.debit}}</td>
