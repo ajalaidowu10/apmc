@@ -13,7 +13,7 @@ class PurchaseOrderItem extends Model
     protected $fillable = [
                             'purchase_order_id', 'item_id', 'qty', 'grwt', 
                             'rate', 'del_record', 'amount', 'levy', 'map_levy',
-                            'apmc', 'comm', 'tds', 'final_amount', 'item_exp_object', 'deleted_at',
+                            'apmc', 'comm', 'tds', 'final_amount', 'item_exp_object', 'is_charged', 'deleted_at',
                         ];
 
     protected static function boot()
