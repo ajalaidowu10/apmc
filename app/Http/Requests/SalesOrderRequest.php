@@ -38,7 +38,7 @@ class SalesOrderRequest extends FormRequest
             'sales_amount'          => 'required|numeric',
             'total_amount'          => 'required|numeric',
             'motor_no'              => 'nullable|string',
-            'sales_order_items'   => 'required|array',
+            'sales_order_items'     => 'required|array',
 
         ];
     }
