@@ -54,6 +54,11 @@
               <template v-slot:item.id="{ item }">
                 {{itemOrders.map(function(x) {return x.id; }).indexOf(item.id)}}
               </template>
+              <template v-slot:item.isCharged="{ item }">
+                <v-icon v-if="item.isCharged
+                ">mdi-check</v-icon>
+                <v-icon v-else>mdi-cancel</v-icon>
+              </template>
             </v-data-table>
           </v-card>
           <v-row>
@@ -128,6 +133,7 @@
                 { text: 'GRWT', value: 'grwt' },
                 { text: 'RATE', value: 'rate' },
                 { text: 'AMOUNT', value: 'amount' },
+                { text: 'Charged', value: 'isCharged' },
               ],
       itemOrders: [],
       overlay: false,
@@ -145,8 +151,9 @@
                   axios.get(`salesorder/${this.orderid}`)
                        .then(resp => {
                         let getData = resp.data.data;
-                        this.itemOrders = getData.sales_order_items.filter(data => data.del_record == 0);
+                        this.itemOrders = transformKeys.camelCase(getData.sales_order_items.filter(data => data.del_record == 0));
                         this.orderid = getData.id;
+                        console.log(this.itemOrders);
                        })
                        .catch(err => Exception.handle(err, 'admin'));
                 }

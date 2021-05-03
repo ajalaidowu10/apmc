@@ -27,6 +27,7 @@ class SalesOrderItemResource extends JsonResource
             'apmc'              => $this->apmc,
             'comm'              => $this->comm,
             'tds'               => $this->tds,
+            'is_charged'        => $this->is_charged,
             'final_amount'      => $this->final_amount,
             'item_exp_object'   => json_decode($this->item_exp_object),
             'del_record'        => $this->del_record,

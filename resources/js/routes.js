@@ -139,12 +139,6 @@ const router = new Router({
 				      props: true,
 				    },
 				    {
-				      path: '/ledger/print/report/:dateFrom/:dateTo/:acctId',
-				      name: 'print-ledger-report',
-				      component: PrintLedgerReport,
-				      props: true,
-				    },
-				    {
 				      path: '/salesbill/printing/:printArray*',
 				      name: 'print-sales-bill',
 				      component: PrintSalesBill,

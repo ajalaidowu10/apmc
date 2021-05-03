@@ -30,7 +30,7 @@ class SalesOrderResource extends JsonResource
           'total_amount'            => $this->total_amount,
           'total_qty'               => $this->total_qty,
           'created_at'              => date('Y-m-d',strtotime($this->created_at)),
-          'sales_order_items'    => PurchaseOrderItemResource::collection($this->sales_order_items),
+          'sales_order_items'       => SalesOrderItemResource::collection($this->sales_order_items),
         ];
     }
 }

@@ -147,7 +147,7 @@
             >
             <v-row>
               <v-col
-                cols="3"
+                cols="2"
                 >
                 <v-combobox
                   v-model="form.item"
@@ -209,7 +209,16 @@
                 ></v-text-field>
               </v-col>
               <v-col
-                cols="3"
+                cols="2"
+               >
+               <v-checkbox
+                  v-model="form.isCharged"
+                  label="Charges"
+                  value
+                ></v-checkbox>
+              </v-col>
+              <v-col
+                cols="2"
                >
                  <v-btn
                   class="px-10"
@@ -472,6 +481,7 @@
       acct: [],
       form: {
               id: 0,
+              isCharged: true,
               qty: null,
               grwt: null,
               motorNo: null,
@@ -665,7 +675,7 @@
           viewData(){
             this.$router.push({name:'view-purchase'});
           },
-          async createPurchase(id, item, itemId, rate, grwt, itemExpObject, qty, delRecord)
+          async createPurchase(id, item, itemId, rate, grwt, itemExpObject, qty, isCharged, delRecord)
           {
             let cartItem = {};
             cartItem.id = id;
@@ -674,6 +684,7 @@
             cartItem.rate = rate;
             cartItem.grwt = grwt;
             cartItem.qty = qty;
+            cartItem.isCharged = isCharged;
             cartItem.itemExpObject = itemExpObject;
             cartItem.unit = itemExpObject.unit;
             cartItem.weightPb = itemExpObject.weightPb;
@@ -687,19 +698,33 @@
             cartItem.iniApmc = itemExpObject.apmc;
             cartItem.iniComm = itemExpObject.comm;
             cartItem.discount = itemExpObject.discount;
+            cartItem.delRecord= delRecord;
 
             cartItem.amount = (cartItem.grwt * cartItem.rate) / cartItem.unit;
             cartItem.unitGrwt = cartItem.grwt/ cartItem.qty;
             cartItem.iniLevy =  (cartItem.unitGrwt >= cartItem.weightPb) ? cartItem.bLevy : cartItem.pLevy;
 
-            cartItem.levy = cartItem.iniLevy * cartItem.qty;
-            cartItem.apmc = cartItem.iniApmc/100 * cartItem.amount;
-            cartItem.mapLevy = cartItem.iniMapLevy * cartItem.grwt;
-            cartItem.comm = cartItem.iniComm/100 *cartItem.amount;
-            cartItem.tds = cartItem.iniTds/100 * cartItem.comm;
-            cartItem.exp = cartItem.levy + cartItem.apmc + cartItem.mapLevy + cartItem.comm;
+            if (cartItem.isCharged) {
+
+              cartItem.levy = cartItem.iniLevy * cartItem.qty;
+              cartItem.apmc = cartItem.iniApmc/100 * cartItem.amount;
+              cartItem.mapLevy = cartItem.iniMapLevy * cartItem.grwt;
+              cartItem.comm = cartItem.iniComm/100 * cartItem.amount;
+              cartItem.tds = cartItem.iniTds/100 * cartItem.comm;
+              cartItem.exp = cartItem.levy + cartItem.apmc + cartItem.mapLevy + cartItem.comm;
+
+            }else{
+
+              cartItem.levy = 0;
+              cartItem.apmc = 0;
+              cartItem.mapLevy = 0;
+              cartItem.comm = 0;
+              cartItem.tds = 0;
+              cartItem.exp = 0;
+            }
+
             cartItem.finalAmount = cartItem.exp + cartItem.amount;
-            cartItem.delRecord= delRecord;
+            
 
             return cartItem;
           },
@@ -715,6 +740,7 @@
             this.form.rate = cartItem.rate;
             this.form.qty = cartItem.qty;
             this.form.grwt = cartItem.grwt;
+            this.form.isCharged = cartItem.isCharged;
             this.form.itemExpObject = cartItem.itemExpObject;
             this.cartEdit = index;
           },
@@ -784,7 +810,7 @@
 
             this.createPurchase(
               this.form.id, this.form.item, this.form.itemId, 
-              this.form.rate, this.form.grwt, this.form.itemExpObject, this.form.qty, 0
+              this.form.rate, this.form.grwt, this.form.itemExpObject, this.form.qty, this.form.isCharged, 0
               )
                 .then(resp => {
 
@@ -797,6 +823,7 @@
                   }
                     
                   this.form.item = this.form.qty = this.form.rate = this.form.grwt = this.form.unit = null;
+                  this.form.isCharged = true;
                   this.$v.form.$reset();
                 })
           },
@@ -805,6 +832,7 @@
             this.form =    {
                               id: 0,
                               qty: null,
+                              isCharged:true,
                               rate:null,
                               grwt:null,
                               unit:null,
