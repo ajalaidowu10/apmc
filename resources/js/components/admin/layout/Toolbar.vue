@@ -73,7 +73,7 @@
       return {
         drawer: true,
         menus:[],
-        mini: false,
+        mini: true,
         username: null,
       }
     },

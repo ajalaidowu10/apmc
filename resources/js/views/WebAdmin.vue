@@ -20,8 +20,6 @@
         created(){
           if (!Admin.loggedIn()) {
             this.$router.push({name: 'admin-login'}).catch(()=>{})
-          }else{
-            this.$router.push({name: 'admin-dashboard'}).catch(()=>{})
           }
 
         }
