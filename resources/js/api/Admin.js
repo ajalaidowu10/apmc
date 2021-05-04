@@ -16,7 +16,7 @@ class Admin {
 
         if (Token.isValidAdmin(access_token)) {
             AppStorage.store(username, access_token, company);
-            window.location = '/web-admin'
+            window.location = '/web-admin/dashboard'
         }
     }
 
