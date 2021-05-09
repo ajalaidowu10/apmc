@@ -742,7 +742,12 @@
             {
               axios.post('account', transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      // this.$router.go(this.$route.path, { message: `Account ${resp.data.name} Added Successfully`});
+                      if (this.$route.name == 'add-account') {
+                        this.$router.push({name:'view-account', params: { message: `Account ${resp.data.name} Added Successfully` }});
+                      }else{
+                        this.$router.go();
+                      }
+                      
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
