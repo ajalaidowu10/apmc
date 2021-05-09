@@ -1,14 +1,5 @@
 <template>
   <v-container v-if="hasAccess">
-    <v-alert 
-      border="left"
-      close-text="Close Alert"
-      color="success"
-      dark
-      dismissible
-      >
-      {{ $route.params.message }}
-    </v-alert>
     <v-card>
       <v-card
         min-height="500"
@@ -41,7 +32,7 @@
               </div>
               
               
-              <template v-slot:actions>
+              <template v-slot:actions v-if="$route.name == 'add-account'">
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
@@ -751,8 +742,7 @@
             {
               axios.post('account', transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      console.log('hellooo');
-                      this.$router.go(this.$route.path, { message: `Account ${resp.data.name} Added Successfully`});
+                      // this.$router.go(this.$route.path, { message: `Account ${resp.data.name} Added Successfully`});
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
