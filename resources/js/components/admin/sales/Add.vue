@@ -1,5 +1,13 @@
 <template>
   <v-container class="mt-n10" v-if="hasAccess">
+    <v-dialog
+      v-model="showAccountModal"
+      persistent
+      max-width="600px"
+      @click:outside="showAccountModal = false"
+    >
+      <account></account>
+    </v-dialog>
     <v-card>
       <v-card
         min-height="500"
@@ -70,7 +78,7 @@
                   @change="setAcct($event)"
                   outlined
                   append-outer-icon="mdi-plus"
-                  @click:append-outer="addNewAccount"
+                  @click:append-outer="showAccountModal = true"
                 >
                 </v-combobox>
               </v-col>
@@ -453,7 +461,9 @@
   import { validationMixin } from 'vuelidate';
   import { required, numeric } from 'vuelidate/lib/validators';
   import transformKeys from '../../../utils/transformKeys';
+  import Account from '../account/Add';
   export default {
+    components: {Account},
      mixins: [validationMixin],
      validations: {
          form:{
@@ -465,6 +475,7 @@
          }
      },
     data: () => ({
+      showAccountModal: false,
       permission: 'sales-entry',
       orderid: 0,
       overlay: false,
@@ -670,32 +681,6 @@
       
     },
     methods: {
-          addNewAccount(){
-            let routeData = this.$router.resolve({path: 'account',  params:{
-                                                                                        dateTo:'2021-05-03'
-                                                                                      }});
-
-            this.popupwindow(routeData.href, "Add Account", 500, 500);
-          },
-          popupwindow(url, title, w, h) {
-            var left = (screen.width/2)-(w/2);
-            var top = (screen.height/2)-(h/2);
-            var win = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
-            var timer = setInterval(() => { 
-                if(win.closed) {
-                    clearInterval(timer);
-                    axios.get(`account/get/0/2`)
-                          .then(resp=>{
-                            this.acct = transformKeys.camelCase(resp.data.data);
-                            console.log('hello');
-                          })
-                          .catch(err => Exception.handle(err, 'admin'));
-                }
-            }, 1000);
-
-            return win;
-          },
-
           setItem(data){
             this.form.itemId = data.itemId;
             this.form.item = data.item;

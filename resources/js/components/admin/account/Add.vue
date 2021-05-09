@@ -32,7 +32,7 @@
               </div>
               
               
-              <template v-slot:actions>
+              <template v-slot:actions v-if="$route.name == 'add-account'">
                 <v-btn
                   class="mx-2 float-right"
                   color="orange"
@@ -265,7 +265,9 @@
           <v-row>
             <v-col
               v-if="orderid != 0"
-              cols="6"
+              cols="12"
+              md="12" 
+              lg="6"
               >
               <v-btn
                color="red"
@@ -285,7 +287,9 @@
              </v-btn>
             </v-col>
             <v-col
-              cols="6"
+              cols="12"
+              md="12" 
+              lg="6"
               >
               <v-btn
                color="primary"
@@ -305,7 +309,7 @@
              </v-btn>
             </v-col>
 
-            <v-col cols="auto" v-if="orderid == 0">
+            <v-col cols="12" md="12" lg="6" v-if="orderid == 0">
               <v-dialog
                 transition="dialog-top-transition"
                 max-width="600"
@@ -387,6 +391,7 @@
          }
      },
     data: () => ({
+      alert: false,
       permission: "account",
       orderid: 0,
       overlay: false,
@@ -679,13 +684,6 @@
               this.form.groupcode = null;
               this.form.groupcodeId = null;
             }
-
-
-
-
-
-            
-
           },
           setStatus(data){
             this.form.statusId = data.id;
@@ -744,7 +742,12 @@
             {
               axios.post('account', transformKeys.snakeCase(this.form))
                     .then(resp =>{
-                      this.$router.push({name:'view-account', params: { message: `Account ${resp.data.name} Added Successfully` }});
+                      if (this.$route.name == 'add-account') {
+                        this.$router.push({name:'view-account', params: { message: `Account ${resp.data.name} Added Successfully` }});
+                      }else{
+                        this.$router.go();
+                      }
+                      
                     })
                     .catch(err => {
                       this.form.allError =  transformKeys.camelCase(err.response.data.errors);
