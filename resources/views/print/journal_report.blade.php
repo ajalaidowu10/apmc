@@ -58,7 +58,7 @@
 						@endphp
 						@if ($get_report)
 							@php
-								$id = $get_report{0}->order_id 
+								$id = $get_report[0]->order_id 
 							@endphp
 							@foreach ($get_report as $report)
 							@if ($report->order_id != $id)

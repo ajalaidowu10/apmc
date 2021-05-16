@@ -71,7 +71,7 @@
 						    Comm
 						  </th>
 						  <th style="text-align: left;"> 
-						    Tds
+						    Round Off
 						  </th>
 						  <th style="text-align: left;"> 
 						    Final Amount
@@ -79,33 +79,29 @@
 						</tr>
 					</thead>
 					<tbody>
-						@php
-							$total_qty= 0;
-							$total_grwt = 0;
-							$total_rate = 0;
-							$total_amount = 0;
-							$total_levy = 0;
-							$total_map_levy = 0;
-							$total_apmc = 0;
-							$total_comm = 0;
-							$total_tds = 0;
-							$total_final_amount = 0;
-						@endphp
 						@if ($get_report)
+							@php
+								$id = $get_report[0]->sno; 
+								$total = $get_report[0];
+							@endphp
 							@foreach ($get_report as $report)
+							@if ($report->sno != $id)
+									<tr>
+									  <td colspan="7"><strong>TOTAL</strong></td>
+									  <td><strong>{{ $total->sales_amount }} </strong></td>
+									  <td><strong>{{ $total->t_levy }} </strong></td>
+									  <td><strong>{{ $total->t_maplevy }} </strong></td>
+									  <td><strong>{{ $total->t_apmc }} </strong></td>
+									  <td><strong>{{ $total->t_comm }} </strong></td>
+									  <td><strong>{{ $total->other_charges }} </strong></td>
+									  <td><strong>{{ $total->total_amount }} </strong></td>
+									</tr>
+									@php
+										$id = $report->sno; 
+										$total = $report;
+									@endphp
+							@endif
 							<tr>
-								@php
-									$total_qty = $total_qty + $report->qty;
-									$total_grwt = $total_grwt + $report->grwt;
-									$total_rate = $total_rate + $report->rate;
-									$total_amount = $total_amount + $report->amount;
-									$total_levy = $total_levy + $report->levy;
-									$total_map_levy = $total_map_levy + $report->map_levy;
-									$total_apmc = $total_apmc + $report->apmc;
-									$total_comm = $total_comm + $report->comm;
-									$total_tds = $total_tds + $report->tds;
-									$total_final_amount = $total_final_amount + $report->final_amount;
-								@endphp
 								<td>{{ $report->sno }}</td>
 								<td>{{ $report->enter_date }}</td>
 								<td>{{ $report->acct_name }}</td>
@@ -114,26 +110,18 @@
 								<td>{{ $report->grwt }}</td>
 								<td>{{ $report->rate }}</td>
 								<td>{{ $report->amount }}</td>
-								<td>{{ $report->levy }}</td>
-								<td>{{ $report->map_levy }}</td>
-								<td>{{ $report->apmc }}</td>
-								<td>{{ $report->comm }}</td>
-								<td>{{ $report->tds }}</td>
-								<td>{{ $report->final_amount }}</td>
+								<td colspan="6"></td>
 							</tr>
 							@endforeach
 							<tr>
-							  <td colspan="4"><strong>TOTAL</strong></td>
-							  <td><strong>{{ $total_qty }}</strong></td>
-							  <td><strong>{{ $total_grwt }}</strong></td>
-							  <td><strong>{{ $total_rate }}</strong></td>
-							  <td><strong>{{ $total_amount }}</strong></td>
-							  <td><strong>{{ $total_levy }}</strong></td>
-							  <td><strong>{{ $total_map_levy }}</strong></td>
-							  <td><strong>{{ $total_apmc }}</strong></td>
-							  <td><strong>{{ $total_comm }}</strong></td>
-							  <td><strong>{{ $total_tds }}</strong></td>
-							  <td><strong>{{ $total_final_amount }}</strong></td>
+							  <td colspan="7"><strong>TOTAL</strong></td>
+							  <td><strong>{{ $total->sales_amount }} </strong></td>
+							  <td><strong>{{ $total->t_levy }} </strong></td>
+							  <td><strong>{{ $total->t_maplevy }} </strong></td>
+							  <td><strong>{{ $total->t_apmc }} </strong></td>
+							  <td><strong>{{ $total->t_comm }} </strong></td>
+							  <td><strong>{{ $total->other_charges }} </strong></td>
+							  <td><strong>{{ $total->total_amount }} </strong></td>
 							</tr>
 						@endif
 					</tbody>
