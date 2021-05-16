@@ -216,7 +216,7 @@ class SalesOrderController extends Controller
                         ->leftJoin('items as t', 't.id', '=', 'o.item_id')
                         ->select(
                           DB::raw(
-                                  'oi.id sno, a.name acct_name, t.name item_name, DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enter_date,  o.*'
+                                  'oi.id sno, a.name acct_name, t.name item_name, DATE_FORMAT(oi.enter_date, "%d-%m-%Y") enter_date,  o.*, oi.levy t_levy, oi.apmc t_apmc, oi.map_levy t_maplevy, oi.comm t_comm, oi.levy t_levy, oi.other_charges, oi.sales_amount, oi.total_amount '
                                 )
                         )
                         ->where('o.deleted_at', '=', null)

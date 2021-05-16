@@ -189,7 +189,7 @@
                       Comm
                     </th>
                     <th class="text-left"> 
-                      Tds
+                      Round Off
                     </th>
                     <th class="text-left"> 
                       Final Amount
@@ -197,38 +197,31 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="(item, index) in itemOrders"
-                    :key="index"
-                   >
-                    <td>{{ item.sno }}</td>
-                    <td>{{ item.enter_date }}</td>
-                    <td>{{ item.acct_name }}</td>
-                    <td>{{ item.item_name }}</td>
-                    <td>{{ item.qty }}</td>
-                    <td>{{ item.grwt }}</td>
-                    <td>{{ item.rate }}</td>
-                    <td>{{ item.amount }}</td>
-                    <td>{{ item.levy }}</td>
-                    <td>{{ item.map_levy }}</td>
-                    <td>{{ item.apmc }}</td>
-                    <td>{{ item.comm }}</td>
-                    <td>{{ item.tds }}</td>
-                    <td>{{ item.final_amount }}</td>
-                  </tr>
-                  <tr class="blue-grey lighten-5">
-                    <td colspan="4"><strong>TOTAL</strong></td>
-                    <td><strong>{{ totalQty }}</strong></td>
-                    <td><strong>{{ totalGrwt }}</strong></td>
-                    <td><strong>{{ totalRate }}</strong></td>
-                    <td><strong>{{ totalAmount }}</strong></td>
-                    <td><strong>{{ totalLevy }}</strong></td>
-                    <td><strong>{{ totalMapLevy }}</strong></td>
-                    <td><strong>{{ totalApmc }}</strong></td>
-                    <td><strong>{{ totalComm }}</strong></td>
-                    <td><strong>{{ totalTds}}</strong></td>
-                    <td><strong>{{ totalFinalAmount }}</strong></td>
-                  </tr>
+                  <template v-for="(group, index) in sales">
+                    <tr
+                      v-for="(item, innerIndex) in salesItem(group)"
+                     >
+                      <td>{{ item.sno }}</td>
+                      <td>{{ item.enter_date }}</td>
+                      <td>{{ item.acct_name }}</td>
+                      <td>{{ item.item_name }}</td>
+                      <td>{{ item.qty }}</td>
+                      <td>{{ item.grwt }}</td>
+                      <td>{{ item.rate }}</td>
+                      <td>{{ item.amount }}</td>
+                      <td colspan="6"></td>
+                    </tr>
+                    <tr class="blue-grey lighten-5">
+                      <td colspan="7"><strong>TOTAL</strong></td>
+                      <td><strong>{{ totalSales(group).sales_amount }} </strong></td>
+                      <td><strong>{{ totalSales(group).t_levy }} </strong></td>
+                      <td><strong>{{ totalSales(group).t_maplevy }} </strong></td>
+                      <td><strong>{{ totalSales(group).t_apmc }} </strong></td>
+                      <td><strong>{{ totalSales(group).t_comm }} </strong></td>
+                      <td><strong>{{ totalSales(group).other_charges }} </strong></td>
+                      <td><strong>{{ totalSales(group).total_amount }} </strong></td>
+                    </tr>
+                  </template>
                 </tbody>
               </template>
             </v-simple-table>
@@ -276,119 +269,28 @@
       overlay: false,
     }),
     computed:{
-      totalQty(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({qty: Number(prev.qty) + Number(cur.qty)})).qty
+      sales() {
+              const sales = new Set();
+              this.itemOrders.forEach(item => sales.add(item.sno));
 
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
+              return Array.from(sales); 
+          },
 
-      totalGrwt(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({grwt: Number(prev.grwt) + Number(cur.grwt)})).grwt
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalRate(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({rate: Number(prev.rate) + Number(cur.rate)})).rate
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalAmount(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({amount: Number(prev.amount) + Number(cur.amount)})).amount
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalLevy(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({levy: Number(prev.levy) + Number(cur.levy)})).levy
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalMapLevy(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({map_levy: Number(prev.map_levy) + Number(cur.map_levy)})).map_levy
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalApmc(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({apmc: Number(prev.apmc) + Number(cur.apmc)})).apmc
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalComm(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({comm: Number(prev.comm) + Number(cur.comm)})).comm
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalTds(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({tds: Number(prev.tds) + Number(cur.tds)})).tds
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-      totalFinalAmount(){
-        if (this.itemOrders.length > 0) {
-          let result = this.itemOrders.reduce((prev, cur) => ({final_amount: Number(prev.final_amount) + Number(cur.final_amount)})).final_amount
-
-          return Number(result).toFixed(2);
-        }
-        
-        return 0;
-      },
-
-
-
-
-
-
-
-
-      
     },
     created(){
        this.index();
     },
     methods: {
+              salesItem(sno) 
+              {
+                return this.itemOrders.filter(item => item.sno === sno);
+              },
+              totalSales(sno) 
+              {
+                let result = this.itemOrders.filter(item => item.sno === sno);
+                result = result.slice(0, 1);
+                return result.shift();
+              },
               index()
               {
 
@@ -401,6 +303,7 @@
                 axios.get(`sales/report/${this.dateFrom}/${this.dateTo}/${this.acctId}`)
                      .then(resp => {
                       this.itemOrders = resp.data;
+                      console.log(resp.data);
                     })
                      .catch(err => {
                       Exception.handle(err, 'admin');
