@@ -201,18 +201,31 @@
                     <tr
                       v-for="(item, innerIndex) in salesItem(group)"
                      >
-                      <td>{{ item.sno }}</td>
-                      <td>{{ item.enter_date }}</td>
-                      <td>{{ item.acct_name }}</td>
-                      <td>{{ item.item_name }}</td>
-                      <td>{{ item.qty }}</td>
-                      <td>{{ item.grwt }}</td>
-                      <td>{{ item.rate }}</td>
-                      <td>{{ item.amount }}</td>
-                      <td colspan="6"></td>
+                     <template v-if="innerIndex == 0">
+                       <td>{{ item.sno }}</td>
+                       <td>{{ item.enter_date }}</td>
+                       <td>{{ item.acct_name }}</td>
+                       <td>{{ item.item_name }}</td>
+                       <td>{{ item.qty }}</td>
+                       <td>{{ item.grwt }}</td>
+                       <td>{{ item.rate }}</td>
+                       <td>{{ item.amount }}</td>
+                       <td colspan="6"></td>
+                     </template>
+                     <template v-else>
+                       <td></td>
+                       <td></td>
+                       <td>{{ item.acct_name }}</td>
+                       <td>{{ item.item_name }}</td>
+                       <td>{{ item.qty }}</td>
+                       <td>{{ item.grwt }}</td>
+                       <td>{{ item.rate }}</td>
+                       <td>{{ item.amount }}</td>
+                       <td colspan="6"></td>
+                     </template>
                     </tr>
                     <tr class="blue-grey lighten-5">
-                      <td colspan="7"><strong>TOTAL</strong></td>
+                      <td colspan="7"></td>
                       <td><strong>{{ totalSales(group).sales_amount }} </strong></td>
                       <td><strong>{{ totalSales(group).t_levy }} </strong></td>
                       <td><strong>{{ totalSales(group).t_maplevy }} </strong></td>
