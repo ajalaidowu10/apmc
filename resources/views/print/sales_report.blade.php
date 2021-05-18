@@ -83,11 +83,18 @@
 							@php
 								$id = $get_report[0]->sno; 
 								$total = $get_report[0];
+								$count = 0;
 							@endphp
 							@foreach ($get_report as $report)
+								@php
+									$count++; 
+								@endphp
 							@if ($report->sno != $id)
+									@php
+										$count = 1; 
+									@endphp
 									<tr>
-									  <td colspan="7"><strong>TOTAL</strong></td>
+									  <td colspan="7"></td>
 									  <td><strong>{{ $total->sales_amount }} </strong></td>
 									  <td><strong>{{ $total->t_levy }} </strong></td>
 									  <td><strong>{{ $total->t_maplevy }} </strong></td>
@@ -102,8 +109,9 @@
 									@endphp
 							@endif
 							<tr>
-								<td>{{ $report->sno }}</td>
-								<td>{{ $report->enter_date }}</td>
+
+								<td>{{ $count == 1 ? $report->sno : ''}}</td>
+								<td>{{ $count == 1 ?  $report->enter_date : '' }}</td>
 								<td>{{ $report->acct_name }}</td>
 								<td>{{ $report->item_name }}</td>
 								<td>{{ $report->qty }}</td>
@@ -114,7 +122,7 @@
 							</tr>
 							@endforeach
 							<tr>
-							  <td colspan="7"><strong>TOTAL</strong></td>
+							  <td colspan="7"></td>
 							  <td><strong>{{ $total->sales_amount }} </strong></td>
 							  <td><strong>{{ $total->t_levy }} </strong></td>
 							  <td><strong>{{ $total->t_maplevy }} </strong></td>
