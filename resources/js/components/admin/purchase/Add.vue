@@ -98,6 +98,7 @@
                   </template>
                   <v-date-picker
                     v-model="enterDate"
+                    :allowed-dates="dateBetween"
                     no-title
                     scrollable
                   >
@@ -386,7 +387,6 @@
                 <v-text-field
                   outlined
                   dense
-                  disabled
                   label="Other Charges"
                   type="number"
                   :value="otherCharges"

@@ -27,6 +27,7 @@ Route::group([
     Route::post('refresh', 'AdminAuthController@refresh');
     Route::post('me', 'AdminAuthController@me');
     Route::get('menu', 'AdminAuthController@menu');
+    Route::post('company-login', 'AdminAuthController@companyLogin');
 });
 
 Route::apiResource('item', 'ItemController');
