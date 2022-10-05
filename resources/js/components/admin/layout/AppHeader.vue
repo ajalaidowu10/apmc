@@ -25,7 +25,7 @@
         company: 'Apmc Manager',
       }),
       created() {
-        this.company = Admin.company();
+        this.company = Admin.company('name');
         EventBus.$on("logout", () => {
           Admin.logout();
         });

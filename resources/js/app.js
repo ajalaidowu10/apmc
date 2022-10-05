@@ -34,10 +34,8 @@ Vue.mixin({
 	  },
   created: function () {
       this.hasPermission()
-      		.then( resp =>{
-      			if (resp.status == 204) {
-      				this.hasAccess = true;
-      			}
+      		.then( resp => {
+      			if (resp.status == 204){} this.hasAccess = true;
       		})
     },
     computed: {
@@ -67,20 +65,23 @@ Vue.mixin({
     },
     methods: {
       async hasPermission() {
-
       	if (this.permission) {
       		  let fetchData = await axios.get(`permission/${this.permission}`);
 
-      		 return fetchData;
+            return fetchData;
       	}
-      	return {'status': 401};
+        return {'status': 401};
       },
 
       formatDate (date) {
-        if (!date) return null
+        if (!date) return null;
 
         const [year, month, day] = date.split('-')
         return `${day}-${month}-${year}`
+      },
+      
+      dateBetween(val){
+        return val >= Admin.company('finyear_from') && val <= Admin.company('finyear_to')
       },
     }
 });
@@ -88,8 +89,8 @@ Vue.mixin({
 
 const app = new Vue({
     el: '#app',
-    vuetify : new Vuetify(),
-    router,
+    vuetify: new Vuetify(),
+    router: router,
     render: h => h(App)
 });
 

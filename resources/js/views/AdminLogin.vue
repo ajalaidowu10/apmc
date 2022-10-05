@@ -67,7 +67,7 @@
                     :loading="form.loading"
                     :disabled="form.loading"
                     color="blue darken-1"
-                    @click="loginFinal"
+                    @click="companyLogin"
                   >
                     Login
                     <template v-slot:loader>
@@ -239,41 +239,37 @@
       login()
       {
         this.$v.form.$touch();
-        if (this.$v.form.email.$invalid) 
-        {
-          return;
-        }
-        if (this.$v.form.password.$invalid) 
-        {
-          return;
-        }
-        this.form.loading = true;
-        axios.get(`company`)
-        .then(resp=>{
-          this.company = resp.data.data;
-          this.showFinyear = true;
-        })
-        this.$v.$reset();
-        this.form.loading = false;
-        
-      },
-      loginFinal()
-      {
-        this.$v.form.$touch();
-        if (this.$v.form.company.$invalid) 
-        {
-          return;
-        }
-        if (this.$v.form.finyear.$invalid) 
-        {
-          return;
-        }
-        this.form.loading = true;
+        if (this.$v.form.email.$invalid) return false;
+        if (this.$v.form.password.$invalid) return false;
+
         Admin.login(transformKeys.snakeCase(this.form))
         .then(resp => {
           this.form.loading = false;
           this.clear();
-          Admin.responseAfterLogin(resp);
+          axios.get(`company`)
+          .then(resp=>{
+            this.company = resp.data.data;
+            this.showFinyear = true;
+          })
+          this.showFinyear = true;
+        })
+        .catch(err => {
+          this.form.loading = false;
+          this.showFinyear = false;
+          swal('Notification', "Email or Password does not match");
+        });        
+      },
+      companyLogin()
+      {
+        this.$v.form.$touch();
+        if (this.$v.form.company.$invalid) return;
+        if (this.$v.form.finyear.$invalid) return;
+
+        this.form.loading = true;
+        Admin.companyLogin(transformKeys.snakeCase(this.form))
+        .then(resp => {
+          this.form.loading = false;
+          this.clear();
         })
         .catch(err => {
           this.form.loading = false;

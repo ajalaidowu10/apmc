@@ -12,9 +12,9 @@ class AppStorage{
     }
 
     store(user,token, company){
-        this.storeToken(token)
-        this.storeUser(user)
-        this.storeCompany(company)
+        this.storeToken(token);
+        this.storeUser(user);
+        this.storeCompany(company);
     }
 
     clear(){
@@ -32,7 +32,8 @@ class AppStorage{
     }
 
     getCompany(){
-        return localStorage.getItem('company')
+        const company = JSON.parse(localStorage.getItem('company'));
+        return company;
     }
 }
 
