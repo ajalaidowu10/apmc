@@ -3,21 +3,21 @@ import AppStorage from './AppStorage'
 
 class Admin {
     async login(data) {
-        const result = axios.post('/admin-auth/login', data);
-            // .then(res => this.responseAfterLogin(res))
-            // .catch(error => console.log(error.response.data))
+        const result = await axios.post('/admin-auth/login', data);
+        const { access_token, user } = result.data;
+        if (Token.isValidAdmin(access_token)) {
+            AppStorage.storeUser(user);
+            AppStorage.storeToken(access_token);
+        }
+        const JwtToken = `Bearer ${localStorage.getItem('token')}`
+        window.axios.defaults.headers.common['Authorization'] = JwtToken;
         return result;
     }
 
-    responseAfterLogin(res) {
-        const access_token = res.data.access_token;
-        const username = res.data.user;
-        const company = res.data.company;
-
-        if (Token.isValidAdmin(access_token)) {
-            AppStorage.store(username, access_token, company);
-            window.location = '/web-admin/dashboard'
-        }
+    async companyLogin(data) {
+        const result = await axios.post('/admin-auth/company-login', data);
+        AppStorage.storeCompany(JSON.stringify(result.data));
+        window.location = '/web-admin/dashboard'
     }
 
     hasToken() {
@@ -43,9 +43,9 @@ class Admin {
         }
     }
 
-    company() {
+    company(data) {
         if (this.loggedIn()) {
-            return AppStorage.getCompany()
+            return AppStorage.getCompany()[data];
         }
     }
 

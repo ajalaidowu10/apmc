@@ -108,6 +108,7 @@
                   </template>
                   <v-date-picker
                     v-model="enterDate"
+                    :allowed-dates="dateBetween"
                     no-title
                     scrollable
                   >
